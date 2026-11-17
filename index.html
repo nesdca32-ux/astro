@@ -140,6 +140,21 @@ ul.hl .tag{margin:0 4px 0 0}
 .cta{display:inline-block;font:inherit;font-weight:600;font-size:15px;color:var(--surface);background:var(--ink);border:0;border-radius:8px;padding:8px 14px;cursor:pointer;margin:0 0 18px}
 .w-st{fill:var(--accent)} .w-sth{fill:var(--accent);opacity:.2}
 .w-kum .w-pl{fill:var(--accent)}
+.meter{position:relative;height:8px;border-radius:4px;background:var(--line-soft);margin:14px 9px 4px}
+.meter i{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:var(--ink);border:3px solid var(--paper);transform:translate(-50%,-50%)}
+.meter-l{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px}
+p.lead-l{font-size:16.5px;margin:6px 0}
+p.k2{font-weight:600;font-size:14px;margin:10px 0 4px}
+dl.dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:12px 0 0;font-size:15px}
+dl.dl dt{color:var(--ink-soft);font-size:14px} dl.dl dd{margin:0;max-width:64ch}
+@media (max-width:560px){dl.dl{grid-template-columns:1fr;gap:2px} dl.dl dd{margin-bottom:10px}}
+.tasks{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.task{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface)}
+.task-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.task p{margin:6px 0 0;font-size:14.5px}
+.mform{position:static;display:grid;gap:12px;max-width:420px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:12px}
+table.tt td.hi{font-weight:700;color:var(--ink)}
+table.tt{border-collapse:collapse;width:100%;font-size:14px;margin-bottom:12px} table.tt th{text-align:left;font-weight:500;color:var(--ink-soft);font-size:13px;padding:6px 8px;border-bottom:1px solid var(--line)} table.tt td{padding:7px 8px;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);white-space:nowrap}
 .gen{font-size:14px !important;color:var(--ink-soft);border-left:2px solid var(--line);padding-left:10px}
 .note{font-size:13px;color:var(--ink-soft);margin-top:32px;border-top:1px solid var(--line-soft);padding-top:14px;max-width:72ch}
 
@@ -234,12 +249,14 @@ ul.hl .tag{margin:0 4px 0 0}
         <button class="tab" role="tab" id="t-planets" aria-controls="p-planets" aria-selected="false" tabindex="-1">ดวงดาว</button>
         <button class="tab" role="tab" id="t-houses" aria-controls="p-houses" aria-selected="false" tabindex="-1">เรือน</button>
         <button class="tab" role="tab" id="t-aspects" aria-controls="p-aspects" aria-selected="false" tabindex="-1">มุม</button>
+        <button class="tab" role="tab" id="t-work" aria-controls="p-work" aria-selected="false" tabindex="-1">การทำงาน</button>
         <button class="tab" role="tab" id="t-summary" aria-controls="p-summary" aria-selected="false" tabindex="-1">สรุปไฮไลต์</button>
       </div>
       <section class="panel" role="tabpanel" id="p-overview" aria-labelledby="t-overview"></section>
       <section class="panel" role="tabpanel" id="p-planets" aria-labelledby="t-planets" hidden></section>
       <section class="panel" role="tabpanel" id="p-houses" aria-labelledby="t-houses" hidden></section>
       <section class="panel" role="tabpanel" id="p-aspects" aria-labelledby="t-aspects" hidden></section>
+      <section class="panel" role="tabpanel" id="p-work" aria-labelledby="t-work" hidden></section>
       <section class="panel" role="tabpanel" id="p-summary" aria-labelledby="t-summary" hidden></section>
       <p class="note" id="note"></p>
     </main>
@@ -754,7 +771,7 @@ function degStr(lon) {
 const glyphSpan = p => (p.k==='asc'||p.k==='mc') ? `<span class="gl txt">${p.g}</span>` : `<span class="gl">${p.g}</span>`;
 
 /* ---------- tabs & opening items ---------- */
-const TABS = ['overview','planets','houses','aspects','summary'];
+const TABS = ['overview','planets','houses','aspects','work','summary'];
 function selectTab(name, focus) {
   TABS.forEach(t=>{
     const on = t===name, b=$('t-'+t);
@@ -1032,6 +1049,7 @@ function renderSummary(inp, ch) {
     if (top.length && !ch.stHouses.length) hi.push(`<b>เรือนที่มีดาวมากที่สุด</b> ${top.map(h=>`${lk('houses','ho-'+h,`เรือน ${h} ${HOUSES[h-1].t}`)}`).join(' และ ')} เป็นเรื่องที่ชีวิตให้น้ำหนักมาก`);
   }
   if (!ch.stSigns.length && !ch.stHouses.length) hi.push(`<b>ไม่มีสเตเลียม</b> ไม่มีดาว 3 ดวงขึ้นไปรวมกันในราศีหรือเรือนเดียว พลังของคุณจึงกระจายไปหลายด้าน เป็นคนรอบด้านมากกว่าเจาะลึกเรื่องเดียว`);
+  { const wp = workProfile(ch); hi.push(`<b>สไตล์การทำงาน: ${soloLabel(wp.pct)}</b> บทบาทเด่นในทีมคือ${ROLE_EL[wp.el].n} ${lk('work','work-top','ดูการทำงานและความเข้ากัน')}`); }
   html += `<section class="sec"><h3>จุดเด่นของดวง</h3><ul class="hl">${hi.map(x=>`<li>${x}</li>`).join('')}</ul></section>`;
 
   // จุดแข็ง
@@ -1084,13 +1102,282 @@ function renderAspects(inp, ch) {
   $('p-aspects').innerHTML = html + '</div>';
 }
 
+/* ---------- การทำงานและความเข้ากัน ---------- */
+const TASKS = {
+  fire:{t:'ริเริ่มและผลักดัน', d:'เปิดโปรเจกต์ใหม่ ขายงาน นำเสนอ และผลักดันเป้าหมาย'},
+  earth:{t:'วางระบบและลงมือให้เสร็จ', d:'วางแผน งบประมาณ เอกสาร ระบบงาน และงานที่ต้องเห็นผลจริง'},
+  air:{t:'คิดและสื่อสาร', d:'ระดมไอเดีย วิเคราะห์ข้อมูล เขียน ประสานงาน และเจรจา'},
+  water:{t:'ดูแลคนและสร้างสรรค์', d:'ดูแลลูกค้าหรือทีม งานบริการ งานสร้างสรรค์ และงานที่ต้องเข้าใจความรู้สึกคน'},
+};
+const ROLE_EL = {
+  fire:{n:'ผู้จุดประกาย',d:'ปลุกพลังทีม กล้าเริ่ม และพาทุกคนเดินหน้า'},
+  earth:{n:'ผู้ลงมือให้สำเร็จ',d:'เปลี่ยนไอเดียเป็นแผนที่ทำได้จริง และดูแลให้งานเสร็จตามกำหนด'},
+  air:{n:'นักคิดและผู้ประสาน',d:'เสนอไอเดีย เชื่อมคน และทำให้ทุกคนเข้าใจตรงกัน'},
+  water:{n:'ผู้ดูแลใจทีม',d:'อ่านบรรยากาศเก่ง ดูแลความรู้สึกคนในทีม และใช้สัญชาตญาณช่วยตัดสินใจ'},
+};
+const ROLE_MOD = {cardinal:'ชอบเป็นคนเริ่มและกำหนดทิศทาง', fixed:'ชอบทำต่อเนื่องจนจบและรักษามาตรฐาน', mutable:'ชอบปรับแผน แก้ปัญหาเฉพาะหน้า และเชื่อมงานหลายส่วน'};
+const MOD_NEED = {
+  cardinal:'คุณชอบเริ่ม จึงควรมีคนแบบมั่นคง (ราศีพฤษภ สิงห์ พิจิก กุมภ์) ช่วยทำต่อจนเสร็จ ส่วนคนที่ชอบเริ่มเหมือนกันอาจแย่งกันนำ ต้องตกลงบทบาทให้ชัด',
+  fixed:'คุณชอบทำต่อเนื่องจนจบ จึงควรมีคนแบบริเริ่ม (ราศีเมษ กรกฎ ตุลย์ มังกร) ช่วยเปิดทางใหม่ และคนแบบยืดหยุ่น (ราศีเมถุน กันย์ ธนู มีน) ช่วยปรับแผนเมื่อสถานการณ์เปลี่ยน',
+  mutable:'คุณปรับตัวเก่ง จึงควรมีคนแบบริเริ่ม (ราศีเมษ กรกฎ ตุลย์ มังกร) ช่วยกำหนดทิศทาง และคนแบบมั่นคง (ราศีพฤษภ สิงห์ พิจิก กุมภ์) ช่วยยึดแผนไม่ให้เปลี่ยนบ่อยเกินไป',
+};
+const PACE = {fire:'ทำงานเร็วเป็นช่วง ๆ ลุยเต็มที่เมื่อมีแรงบันดาลใจ แต่เบื่อง่ายถ้างานยืดเยื้อ', earth:'ทำงานสม่ำเสมอ ช้าแต่ชัวร์ ชอบมีแผนและเห็นความคืบหน้าทีละขั้น', air:'ทำหลายอย่างพร้อมกัน ขับเคลื่อนด้วยไอเดียและการพูดคุย พลังขึ้นลงตามความสนใจ', water:'ทำได้ดีที่สุดเมื่อรู้สึกผูกพันกับงานหรือคนที่ทำด้วย พลังขึ้นกับอารมณ์และบรรยากาศ'};
+const COMM = {fire:'สื่อสารตรง กระชับ และรวดเร็ว อยากได้คำตอบทันที', earth:'สื่อสารแบบเน้นข้อเท็จจริง ชัดเจน และใช้ได้จริง', air:'ชอบคุย ชอบแลกเปลี่ยนถกเถียง และคิดออกมาดัง ๆ', water:'สื่อสารผ่านความรู้สึก อ่านสิ่งที่ไม่ได้พูดได้ดี และต้องไว้ใจก่อนจึงจะเปิดใจ'};
+const EL_SIGNS = {fire:'เมษ สิงห์ ธนู', earth:'พฤษภ กันย์ มังกร', air:'เมถุน ตุลย์ กุมภ์', water:'กรกฎ พิจิก มีน'};
+const EL_FRIEND = {fire:'air', air:'fire', earth:'water', water:'earth'};
+const elRel = (x,y) => x===y ? 'same' : EL_FRIEND[x]===y ? 'friend' : 'diff';
+
+const W_PL = {sun:3,moon:2,mercury:1.5,venus:1,mars:2,jupiter:1,saturn:1,uranus:.5,neptune:.5,pluto:.5};
+const H_TEAM = [-2,-.5,1,-.5,.5,-.5,2,-.5,0,0,2,-1.5];
+const S_TEAM = [-1,-.5,1,.5,.5,-1,1.5,-1,0,-.5,1,.5];
+function elemCount(ch) {
+  const e = {fire:0,earth:0,air:0,water:0}, m = {cardinal:0,fixed:0,mutable:0};
+  PLANETS.filter(p=>p.k!=='node').forEach(p=>{ const s=signOf(ch.lons[p.k]); e[s.el]++; m[s.mod]++; });
+  if (ch.asc!=null) { const s=signOf(ch.asc); e[s.el]++; m[s.mod]++; }
+  return {e, m};
+}
+const topKey = o => Object.keys(o).sort((a,b)=>o[b]-o[a])[0];
+function workProfile(ch) {
+  const f = []; let sum = 0;
+  for (const p of PLANETS) {
+    if (p.k==='node') continue;
+    const w = W_PL[p.k]*0.6, l = ch.lons[p.k], si = Math.floor(norm(l)/30);
+    const sv = S_TEAM[si]*w; sum += sv;
+    if (Math.abs(sv) >= 0.9) f.push({v:sv, t:`${p.th}ในราศี${SIGNS[si].th}`});
+    if (ch.cusps) { const h = ch.houseOf(l), hv = H_TEAM[h-1]*w; sum += hv; if (Math.abs(hv) >= 0.9) f.push({v:hv, t:`${p.th}ในเรือน ${h} (${HOUSES[h-1].t})`}); }
+  }
+  if (ch.asc!=null) {
+    const si = Math.floor(norm(ch.asc)/30), v = S_TEAM[si]*1.2; sum += v;
+    if (Math.abs(v) >= 0.9) f.push({v, t:`ลัคนาราศี${SIGNS[si].th}`});
+    let east=0, west=0; PLANETS.filter(p=>p.k!=='node').forEach(p=>{ const h=ch.houseOf(ch.lons[p.k]); if (h>=4&&h<=9) west++; else east++; });
+    const hv = (west-east)*0.35; sum += hv;
+    if (Math.abs(west-east) >= 4) f.push({v:hv, t: west>east ? `ดาวส่วนใหญ่ (${west} ดวง) อยู่ซีกตะวันตกของดวง ซึ่งเป็นซีกของผู้อื่น` : `ดาวส่วนใหญ่ (${east} ดวง) อยู่ซีกตะวันออกของดวง ซึ่งเป็นซีกของตัวเอง`});
+  }
+  const scale = ch.cusps ? 9 : 5;
+  const pct = Math.round(Math.max(3, Math.min(97, 50 + 50*Math.tanh((sum - (ch.cusps ? 1.2 : 0.6))/scale))));
+  const {e, m} = elemCount(ch);
+  return {pct, f, e, m, el:topKey(e), mod:topKey(m)};
+}
+const soloLabel = p => p<35?'ชอบทำงานคนเดียว':p<45?'ค่อนข้างชอบทำคนเดียว':p<=55?'ยืดหยุ่น ทำได้ทั้งคนเดียวและเป็นทีม':p<=65?'ค่อนข้างชอบทำเป็นทีม':'ชอบทำงานเป็นทีม';
+const soloDesc = p => p<35?'คุณมีสมาธิและพลังที่สุดเมื่อได้คุมงานเอง ตัดสินใจเอง และมีพื้นที่ส่วนตัว ทำงานเป็นทีมได้ แต่จะดีที่สุดเมื่อแบ่งงานชัดเจนว่าส่วนไหนเป็นของคุณ'
+  : p<45?'คุณชอบรับผิดชอบงานของตัวเองให้จบก่อน แล้วค่อยนำมารวมกับทีม การประชุมบ่อยเกินไปอาจทำให้เหนื่อย'
+  : p<=55?'คุณปรับตัวได้ตามลักษณะงาน งานที่ต้องใช้สมาธิทำคนเดียวได้ดี ส่วนงานที่ต้องใช้หลายมุมมองก็เข้ากับทีมได้ดี'
+  : p<=65?'คุณได้พลังจากการทำงานกับคนอื่น ชอบแลกเปลี่ยนและมีคนช่วยสะท้อนความคิด แต่ก็ยังต้องการเวลาเงียบ ๆ บ้าง'
+  : 'คุณทำงานได้ดีที่สุดเมื่อมีทีม ได้คุย ได้ประสาน และได้เห็นผลงานร่วมกัน การทำงานคนเดียวนาน ๆ อาจทำให้หมดแรงจูงใจ';
+function taskVerdict(cnt, el, pct) {
+  const n = ELEM[el].n;
+  if (cnt >= 4) return pct >= 55 ? {v:'นำทีมได้', c:'e', d:`คุณถนัดงานแบบนี้มาก (${cnt} จุดในธาตุ${n}) และได้พลังจากการทำกับคน จึงเหมาะเป็นคนนำทีมในงานประเภทนี้`}
+    : {v:'ทำคนเดียวได้ดี', c:'e', d:`คุณถนัดงานแบบนี้มาก (${cnt} จุดในธาตุ${n}) ทำเองได้เร็วและได้คุณภาพ ไม่จำเป็นต้องรอทีม`};
+  if (cnt >= 2) return {v:'ทำได้ทั้งสองแบบ', c:'m', d:`คุณมีพื้นฐานด้านนี้พอสมควร (${cnt} จุดในธาตุ${n}) ทำคนเดียวได้ และจะดีขึ้นถ้ามีคนที่ถนัดกว่าช่วยรีวิว`};
+  return {v:'ควรมีทีมช่วย', c:'h', d:`ด้านนี้ไม่ใช่ธรรมชาติของคุณ (${cnt} จุดในธาตุ${n}) ทำคนเดียวได้แต่จะเหนื่อยกว่าคนอื่น ควรจับคู่กับคนที่มีธาตุ${n}เด่น (ราศี${EL_SIGNS[el]})`};
+}
+
+/* ความเข้ากันระหว่างสองคน: [ผลของมุมร่วม, เมื่อส่งเสริม, เมื่อท้าทาย, เมื่อร่วม] {1} และ {2} คือเจ้าของดาวตัวแรกและตัวหลังตามลำดับ */
+const SYN_SET = ['sun','moon','mercury','venus','mars','jupiter','saturn'];
+const SYN_ORB = {0:8,60:4,90:6,120:6,180:7};
+const SYN_W = {sun:3,moon:2.5,mercury:2.5,venus:1.5,mars:2.5,jupiter:1.5,saturn:2.5};
+const SYN = {
+  'sun-sun':['m','เป้าหมายและวิธีมองงานของ{1}กับ{2}ไปทางเดียวกัน เข้าใจกันโดยไม่ต้องอธิบายมาก','{1}กับ{2}มีเป้าหมายหรือวิธีทำงานคนละแบบ อาจรู้สึกว่าอีกฝ่ายไม่เข้าใจ ควรคุยเป้าหมายร่วมให้ชัดตั้งแต่ต้น','{1}กับ{2}มีแก่นคล้ายกันมาก เข้าใจกันทันที แต่ก็อาจอยากเป็นคนนำเหมือนกัน'],
+  'sun-moon':['e','{2}รู้สึกสบายใจกับวิธีทำงานของ{1} และ{1}รู้สึกได้รับการสนับสนุน ทำงานด้วยกันแล้วไม่เหนื่อยใจ','สิ่งที่{1}ต้องการกับสิ่งที่{2}รู้สึกสบายใจไม่ตรงกัน อาจเกิดความน้อยใจเล็ก ๆ ที่ไม่ได้พูดออกมา','เข้าขากันโดยธรรมชาติ {1}ให้ทิศทาง ส่วน{2}ให้ความรู้สึกปลอดภัย'],
+  'sun-mercury':['e','{2}เข้าใจและอธิบายความคิดของ{1}ได้ดี เหมาะให้{2}ช่วยสื่อสารหรือเขียนแผนของ{1}','{2}อาจวิจารณ์หรือตั้งคำถามกับ{1}บ่อยจน{1}รู้สึกถูกจับผิด','{2}คิดในทางเดียวกับ{1} คุยงานกันลื่นและต่อยอดไอเดียกันได้เร็ว'],
+  'sun-venus':['e','บรรยากาศการทำงานดี {2}ชื่นชมและสนับสนุน{1} ทำงานด้วยกันอย่างมีความสุข','อาจเกรงใจกันจนไม่กล้าพูดเรื่องงานตรง ๆ หรือให้ความสำคัญกับความสบายมากกว่าผลงาน','ชื่นชมกันและกัน เหมาะกับงานสร้างสรรค์ ความงาม หรืองานดูแลลูกค้า'],
+  'sun-mars':['m','{2}ช่วยผลักให้เป้าหมายของ{1}เกิดขึ้นจริง ลงมือด้วยกันได้เร็วและมีพลัง','{2}อาจดูท้าทาย{1} จนเกิดการแข่งขันหรือขัดกันเรื่องใครเป็นคนตัดสินใจ','พลังสูงมากเมื่อทำด้วยกัน แต่ต้องตกลงให้ชัดว่าใครนำ ไม่อย่างนั้นอาจชนกัน'],
+  'sun-jupiter':['e','{2}มองเห็นศักยภาพของ{1}และช่วยเปิดโอกาสให้ เป็นคู่ที่ทำให้กันและกันเติบโต','{2}อาจให้คำแนะนำหรือสัญญาเกินจริง หรือทั้งคู่ตั้งเป้าใหญ่เกินกำลัง','{2}เป็นเหมือนพี่เลี้ยงหรือผู้สนับสนุนของ{1} ทำงานด้วยกันแล้วมองโลกแง่ดีขึ้น'],
+  'sun-saturn':['h','{2}ช่วยวางโครงสร้างและความมั่นคงให้เป้าหมายของ{1} สร้างงานระยะยาวด้วยกันได้ดี','{2}อาจดูเข้มงวด จำกัด หรือวิจารณ์{1}มากไป จน{1}รู้สึกถูกกด ต้องให้เกียรติกันและชมกันบ้าง','{2}มักเป็นคนวางกรอบและคุมคุณภาพให้{1} ได้งานที่มั่นคง แต่{1}อาจรู้สึกถูกควบคุม เหมาะกับความสัมพันธ์แบบพี่เลี้ยงหรือหัวหน้ากับลูกทีม'],
+  'moon-moon':['m','อารมณ์และจังหวะชีวิตตรงกัน รู้ใจกันว่าเมื่อไหร่ควรพัก เมื่อไหร่ควรลุย','ต้องการบรรยากาศการทำงานต่างกัน คนหนึ่งอยากเงียบ อีกคนอยากคึกคัก ต้องคุยเรื่องพื้นที่และเวลา','รู้สึกคุ้นเคยเหมือนรู้จักกันมานาน ทำงานด้วยกันแล้วอบอุ่น'],
+  'moon-mercury':['e','เวลา{2}พูดหรืออธิบาย {1}รู้สึกเข้าใจและสบายใจ การสื่อสารระหว่างกันนุ่มนวล','คำพูดของ{2}อาจกระทบความรู้สึกของ{1}โดยไม่ตั้งใจ ควรระวังการให้ฟีดแบ็กแรงเกินไป','คุยกันรู้เรื่องทั้งเรื่องงานและความรู้สึก เหมาะเป็นคู่ปรึกษากัน'],
+  'moon-venus':['e','อบอุ่น เกื้อกูล ทำงานด้วยกันแล้วสบายใจ','อาจตามใจกันจนงานไม่คืบ หรือน้อยใจกันเรื่องการเอาใจใส่','ใส่ใจกันเป็นพิเศษ เหมาะกับงานบริการหรืองานดูแลคน'],
+  'moon-mars':['h','{2}ช่วยปลุกพลังให้{1}กล้าลงมือ และ{1}ช่วยให้{2}ใจเย็นลง','{2}อาจเร่งหรือพูดแรงจน{1}รู้สึกไม่ปลอดภัย อารมณ์ปะทะกันง่ายเมื่องานกดดัน','มีพลังร่วมกันสูง แต่ถ้าเครียดอาจอารมณ์ขึ้นใส่กันง่าย'],
+  'moon-jupiter':['e','{2}ทำให้{1}รู้สึกได้รับกำลังใจและมั่นใจขึ้น','อาจสัญญาหรือคาดหวังกันมากเกินไป','{2}เป็นแหล่งกำลังใจของ{1} ทำงานด้วยกันแล้วรู้สึกดี'],
+  'moon-saturn':['h','{2}ทำให้{1}รู้สึกมั่นคงและพึ่งพาได้ เป็นคู่ที่ไว้ใจกันในระยะยาว','{2}อาจดูเย็นชาหรือเข้มงวดจน{1}รู้สึกไม่ได้รับความเห็นใจ {2}ควรแสดงความใส่ใจออกมาบ้าง','{2}ให้ความมั่นคง แต่{1}อาจรู้สึกถูกกดดันหรือถูกตัดสินทางอารมณ์'],
+  'mercury-mercury':['m','คิดและสื่อสารในแบบที่เข้ากัน ระดมความคิดด้วยกันได้ดี','วิธีคิดหรือวิธีพูดต่างกันมาก อาจเข้าใจผิดหรือเถียงกันบ่อย ควรสรุปสิ่งที่ตกลงเป็นลายลักษณ์อักษร','คิดคล้ายกันมาก คุยกันไม่กี่คำก็เข้าใจ'],
+  'mercury-venus':['e','สื่อสารกันอย่างสุภาพและสร้างสรรค์ เหมาะกับงานออกแบบหรือการเจรจา','อาจพูดอ้อมหรือเกรงใจกันเกินไปจนไม่ชัด','คุยกันสนุกและนุ่มนวล'],
+  'mercury-mars':['h','{2}ช่วยเปลี่ยนความคิดของ{1}ให้เป็นการลงมือ ทำงานด้วยกันได้เร็ว','ถกกันแล้วร้อน อาจเถียงเพื่อเอาชนะ ควรแยกการวิจารณ์ความคิดออกจากตัวคน','ถกงานกันได้คมและเร็ว แต่ระวังคำพูดแรง'],
+  'mercury-jupiter':['e','{2}ช่วยขยายความคิดของ{1}ให้กว้างขึ้น เหมาะกับงานวางกลยุทธ์หรือการสอน','ฝ่ายหนึ่งมองรายละเอียด อีกฝ่ายมองภาพใหญ่ อาจรู้สึกว่าอีกฝ่ายไม่ฟัง','ไอเดียต่อยอดกันได้ไม่รู้จบ'],
+  'mercury-saturn':['h','{2}ช่วยจัดความคิดของ{1}ให้เป็นระบบและใช้ได้จริง','{2}อาจตั้งคำถามหรือตัดไอเดียของ{1}เร็วเกินไป จน{1}ไม่กล้าเสนอ','{2}เป็นคนตรวจทานงานที่ดีของ{1} แต่ควรให้กำลังใจควบคู่ไปด้วย'],
+  'venus-venus':['e','รสนิยมและสิ่งที่ให้คุณค่าตรงกัน ทำงานด้วยกันแล้วกลมกลืน','ให้คุณค่ากับสิ่งต่างกัน เช่น คนหนึ่งเน้นความสวยงาม อีกคนเน้นความคุ้มค่า','ชอบสิ่งเดียวกัน ทำงานสร้างสรรค์ร่วมกันได้ดี'],
+  'venus-mars':['m','ดึงพลังกันและกันได้ดี {1}ให้ความกลมกลืน {2}ให้แรงขับ','จังหวะไม่ตรงกัน ฝ่ายหนึ่งอยากประนีประนอม อีกฝ่ายอยากลุย','มีเคมีที่ดีและกระตุ้นกันสร้างสรรค์งาน'],
+  'venus-jupiter':['e','บรรยากาศดี มองโลกแง่บวก เหมาะกับงานที่ต้องพบปะผู้คน','อาจใช้จ่ายหรือขยายงานเกินพอดีเมื่ออยู่ด้วยกัน','นำโชคและความรู้สึกดีมาให้กัน'],
+  'venus-saturn':['h','ความสัมพันธ์มั่นคง ซื่อสัตย์ และยิ่งทำงานด้วยกันนานยิ่งดี','{2}อาจดูแห้งหรือเข้มงวด จน{1}รู้สึกไม่ได้รับความชื่นชม','จริงจังต่อกัน เหมาะกับความร่วมมือระยะยาว แต่ต้องใส่ความอบอุ่นเข้าไปบ้าง'],
+  'mars-mars':['m','จังหวะการลงมือตรงกัน ทำงานด้วยกันแล้วมีพลัง','จังหวะไม่ตรงกัน คนหนึ่งเร็ว อีกคนช้า หรือแข่งกันจนเกิดความขัดแย้ง','พลังเหมือนกันมาก ทำงานหนักด้วยกันได้ แต่ถ้าแข่งกันอาจปะทะ'],
+  'mars-jupiter':['e','{2}ช่วยให้การลงมือของ{1}ได้ผลใหญ่ขึ้น กล้าทำเรื่องใหญ่ด้วยกัน','อาจเสี่ยงหรือรับงานเกินกำลังเมื่ออยู่ด้วยกัน','ลุยด้วยกันแล้วมีทั้งพลังและโชค'],
+  'mars-saturn':['h','{2}ช่วยให้พลังของ{1}มีทิศทาง ทำงานหนักได้อย่างมีแบบแผน','{2}อาจเบรกหรือขัด{1}จนหงุดหงิด เหมือนคนหนึ่งเหยียบคันเร่ง อีกคนเหยียบเบรก ควรตกลงจังหวะงานกันก่อนเริ่ม','ทำงานหนักด้วยกันได้ แต่ต้องระวังความหงุดหงิดที่เก็บไว้'],
+  'jupiter-jupiter':['e','มีมุมมองและความเชื่อคล้ายกัน มองโอกาสไปทางเดียวกัน','มองว่าอะไรคือโอกาสไม่ตรงกัน','เติบโตไปด้วยกันได้ดี'],
+  'jupiter-saturn':['m','ผสมความกล้าขยายกับความรอบคอบได้ลงตัว','ฝ่ายหนึ่งอยากขยาย อีกฝ่ายอยากระวัง','วางแผนระยะยาวด้วยกันได้ดี'],
+  'saturn-saturn':['m','มีวิธีรับผิดชอบงานคล้ายกัน ไว้ใจกันได้','มีมาตรฐานหรือความกังวลต่างกัน','มีบทเรียนชีวิตคล้ายกัน เข้าใจความกดดันของกันและกัน'],
+};
+const MOD_PAIR = {
+  'cardinal-cardinal':[-1,'ทั้งคู่ชอบเป็นคนเริ่มและนำ ต้องแบ่งให้ชัดว่าใครนำเรื่องไหน'],
+  'cardinal-fixed':[1.5,'คนหนึ่งเริ่ม อีกคนทำต่อจนจบ เป็นคู่ที่ปิดงานได้'],
+  'cardinal-mutable':[1,'คนหนึ่งกำหนดทิศ อีกคนปรับแผนให้ไปได้จริง'],
+  'fixed-fixed':[-.5,'มั่นคงทั้งคู่ ทำงานยาวได้ แต่ถ้าเห็นต่างจะดื้อใส่กัน'],
+  'fixed-mutable':[1,'คนหนึ่งยึดแผน อีกคนยืดหยุ่น ช่วยกันรักษาสมดุล'],
+  'mutable-mutable':[0,'ยืดหยุ่นทั้งคู่ ปรับตัวง่าย แต่อาจขาดคนตัดสินใจ ควรกำหนดเส้นตายให้ชัด'],
+};
+const COMM_REL = {same:[2,'ดาวพุธอยู่ธาตุเดียวกัน คิดและพูดภาษาเดียวกัน'], friend:[1.5,'ดาวพุธอยู่ธาตุที่เข้ากัน สื่อสารกันลื่น'], diff:[-1,'ดาวพุธอยู่ธาตุที่ต่างกัน วิธีคิดและวิธีพูดต่างกัน ต้องตั้งใจฟังกันมากขึ้น']};
+const PACE_REL = {same:[1.5,'ดาวอังคารอยู่ธาตุเดียวกัน จังหวะการลงมือตรงกัน'], friend:[1,'ดาวอังคารอยู่ธาตุที่เข้ากัน จังหวะการทำงานไปด้วยกันได้'], diff:[-1,'ดาวอังคารอยู่ธาตุที่ต่างกัน จังหวะการลงมือไม่เหมือนกัน ควรตกลงเรื่องเวลาและความเร็วของงาน']};
+const clamp = (x,a,b) => Math.max(a, Math.min(b, x));
+function synastry(A, B, nA, nB) {
+  const list = [];
+  for (const a of SYN_SET) for (const b of SYN_SET) {
+    const s = sep(A.lons[a], B.lons[b]);
+    for (const asp of ASPECTS) {
+      const orb = Math.abs(s-asp.a); if (orb > SYN_ORB[asp.a]) continue;
+      const ia = SYN_SET.indexOf(a), ib = SYN_SET.indexOf(b), fwd = ia<=ib;
+      const T = SYN[fwd ? a+'-'+b : b+'-'+a], first = fwd ? nA : nB, second = fwd ? nB : nA;
+      const nature = asp.c==='conj' ? T[0] : asp.c==='harm' ? 'e' : 'h';
+      const txt = (asp.c==='conj' ? T[3] : asp.c==='harm' ? T[1] : T[2]).replaceAll('{1}', first).replaceAll('{2}', second);
+      const w = (SYN_W[a]+SYN_W[b])/2 * (1 - orb/(SYN_ORB[asp.a]+1));
+      list.push({a, b, asp, orb, nature, txt, w});
+    }
+  }
+  list.sort((x,y)=>y.w-x.w);
+  const val = x => x.w * (x.nature==='e' ? 1 : x.nature==='h' ? -0.85 : 0.35);
+  const sub = keys => list.filter(x=>keys.includes(x.a)||keys.includes(x.b)).reduce((s,x)=>s+val(x),0);
+  const pA = workProfile(A), pB = workProfile(B);
+  const cr = COMM_REL[elRel(signOf(A.lons.mercury).el, signOf(B.lons.mercury).el)];
+  const pr = PACE_REL[elRel(signOf(A.lons.mars).el, signOf(B.lons.mars).el)];
+  const mk = [pA.mod, pB.mod].sort((x,y)=>['cardinal','fixed','mutable'].indexOf(x)-['cardinal','fixed','mutable'].indexOf(y)).join('-');
+  const mp = MOD_PAIR[mk];
+  const comp = []; let cs = 0;
+  for (const el of Object.keys(ELEM)) {
+    if (pA.e[el]<=1 && pB.e[el]>=3) { comp.push(`${nB}เติมธาตุ${ELEM[el].n}ให้${nA} ช่วยงานด้าน${TASKS[el].t}`); cs += 1.5; }
+    if (pB.e[el]<=1 && pA.e[el]>=3) { comp.push(`${nA}เติมธาตุ${ELEM[el].n}ให้${nB} ช่วยงานด้าน${TASKS[el].t}`); cs += 1.5; }
+  }
+  const comm = Math.round(clamp(50 + 6*(sub(['mercury']) + cr[0] - 1), 5, 95));
+  const pace = Math.round(clamp(50 + 6*(sub(['mars','saturn']) + pr[0] + mp[0] - 1), 5, 95));
+  const trust = Math.round(clamp(50 + 6*(sub(['moon','venus']) - 1), 5, 95));
+  const total = Math.round(clamp(50 + 2.6*(list.reduce((s,x)=>s+val(x),0) + cr[0] + pr[0] + mp[0] + cs - 4), 5, 95));
+  return {list, total, comm, pace, trust, cr, pr, mp, comp, pA, pB};
+}
+const scoreLabel = s => s>=70?'เข้ากันดีมาก':s>=58?'เข้ากันดี':s>=45?'เข้ากันได้ ต้องปรับบางเรื่อง':s>=33?'ต้องใช้ความเข้าใจกันมาก':'ต่างกันมาก';
+
+/* ---------- เพื่อนร่วมงาน ---------- */
+let TEAM = [];
+try { TEAM = JSON.parse(localStorage.getItem('birthchart:team')||'[]') || []; } catch(e) { TEAM = []; }
+function saveTeam() { try { localStorage.setItem('birthchart:team', JSON.stringify(TEAM)); } catch(e) {} }
+function memberChart(o) {
+  let y = +o.year; if (y > 2300) y -= 543;
+  const loc = PLACES[+o.place] || TH[0];
+  const h = o.notime ? 12 : +o.hour, mi = o.notime ? 0 : +(o.minute||0);
+  const {ms, off} = localToUTC(y, +o.month, +o.day, h, mi, loc);
+  return compute({ms, off, lat:loc.lat, lon:loc.lon, timeKnown:!o.notime, houses:'placidus'});
+}
+function memberError(o) {
+  if (!o.name) return 'ใส่ชื่อเพื่อนร่วมงาน';
+  let y = +o.year; if (!+o.day || !+o.month || !y) return 'กรอกวัน เดือน และปีเกิดให้ครบ';
+  if (y > 2300) y -= 543;
+  if (y < 1800 || y > 2100) return 'ปีเกิดต้องอยู่ระหว่าง ค.ศ. 1800 ถึง 2100';
+  const leap = y%4===0 && (y%100!==0 || y%400===0), dim = [31,leap?29:28,31,30,31,30,31,31,30,31,30,31][+o.month-1];
+  if (+o.day > dim) return `เดือน${MONTHS[+o.month-1]}ปีนั้นมี ${dim} วัน`;
+  if (!o.notime && (o.hour==='' || +o.hour<0 || +o.hour>23)) return 'กรอกเวลาเกิด หรือเลือก ไม่ทราบเวลาเกิด';
+  return null;
+}
+const meter = (pct, l, r) => `<div class="meter" role="img" aria-label="${l} ${100-pct}% ${r} ${pct}%"><i style="left:${pct}%"></i></div><div class="meter-l"><span>${l}</span><span>${r}</span></div>`;
+const bar = (label, v) => `<div class="bar${v>=60?' top':''}"><span>${label}</span><span class="t"><i style="width:${v}%"></i></span><span class="num">${v}</span></div>`;
+
+function renderWork(inp, ch) {
+  const P = workProfile(ch), me = 'คุณ';
+  let html = `<p class="intro">ดูว่าดวงของคุณชอบทำงานแบบไหน เหมาะกับบทบาทอะไรในทีม งานประเภทไหนทำคนเดียวดีกว่า และเข้ากับเพื่อนร่วมงานแต่ละคนอย่างไร</p>`;
+  html += `<section class="sec" id="work-top"><h3>ทำคนเดียวหรือทำเป็นทีม</h3>${meter(P.pct,'ทำคนเดียว','ทำเป็นทีม')}<p class="lead-l"><b>${soloLabel(P.pct)}</b></p><p>${soloDesc(P.pct)}</p>`;
+  const solo = P.f.filter(x=>x.v<0).sort((a,b)=>a.v-b.v).slice(0,4), team = P.f.filter(x=>x.v>0).sort((a,b)=>b.v-a.v).slice(0,4);
+  html += `<div class="split"><div><p class="k2">สิ่งที่ทำให้ชอบทำคนเดียว</p>${solo.length?`<ul class="pl">${solo.map(x=>`<li>${x.t}</li>`).join('')}</ul>`:'<p class="sub">ไม่มีปัจจัยเด่น</p>'}</div><div><p class="k2">สิ่งที่ทำให้ชอบทำเป็นทีม</p>${team.length?`<ul class="pl">${team.map(x=>`<li>${x.t}</li>`).join('')}</ul>`:'<p class="sub">ไม่มีปัจจัยเด่น</p>'}</div></div>`;
+  if (!ch.cusps) html += `<p class="sub">ไม่ทราบเวลาเกิด จึงคำนวณจากราศีของดาวเท่านั้น ถ้าใส่เวลาเกิด ผลจะรวมเรือนของดาวด้วยและแม่นขึ้น</p>`;
+  html += `</section>`;
+
+  const r = ROLE_EL[P.el], ms = signOf(ch.lons.mars), mc = signOf(ch.lons.mercury);
+  html += `<section class="sec"><h3>บทบาทของคุณในทีม</h3><p class="lead-l"><b>${r.n}</b> ที่${ROLE_MOD[P.mod]}</p><p>ธาตุ${ELEM[P.el].n}เด่นที่สุดในดวงของคุณ ในทีมคุณจึงมักเป็นคน${r.d} และด้วยพลังแบบ${MODS[P.mod].n} คุณ${ROLE_MOD[P.mod]}</p>`;
+  html += `<dl class="dl"><dt>จังหวะการทำงาน</dt><dd>${PACE[ms.el]} (${lk('planets','pl-mars',`ดาวอังคารราศี${ms.th}`)})</dd><dt>การสื่อสาร</dt><dd>${COMM[mc.el]} (${lk('planets','pl-mercury',`ดาวพุธราศี${mc.th}`)})</dd>`;
+  if (ch.cusps) {
+    const s6 = signOf(ch.cusps[5]), in6 = PLANETS.filter(p=>ch.houseOf(ch.lons[p.k])===6), s10 = signOf(ch.mc);
+    html += `<dt>งานประจำวัน</dt><dd>คุณจัดการงานแต่ละวันแบบ${s6.style} (${lk('houses','ho-6','เรือน 6 ราศี'+s6.th)})${in6.length?` และมี${in6.map(p=>p.th).join(' ')}อยู่ในเรือนงาน ${in6.map(p=>PH[p.k][5]).join(' ')}`:''}</dd>`;
+    html += `<dt>ทิศทางอาชีพ</dt><dd>ในอาชีพ คุณอยากเป็นที่รู้จักในฐานะคน${s10.style} (${lk('planets','pl-mc','กลางฟ้าราศี'+s10.th)})</dd>`;
+  }
+  html += `</dl></section>`;
+
+  html += `<section class="sec"><h3>งานแบบไหนทำคนเดียว งานแบบไหนทำเป็นทีม</h3><div class="tasks">${Object.keys(TASKS).map(el=>{ const v = taskVerdict(P.e[el], el, P.pct);
+    return `<div class="task"><div class="task-h"><b>${TASKS[el].t}</b><span class="tag n-${v.c}">${v.v}</span></div><p class="sub">${TASKS[el].d}</p><p>${v.d}</p></div>`; }).join('')}</div></section>`;
+
+  let weak = Object.keys(P.e).filter(k=>P.e[k]<=1);
+  if (!weak.length) { const mn = Math.min(...Object.values(P.e)), w2 = Object.keys(P.e).filter(k=>P.e[k]===mn); weak = w2.length<=2 ? w2 : []; }
+  const sunEl = signOf(ch.lons.sun).el;
+  html += `<section class="sec"><h3>คนแบบไหนเติมเต็มคุณ</h3><ul class="hl good">`;
+  if (!weak.length) html += `<li><b>ธาตุในดวงค่อนข้างสมดุล</b> คุณจึงทำงานเข้ากับคนได้หลายแบบ คนที่เติมเต็มคุณได้ดีที่สุดคือคนที่เก่งเฉพาะด้านลึกกว่าคุณในเรื่องที่ทีมต้องการ</li>`;
+  html += weak.map(el=>`<li><b>คนที่มีธาตุ${ELEM[el].n}เด่น</b> เช่น มีดวงอาทิตย์ ดวงจันทร์ หรือลัคนาอยู่ราศี${EL_SIGNS[el]} เขาถนัดงานด้าน${TASKS[el].t} ซึ่งเป็นด้านที่คุณต้องใช้แรงมากกว่าคนอื่น</li>`).join('');
+  html += `<li><b>จังหวะการทำงานที่เข้ากัน</b> ${MOD_NEED[P.mod]}</li>`;
+  html += `<li><b>คนที่คุยกันรู้เรื่องง่าย</b> คนที่มีดวงอาทิตย์หรือดาวพุธอยู่ธาตุ${ELEM[sunEl].n}เหมือนคุณ หรือธาตุ${ELEM[EL_FRIEND[sunEl]].n} (ราศี${EL_SIGNS[EL_FRIEND[sunEl]]}) จะเข้าใจวิธีคิดของคุณได้เร็ว แต่ถ้าเหมือนกันมากไปอาจมีจุดบอดเดียวกัน</li></ul></section>`;
+
+  // เพื่อนร่วมงาน
+  const opts = $('place').innerHTML.replace(/<optgroup label="อื่น ๆ">.*?<\/optgroup>/, '');
+  html += `<section class="sec" id="team"><h3>เทียบกับเพื่อนร่วมงาน</h3><p class="sub">เพิ่มวันเกิดของคนที่ทำงานด้วย เพื่อดูว่าเข้ากันอย่างไร ควรแบ่งงานกันแบบไหน และงานไหนควรทำด้วยกันหรือแยกกันทำ เพิ่มได้หลายคนเพื่อดูภาพรวมของทั้งทีม</p>
+  <form id="mf" class="mform" novalidate>
+    <label class="mini">ชื่อ<input id="m-name" type="text" autocomplete="off" placeholder="เช่น นิด"></label>
+    <div class="row r3"><label class="mini">วัน<input id="m-day" type="number" inputmode="numeric" min="1" max="31"></label><label class="mini">เดือน<select id="m-month"><option value="">เลือก</option>${MONTHS.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('')}</select></label><label class="mini">ปี<input id="m-year" type="number" inputmode="numeric" placeholder="พ.ศ. หรือ ค.ศ."></label></div>
+    <div class="row r2"><label class="mini">ชั่วโมง<input id="m-hour" type="number" inputmode="numeric" min="0" max="23"></label><label class="mini">นาที<input id="m-minute" type="number" inputmode="numeric" min="0" max="59"></label></div>
+    <label class="check"><input id="m-notime" type="checkbox"> ไม่ทราบเวลาเกิด</label>
+    <label class="mini">สถานที่เกิด<select id="m-place">${opts}</select></label>
+    <p class="err" id="m-err" role="alert"></p>
+    <button class="btn" type="submit">เพิ่มเพื่อนร่วมงาน</button>
+  </form>`;
+  if (TEAM.length) {
+    const rows = [{n:'คุณ', ch, P}].concat(TEAM.map(o=>{ const c = memberChart(o); return {n:o.name, ch:c, P:workProfile(c), o}; }));
+    html += `<div class="list" style="margin-top:20px">`;
+    rows.slice(1).forEach((m, i)=>{
+      const S = synastry(ch, m.ch, me, m.n);
+      const good = S.list.filter(x=>x.nature==='e').slice(0,4), hard = S.list.filter(x=>x.nature==='h').slice(0,4);
+      const verdict = S.total>=60 ? 'ทำงานด้วยกันได้ดี เหมาะกับโปรเจกต์ร่วมที่ต้องคุยกันบ่อย' : S.total>=45 ? 'ทำงานด้วยกันได้ โดยแบ่งงานตามความถนัดและตกลงวิธีสื่อสารให้ชัด' : 'เหมาะแบ่งงานเป็นส่วนของใครของมัน แล้วนัดรวมงานเป็นระยะ มากกว่าทำงานใกล้ชิดตลอดเวลา';
+      const bothSolo = P.pct<45 && m.P.pct<45 ? ' ทั้งคู่ชอบทำคนเดียว ควรแบ่งความรับผิดชอบให้ชัดและลดการประชุมที่ไม่จำเป็น' : (P.pct>55 && m.P.pct>55 ? ' ทั้งคู่ชอบทำเป็นทีม ทำงานใกล้ชิดกันได้สบาย แต่ระวังคุยกันมากจนงานไม่เดิน' : '');
+      const split = Object.keys(TASKS).map(el=>{ const a = P.e[el], b = m.P.e[el];
+        const t = a>=3&&b>=3 ? 'ถนัดทั้งคู่ ทำด้วยกันได้ดีมาก แต่ระวังจุดบอดเดียวกัน' : a>=3&&a>b ? `ให้คุณเป็นเจ้าของงานนี้ ${m.n}ช่วยเสริม` : b>=3&&b>a ? `ให้${m.n}เป็นเจ้าของงานนี้ คุณช่วยเสริม` : a<=1&&b<=1 ? 'ไม่มีใครถนัด ควรหาคนที่สามมาช่วย หรือเผื่อเวลาให้มากขึ้น' : a>=2&&b<=1 ? `ให้คุณดูแลเป็นหลัก เพราะ${m.n}ไม่ถนัดด้านนี้` : b>=2&&a<=1 ? `ให้${m.n}ดูแลเป็นหลัก เพราะคุณไม่ถนัดด้านนี้` : 'ทำได้ทั้งคู่ จะทำด้วยกันหรือแยกกันก็ได้';
+        return `<li><b>${TASKS[el].t}</b> ${t}</li>`; }).join('');
+      const sum = `<span class="gl num" style="font-family:var(--display);font-size:18px">${S.total}</span><span><span class="sm-name">${esc(m.n)}</span><span class="tag n-${S.total>=58?'e':S.total>=45?'m':'h'}">${scoreLabel(S.total)}</span><br><span class="sm-sub">${ROLE_EL[m.P.el].n} ${soloLabel(m.P.pct)}</span></span><span class="sm-right"></span>`;
+      let body = `<div class="bars" style="max-width:420px">${bar('การสื่อสาร',S.comm)}${bar('จังหวะงาน',S.pace)}${bar('ความไว้ใจ',S.trust)}</div>`;
+      body += `<p class="lead-l"><b>${verdict}</b>${bothSolo}</p>`;
+      body += `<p><b>แบ่งบทบาท</b> คุณเป็น${ROLE_EL[P.el].n} ส่วน${esc(m.n)}เป็น${ROLE_EL[m.P.el].n}${P.el===m.P.el?' เหมือนกัน จึงเข้าใจกันง่าย แต่ควรมีคนที่สามมาเติมด้านที่ขาด':''} ${S.mp[1]}</p>`;
+      body += `<p><b>การสื่อสารและจังหวะ</b> ${S.cr[1]} ${S.pr[1]}</p>`;
+      if (S.comp.length) body += `<p><b>เติมเต็มกัน</b> ${S.comp.join(' ')}</p>`;
+      body += `<p><b>งานแต่ละประเภท</b></p><ul class="pl">${split}</ul>`;
+      if (good.length) body += `<p><b>จุดที่ส่งเสริมกัน</b></p><ul class="hl good">${good.map(x=>`<li><span class="tag n-e">${PK[x.a].th}ของคุณ ${x.asp.n} ${PK[x.b].th}ของ${esc(m.n)}</span> ${esc(x.txt)}</li>`).join('')}</ul>`;
+      if (hard.length) body += `<p><b>จุดที่ต้องระวัง</b></p><ul class="hl bad">${hard.map(x=>`<li><span class="tag n-h">${PK[x.a].th}ของคุณ ${x.asp.n} ${PK[x.b].th}ของ${esc(m.n)}</span> ${esc(x.txt)}</li>`).join('')}</ul>`;
+      if (m.o.notime) body += `<p class="sub">ไม่ทราบเวลาเกิดของ${esc(m.n)} ตำแหน่งดวงจันทร์อาจคลาดได้ถึงราว 7°</p>`;
+      body += `<button class="more" type="button" data-remove="${i}">ลบ${esc(m.n)}ออกจากรายการ</button>`;
+      html += item('mb-'+i, sum, body);
+    });
+    html += `</div>`;
+    // ภาพรวมทีม
+    const tot = {fire:0,earth:0,air:0,water:0}; rows.forEach(r=>Object.keys(tot).forEach(k=>tot[k]+=r.P.e[k]));
+    const strongBy = el => rows.filter(r=>r.P.e[el]>=3).map(r=>esc(r.n));
+    html += `<h3 style="margin-top:26px">ภาพรวมทีม (${rows.length} คน)</h3><div class="scroll"><table class="tt"><thead><tr><th>ชื่อ</th><th>บทบาท</th><th>สไตล์</th><th>ไฟ</th><th>ดิน</th><th>ลม</th><th>น้ำ</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.n)}</td><td>${ROLE_EL[r.P.el].n}</td><td>${soloLabel(r.P.pct)}</td>${['fire','earth','air','water'].map(k=>`<td class="num${r.P.e[k]>=3?' hi':''}">${r.P.e[k]}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    html += `<ul class="hl">${Object.keys(TASKS).map(el=>{ const s = strongBy(el); return `<li><b>${TASKS[el].t}</b> ${s.length ? `คนที่ถนัด: ${s.join(' ')} ควรรับผิดชอบงานด้านนี้เป็นหลัก` : 'ยังไม่มีใครในทีมถนัดด้านนี้ ควรหาคนเพิ่มหรือแบ่งเวลาให้งานด้านนี้มากขึ้น'}</li>`; }).join('')}</ul>`;
+    const roles = {}; rows.forEach(r=>roles[r.P.el]=(roles[r.P.el]||0)+1);
+    const many = Object.keys(roles).filter(k=>roles[k]>=Math.max(2, Math.ceil(rows.length*0.6)));
+    if (many.length && rows.length>=3) html += `<p class="sub">ทีมนี้มี${ROLE_EL[many[0]].n}หลายคน ทำงานเข้ากันง่าย แต่อาจมีจุดบอดเดียวกัน ลองเติมคนที่มีธาตุอื่นเด่นเข้ามา</p>`;
+  } else html += `<p class="empty">ยังไม่มีเพื่อนร่วมงานในรายการ</p>`;
+  html += `<p class="sub" style="margin-top:14px">ใช้เพื่อทำความเข้าใจกันและแบ่งบทบาทเท่านั้น ไม่ควรใช้ตัดสินการจ้างงานหรือประเมินผลงานของใคร ข้อมูลเพื่อนร่วมงานเก็บไว้ในเบราว์เซอร์ของคุณเท่านั้น</p></section>`;
+  $('p-work').innerHTML = html;
+  $('m-notime').addEventListener('change', e=>{ $('m-hour').disabled = $('m-minute').disabled = e.target.checked; });
+}
+let CUR = null;
+document.addEventListener('submit', e=>{
+  if (e.target.id !== 'mf') return;
+  e.preventDefault();
+  const o = {name:$('m-name').value.trim().replace(/[<>&"]/g,''), day:$('m-day').value, month:$('m-month').value, year:$('m-year').value, hour:$('m-hour').value, minute:$('m-minute').value, notime:$('m-notime').checked, place:$('m-place').value};
+  const err = memberError(o); if (err) { $('m-err').textContent = err; return; }
+  TEAM.push(o); saveTeam(); renderWork(CUR.inp, CUR.ch); openItem('work', 'mb-'+(TEAM.length-1));
+});
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-remove]'); if (!b) return;
+  TEAM.splice(+b.dataset.remove, 1); saveTeam(); renderWork(CUR.inp, CUR.ch); openItem('work','team');
+});
+
 function render(inp, ch) {
+  CUR = {inp, ch};
   const dtf = new Intl.DateTimeFormat('th-TH',{dateStyle:'long',...(inp.timeKnown?{timeStyle:'short'}:{}),timeZone:'UTC'});
   const localShown = dtf.format(new Date(inp.ms + inp.off*60000));
   $('cTitle').textContent = inp.title;
   $('cSub').textContent = inp.sub || `${localShown}${inp.timeKnown?' น.':' (ไม่ทราบเวลาเกิด คำนวณที่เที่ยงวัน)'} ที่${inp.placeName} (${fmtOff(inp.off)})`;
   drawWheel(ch);
-  renderOverview(inp, ch); renderPlanets(inp, ch); renderHouses(inp, ch); renderAspects(inp, ch); renderSummary(inp, ch);
+  renderOverview(inp, ch); renderPlanets(inp, ch); renderHouses(inp, ch); renderAspects(inp, ch); renderWork(inp, ch); renderSummary(inp, ch);
   const notes = [];
   if (ch.houseNote) notes.push(ch.houseNote);
   notes.push('ใช้ระบบราศีแบบตะวันตก (Tropical) ตำแหน่งดาวคำนวณในเบราว์เซอร์ของคุณ ไม่มีการส่งข้อมูลออกไป ความคลาดเคลื่อนราว 1 ถึง 2 ลิปดา ใช้ได้กับปีเกิด ค.ศ. 1800 ถึง 2100 คำอธิบายเป็นความหมายทั่วไปเพื่อการเรียนรู้และความบันเทิง');
