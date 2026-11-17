@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ดวงกำเนิด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Serif+Thai:wght@500;700&family=Noto+Sans+Symbols&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E8EDF2; --surface:#F5F7FA; --ink:#1B3A6B; --ink-soft:#5B7396; --line:#B7C5D7; --line-soft:#D3DCE7;
+  --band:#DCE4EE; --accent:#B97A10; --tense:#B0402C; --harmony:#2C6AA3; --field:#FFFFFF; --error:#A33A28; --flash:#F6E7C8;
+  --sym:"Noto Sans Symbols","Noto Sans Symbols 2","Segoe UI Symbol","Apple Symbols","DejaVu Sans",sans-serif;
+  --body:"IBM Plex Sans Thai","Noto Sans Thai","Leelawadee UI","Thonburi",system-ui,sans-serif;
+  --display:"Noto Serif Thai","Noto Serif","Georgia",serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0D1B31; --surface:#132645; --ink:#D6E2F3; --ink-soft:#8EA5C5; --line:#2D4670; --line-soft:#1F365A;
+    --band:#172C4F; --accent:#E6AE48; --tense:#E57B63; --harmony:#7DB1E3; --field:#0F2140; --error:#F08A72; --flash:#3A3420;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0D1B31; --surface:#132645; --ink:#D6E2F3; --ink-soft:#8EA5C5; --line:#2D4670; --line-soft:#1F365A;
+  --band:#172C4F; --accent:#E6AE48; --tense:#E57B63; --harmony:#7DB1E3; --field:#0F2140; --error:#F08A72; --flash:#3A3420;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 56px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 20px;margin-bottom:22px;border-bottom:1px solid var(--line);padding-bottom:16px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,44px);line-height:1.2;margin:0;letter-spacing:.01em}
+header p{margin:0;color:var(--ink-soft);max-width:52ch}
+.layout{display:grid;grid-template-columns:minmax(280px,340px) minmax(0,1fr);gap:32px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:16px;position:sticky;top:calc(16px + env(safe-area-inset-top,0px))}
+@media (max-width:860px){form{position:static}}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:8px;min-width:0}
+legend{font-weight:600;font-size:15px;padding:0;margin-bottom:6px}
+.row{display:grid;gap:8px}
+.r3{grid-template-columns:64px 1fr 92px}
+.r2{grid-template-columns:1fr 1fr}
+label.mini{display:grid;gap:3px;font-size:13px;color:var(--ink-soft)}
+label.top{font-size:15px;color:var(--ink);font-weight:600}
+input,select{font:inherit;font-size:16px;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+input:disabled{opacity:.45}
+.check{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink-soft);cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--ink)}
+.hint{font-size:13px;color:var(--ink-soft);margin:0}
+.btn{font:inherit;font-weight:600;font-size:16px;background:var(--ink);color:var(--surface);border:0;border-radius:10px;padding:12px 16px;cursor:pointer}
+.btn:hover{filter:brightness(1.12)}
+.err{color:var(--error);font-size:14px;margin:0}
+.err:empty{display:none}
+#customLoc[hidden]{display:none}
+
+.chart-head h2{font-family:var(--display);font-weight:500;font-size:clamp(22px,3vw,28px);margin:0;line-height:1.3}
+.chart-head p{margin:2px 0 0;color:var(--ink-soft);font-size:14px}
+.wheel{width:100%;max-width:640px;display:block;margin:6px auto 0}
+.wheel-hint{text-align:center;font-size:13px;color:var(--ink-soft);margin:2px 0 18px}
+
+/* tabs */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);z-index:5}
+.tabs::-webkit-scrollbar{display:none}
+.tab{font:inherit;font-size:16px;font-weight:500;color:var(--ink-soft);background:none;border:0;border-bottom:2.5px solid transparent;padding:10px 14px 9px;cursor:pointer;white-space:nowrap;margin-bottom:-1px}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink);font-weight:600}
+.panel{padding:20px 0 0}
+.panel[hidden]{display:none}
+.intro{color:var(--ink-soft);max-width:66ch;margin:0 0 18px;font-size:15px}
+h3{font-family:var(--display);font-weight:500;font-size:19px;margin:26px 0 8px}
+.panel > h3:first-child{margin-top:0}
+
+.big3{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.big3 > div{padding:16px 16px 16px 0;display:flex;flex-direction:column}
+.big3 > div + div{border-left:1px solid var(--line-soft);padding-left:16px}
+.big3 .k{font-size:13px;color:var(--ink-soft)}
+.big3 .v{font-family:var(--display);font-size:21px;font-weight:500;line-height:1.35;margin:2px 0 6px}
+.big3 .v .g{font-family:var(--sym);margin-right:4px}
+.big3 .d{font-size:14px;line-height:1.6;flex:1}
+.more{font:inherit;font-size:13.5px;color:var(--harmony);background:none;border:0;padding:8px 0 0;cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:640px){.big3{grid-template-columns:1fr}.big3 > div + div{border-left:0;border-top:1px solid var(--line-soft);padding-left:0}}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media (max-width:700px){.split{grid-template-columns:1fr}}
+.bars{display:grid;gap:8px;margin-bottom:10px}
+.bar{display:grid;grid-template-columns:78px 1fr 22px;gap:10px;align-items:center;font-size:14px}
+.bar .t{height:8px;border-radius:4px;background:var(--line-soft);overflow:hidden}
+.bar .t i{display:block;height:100%;background:var(--ink-soft);border-radius:4px}
+.bar.top .t i{background:var(--ink)}
+.explain{font-size:14.5px;margin:6px 0 0;max-width:60ch}
+
+/* accordion items */
+.list{border-top:1px solid var(--line)}
+details.item{border-bottom:1px solid var(--line-soft);transition:background-color .6s}
+details.item.flash{background:var(--flash)}
+details.item > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:30px minmax(0,1fr) auto 18px;gap:10px;align-items:center;padding:11px 4px}
+details.item > summary::-webkit-details-marker{display:none}
+details.item > summary::after{content:"";width:8px;height:8px;border-right:1.5px solid var(--ink-soft);border-bottom:1.5px solid var(--ink-soft);transform:rotate(45deg);justify-self:center;margin-top:-4px;transition:transform .2s}
+details.item[open] > summary::after{transform:rotate(-135deg);margin-top:4px}
+details.item > summary:hover{background:color-mix(in srgb, var(--band) 60%, transparent)}
+.gl{font-family:var(--sym);font-size:20px;text-align:center;line-height:1}
+.gl.txt{font-family:var(--body);font-size:12px;font-weight:600;color:var(--accent)}
+.sm-name{font-weight:500}
+.sm-sub{color:var(--ink-soft);font-size:13.5px}
+.sm-right{font-size:14px;color:var(--ink-soft);text-align:right;white-space:nowrap}
+.sg{font-family:var(--sym)}
+.num{font-variant-numeric:tabular-nums}
+.rx{display:inline-block;color:var(--tense);font-size:11.5px;font-weight:600;border:1px solid currentColor;border-radius:4px;padding:0 4px;margin-left:6px;line-height:1.4;vertical-align:1px}
+.body{padding:2px 4px 16px 44px;max-width:72ch}
+.body p{margin:0 0 8px;font-size:15px}
+.body p:last-child{margin-bottom:0}
+.body b{font-weight:600}
+@media (max-width:520px){.body{padding-left:4px}}
+.cnt{display:inline-block;min-width:20px;text-align:center;font-size:12px;border-radius:10px;background:var(--band);padding:0 6px;margin-left:6px}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 22px;margin:0 0 22px}
+.legend div{font-size:14px;line-height:1.5;padding-left:14px;border-left:3px solid var(--c)}
+.legend b{font-weight:600}
+.c-tense{--c:var(--tense)} .c-harm{--c:var(--harmony)} .c-conj{--c:var(--accent)}
+.asp-name{font-weight:600;color:var(--c)}
+.empty{color:var(--ink-soft);font-size:15px;padding:12px 0}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;border-radius:4px;padding:0 6px;margin-left:6px;color:var(--c);border:1px solid currentColor;line-height:1.5;vertical-align:1px}
+.n-e{--c:var(--harmony)} .n-h{--c:var(--tense)} .n-m{--c:var(--accent)}
+.tag.n-k{color:var(--surface);background:var(--accent);border-color:var(--accent)}
+.more.inl{padding:0;font-size:inherit}
+.body p.lead{font-size:15.5px}
+p.sub,.body p.sub{color:var(--ink-soft);font-size:14px}
+.rbox{border-left:3px solid var(--accent);padding:6px 0 6px 12px;margin-top:10px;font-size:15px;line-height:1.65}
+ul.pl{margin:0 0 8px;padding-left:18px} ul.pl li{font-size:15px;margin-bottom:4px}
+.sec{margin-bottom:10px}
+ul.hl{list-style:none;padding:0;margin:0}
+ul.hl li{padding:8px 0 8px 14px;border-left:3px solid var(--line);margin-bottom:8px;font-size:15px;max-width:74ch;line-height:1.65}
+ul.hl.good li{border-left-color:var(--harmony)} ul.hl.bad li{border-left-color:var(--tense)}
+ul.hl .tag{margin:0 4px 0 0}
+.cta{display:inline-block;font:inherit;font-weight:600;font-size:15px;color:var(--surface);background:var(--ink);border:0;border-radius:8px;padding:8px 14px;cursor:pointer;margin:0 0 18px}
+.w-st{fill:var(--accent)} .w-sth{fill:var(--accent);opacity:.2}
+.w-kum .w-pl{fill:var(--accent)}
+.gen{font-size:14px !important;color:var(--ink-soft);border-left:2px solid var(--line);padding-left:10px}
+.note{font-size:13px;color:var(--ink-soft);margin-top:32px;border-top:1px solid var(--line-soft);padding-top:14px;max-width:72ch}
+
+/* wheel */
+.w-band{fill:var(--band)} .w-band2{fill:var(--surface)}
+.w-line{stroke:var(--line);fill:none;stroke-width:1}
+.w-ink{stroke:var(--ink);fill:none;stroke-width:1.2}
+.w-tick{stroke:var(--ink-soft);stroke-width:.7}
+.w-sign{font-family:var(--sym);font-size:21px;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.w-house{font-family:var(--body);font-size:11px;fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central}
+.w-cusp{stroke:var(--line);stroke-width:1}
+.w-axis{stroke:var(--accent);stroke-width:2}
+.w-axlbl{font-family:var(--body);font-size:12px;font-weight:600;fill:var(--accent);text-anchor:middle;dominant-baseline:central}
+.w-pl{font-family:var(--sym);font-size:20px;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.w-deg{font-family:var(--body);font-size:10px;fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central}
+.w-ptick{stroke:var(--ink);stroke-width:1.4}
+.w-conn{stroke:var(--line);stroke-width:.8}
+.w-a-t{stroke:var(--tense)} .w-a-h{stroke:var(--harmony)}
+.w-hit{stroke:transparent;stroke-width:12;cursor:pointer}
+.w-click{cursor:pointer}
+.w-click circle{fill:transparent}
+.w-click:hover .w-pl,.w-click:focus-visible .w-pl{fill:var(--accent)}
+.w-click:hover circle,.w-click:focus-visible circle{fill:var(--band)}
+.w-hclick{cursor:pointer}
+.w-hclick:hover .w-house{fill:var(--ink);font-weight:600}
+@media (prefers-reduced-motion:no-preference){
+  .wheel .w-planets,.wheel .w-aspects{animation:fade .6s ease-out both}
+  .wheel .w-aspects{animation-delay:.15s}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>ดวงกำเนิด</h1>
+    <p>กรอกวัน เวลา และสถานที่เกิด แล้วอ่านความหมายของดวงคุณตามโหราศาสตร์ตะวันตก ทีละเรื่องอย่างเข้าใจง่าย</p>
+  </header>
+
+  <div class="layout">
+    <form id="f" novalidate>
+      <label class="mini top">ชื่อ (ไม่บังคับ)
+        <input id="name" type="text" autocomplete="off" placeholder="เช่น น้ำฝน">
+      </label>
+      <fieldset>
+        <legend>วันเกิด</legend>
+        <div class="row r3">
+          <label class="mini">วัน<input id="day" type="number" inputmode="numeric" min="1" max="31" placeholder="15"></label>
+          <label class="mini">เดือน<select id="month"></select></label>
+          <label class="mini">ปี<input id="year" type="number" inputmode="numeric" placeholder="2535"></label>
+        </div>
+        <p class="hint">ใส่ปีเป็น พ.ศ. หรือ ค.ศ. ก็ได้</p>
+      </fieldset>
+      <fieldset>
+        <legend>เวลาเกิด</legend>
+        <div class="row r2">
+          <label class="mini">ชั่วโมง<input id="hour" type="number" inputmode="numeric" min="0" max="23" placeholder="08"></label>
+          <label class="mini">นาที<input id="minute" type="number" inputmode="numeric" min="0" max="59" placeholder="30"></label>
+        </div>
+        <label class="check"><input id="notime" type="checkbox"> ไม่ทราบเวลาเกิด</label>
+      </fieldset>
+      <fieldset>
+        <legend>สถานที่เกิด</legend>
+        <select id="place" aria-label="สถานที่เกิด"></select>
+        <div id="customLoc" class="row" hidden>
+          <div class="row r2">
+            <label class="mini">ละติจูด (เหนือ +)<input id="lat" type="number" step="0.0001" placeholder="13.7563"></label>
+            <label class="mini">ลองจิจูด (ตะวันออก +)<input id="lon" type="number" step="0.0001" placeholder="100.5018"></label>
+          </div>
+          <label class="mini">เขตเวลา<select id="utcoff"></select></label>
+          <p class="hint">หาพิกัดได้จาก Google Maps โดยกดค้างที่ตำแหน่งนั้น</p>
+        </div>
+      </fieldset>
+      <label class="mini">ระบบเรือน
+        <select id="houses">
+          <option value="placidus">Placidus (นิยมที่สุด)</option>
+          <option value="whole">Whole Sign (เรือนละหนึ่งราศี)</option>
+          <option value="equal">Equal (เรือนละ 30° เท่ากัน)</option>
+        </select>
+      </label>
+      <p class="err" id="err" role="alert" aria-live="polite"></p>
+      <button class="btn" type="submit">ดูดวงกำเนิด</button>
+    </form>
+
+    <main id="out">
+      <div class="chart-head"><h2 id="cTitle"></h2><p id="cSub"></p></div>
+      <svg id="wheel" class="wheel" viewBox="0 0 640 640" role="img" aria-labelledby="cTitle"></svg>
+      <p class="wheel-hint">กดที่สัญลักษณ์ดาว เลขเรือน หรือเส้นมุมบนวงดวงเพื่ออ่านคำอธิบาย</p>
+
+      <div class="tabs" role="tablist" aria-label="หมวดคำอธิบาย">
+        <button class="tab" role="tab" id="t-overview" aria-controls="p-overview" aria-selected="true">ภาพรวม</button>
+        <button class="tab" role="tab" id="t-planets" aria-controls="p-planets" aria-selected="false" tabindex="-1">ดวงดาว</button>
+        <button class="tab" role="tab" id="t-houses" aria-controls="p-houses" aria-selected="false" tabindex="-1">เรือน</button>
+        <button class="tab" role="tab" id="t-aspects" aria-controls="p-aspects" aria-selected="false" tabindex="-1">มุม</button>
+        <button class="tab" role="tab" id="t-summary" aria-controls="p-summary" aria-selected="false" tabindex="-1">สรุปไฮไลต์</button>
+      </div>
+      <section class="panel" role="tabpanel" id="p-overview" aria-labelledby="t-overview"></section>
+      <section class="panel" role="tabpanel" id="p-planets" aria-labelledby="t-planets" hidden></section>
+      <section class="panel" role="tabpanel" id="p-houses" aria-labelledby="t-houses" hidden></section>
+      <section class="panel" role="tabpanel" id="p-aspects" aria-labelledby="t-aspects" hidden></section>
+      <section class="panel" role="tabpanel" id="p-summary" aria-labelledby="t-summary" hidden></section>
+      <p class="note" id="note"></p>
+    </main>
+  </div>
+</div>
+
+<script>
+// Planetary positions after Paul Schlyter's method (ecliptic & equinox of date = tropical zodiac)
+const D2R = Math.PI / 180, R2D = 180 / Math.PI;
+const norm = a => ((a % 360) + 360) % 360;
+const sind = x => Math.sin(x * D2R), cosd = x => Math.cos(x * D2R);
+const atan2d = (y, x) => Math.atan2(y, x) * R2D;
+
+function kepler(M, e) {
+  let E = M + R2D * e * sind(M) * (1 + e * cosd(M));
+  for (let k = 0; k < 30; k++) {
+    const dE = (E - R2D * e * sind(E) - M) / (1 - e * cosd(E));
+    E -= dE;
+    if (Math.abs(dE) < 1e-8) break;
+  }
+  return E;
+}
+
+function orbit(el) {
+  const M = norm(el.M);
+  const E = kepler(M, el.e);
+  const xv = el.a * (cosd(E) - el.e);
+  const yv = el.a * Math.sqrt(1 - el.e * el.e) * sind(E);
+  const v = atan2d(yv, xv), r = Math.hypot(xv, yv);
+  const vw = v + el.w;
+  const x = r * (cosd(el.N) * cosd(vw) - sind(el.N) * sind(vw) * cosd(el.i));
+  const y = r * (sind(el.N) * cosd(vw) + cosd(el.N) * sind(vw) * cosd(el.i));
+  const z = r * sind(vw) * sind(el.i);
+  return { x, y, z, r, v, M };
+}
+
+function elements(d) {
+  return {
+    sun: { N: 0, i: 0, w: 282.9404 + 4.70935e-5 * d, a: 1, e: 0.016709 - 1.151e-9 * d, M: 356.0470 + 0.9856002585 * d },
+    moon: { N: 125.1228 - 0.0529538083 * d, i: 5.1454, w: 318.0634 + 0.1643573223 * d, a: 60.2666, e: 0.0549, M: 115.3654 + 13.0649929509 * d },
+    mercury: { N: 48.3313 + 3.24587e-5 * d, i: 7.0047 + 5.0e-8 * d, w: 29.1241 + 1.01444e-5 * d, a: 0.387098, e: 0.205635 + 5.59e-10 * d, M: 168.6562 + 4.0923344368 * d },
+    venus: { N: 76.6799 + 2.4659e-5 * d, i: 3.3946 + 2.75e-8 * d, w: 54.891 + 1.38374e-5 * d, a: 0.72333, e: 0.006773 - 1.302e-9 * d, M: 48.0052 + 1.6021302244 * d },
+    mars: { N: 49.5574 + 2.11081e-5 * d, i: 1.8497 - 1.78e-8 * d, w: 286.5016 + 2.92961e-5 * d, a: 1.523688, e: 0.093405 + 2.516e-9 * d, M: 18.6021 + 0.5240207766 * d },
+    jupiter: { N: 100.4542 + 2.76854e-5 * d, i: 1.303 - 1.557e-7 * d, w: 273.8777 + 1.64505e-5 * d, a: 5.20256, e: 0.048498 + 4.469e-9 * d, M: 19.895 + 0.0830853001 * d },
+    saturn: { N: 113.6634 + 2.3898e-5 * d, i: 2.4886 - 1.081e-7 * d, w: 339.3939 + 2.97661e-5 * d, a: 9.55475, e: 0.055546 - 9.499e-9 * d, M: 316.967 + 0.0334442282 * d },
+    uranus: { N: 74.0005 + 1.3978e-5 * d, i: 0.7733 + 1.9e-8 * d, w: 96.6612 + 3.0565e-5 * d, a: 19.18171 - 1.55e-8 * d, e: 0.047318 + 7.45e-9 * d, M: 142.5905 + 0.011725806 * d },
+    neptune: { N: 131.7806 + 3.0173e-5 * d, i: 1.77 - 2.55e-7 * d, w: 272.8461 - 6.027e-6 * d, a: 30.05826 + 3.313e-8 * d, e: 0.008606 + 2.15e-9 * d, M: 260.2471 + 0.005995147 * d },
+  };
+}
+
+// Ecliptic longitudes (degrees, tropical) for a Julian Day (UT)
+function longitudes(jd) {
+  const d = jd - 2451543.5;
+  const el = elements(d);
+  const s = orbit(el.sun);
+  const sunLon = norm(s.v + el.sun.w);
+  const xs = s.r * cosd(sunLon), ys = s.r * sind(sunLon);
+  const out = { sun: sunLon };
+
+  // Moon
+  const m = orbit(el.moon);
+  let mlon = atan2d(m.y, m.x);
+  const Ms = norm(el.sun.M), Mm = norm(el.moon.M);
+  const Ls = Ms + el.sun.w, Lm = Mm + el.moon.w + el.moon.N;
+  const D = Lm - Ls, F = Lm - el.moon.N;
+  mlon += -1.274 * sind(Mm - 2 * D) + 0.658 * sind(2 * D) - 0.186 * sind(Ms)
+    - 0.059 * sind(2 * Mm - 2 * D) - 0.057 * sind(Mm - 2 * D + Ms) + 0.053 * sind(Mm + 2 * D)
+    + 0.046 * sind(2 * D - Ms) + 0.041 * sind(Mm - Ms) - 0.035 * sind(D)
+    - 0.031 * sind(Mm + Ms) - 0.015 * sind(2 * F - 2 * D) + 0.011 * sind(Mm - 4 * D);
+  out.moon = norm(mlon);
+
+  const Mj = norm(el.jupiter.M), Msa = norm(el.saturn.M), Mu = norm(el.uranus.M);
+  const pert = {
+    jupiter: -0.332 * sind(2 * Mj - 5 * Msa - 67.6) - 0.056 * sind(2 * Mj - 2 * Msa + 21) + 0.042 * sind(3 * Mj - 5 * Msa + 21)
+      - 0.036 * sind(Mj - 2 * Msa) + 0.022 * cosd(Mj - Msa) + 0.023 * sind(2 * Mj - 3 * Msa + 52) - 0.016 * sind(Mj - 5 * Msa - 69),
+    saturn: 0.812 * sind(2 * Mj - 5 * Msa - 67.6) - 0.229 * cosd(2 * Mj - 4 * Msa - 2) + 0.119 * sind(Mj - 2 * Msa - 3)
+      + 0.046 * sind(2 * Mj - 6 * Msa - 69) + 0.014 * sind(Mj - 3 * Msa + 32),
+    uranus: 0.04 * sind(Msa - 2 * Mu + 6) + 0.035 * sind(Msa - 3 * Mu + 33) - 0.015 * sind(Mj - Mu + 20),
+  };
+
+  const geo = (xh, yh) => norm(atan2d(yh + ys, xh + xs));
+  for (const p of ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune']) {
+    const o = orbit(el[p]);
+    let { x, y, z } = o;
+    if (pert[p]) {
+      const lon = atan2d(y, x) + pert[p];
+      const lat = atan2d(z, Math.hypot(x, y));
+      const r = Math.hypot(x, y, z);
+      x = r * cosd(lat) * cosd(lon); y = r * cosd(lat) * sind(lon);
+    }
+    out[p] = geo(x, y);
+  }
+
+  // Pluto (heliocentric, J2000 → equinox of date)
+  const S = 50.03 + 0.033459652 * d, P = 238.95 + 0.003968789 * d;
+  const plon = 238.9508 + 0.00400703 * d - 19.799 * sind(P) + 19.848 * cosd(P) + 0.897 * sind(2 * P) - 4.956 * cosd(2 * P)
+    + 0.61 * sind(3 * P) + 1.211 * cosd(3 * P) - 0.341 * sind(4 * P) - 0.19 * cosd(4 * P) + 0.128 * sind(5 * P) - 0.034 * cosd(5 * P)
+    - 0.038 * sind(6 * P) + 0.031 * cosd(6 * P) + 0.02 * sind(S - P) - 0.01 * cosd(S - P);
+  const plat = -3.9082 - 5.453 * sind(P) - 14.975 * cosd(P) + 3.527 * sind(2 * P) + 1.673 * cosd(2 * P) - 1.051 * sind(3 * P)
+    + 0.328 * cosd(3 * P) + 0.179 * sind(4 * P) - 0.292 * cosd(4 * P) + 0.019 * sind(5 * P) + 0.1 * cosd(5 * P)
+    - 0.031 * sind(6 * P) - 0.026 * cosd(6 * P) + 0.011 * cosd(S - P);
+  const pr = 40.72 + 6.68 * sind(P) + 6.9 * cosd(P) - 1.18 * sind(2 * P) - 0.03 * cosd(2 * P) + 0.15 * sind(3 * P) - 0.14 * cosd(3 * P);
+  out.pluto = geo(pr * cosd(plat) * cosd(plon), pr * cosd(plat) * sind(plon));
+
+  out.node = norm(el.moon.N); // mean north node (ราหู)
+  return out;
+}
+
+function obliquity(jd) { return 23.4393 - 3.563e-7 * (jd - 2451543.5); }
+
+function lstDeg(jd, lonEast) {
+  const T = (jd - 2451545) / 36525;
+  const gmst = 280.46061837 + 360.98564736629 * (jd - 2451545) + 0.000387933 * T * T - T * T * T / 38710000;
+  return norm(gmst + lonEast);
+}
+
+function angles(jd, lat, lon) {
+  const eps = obliquity(jd), ramc = lstDeg(jd, lon);
+  const mc = norm(atan2d(sind(ramc), cosd(ramc) * cosd(eps)));
+  const asc = norm(atan2d(cosd(ramc), -(sind(ramc) * cosd(eps) + Math.tan(lat * D2R) * sind(eps))));
+  return { asc, mc, ramc, eps };
+}
+
+function eclFromRA(ra, eps) { return norm(atan2d(sind(ra), cosd(ra) * cosd(eps))); }
+
+function placidus(ramc, eps, lat) {
+  if (Math.abs(lat) >= 66) return null;
+  const tphi = Math.tan(lat * D2R);
+  const cusp = (above, f) => {
+    let ra = above ? ramc + f * 90 : ramc + 180 - f * 90, lam = 0;
+    for (let k = 0; k < 50; k++) {
+      lam = eclFromRA(ra, eps);
+      const dec = Math.asin(sind(eps) * sind(lam)) * R2D;
+      const x = tphi * Math.tan(dec * D2R);
+      if (Math.abs(x) > 1) return NaN;
+      const ad = Math.asin(x) * R2D;
+      const next = above ? ramc + f * (90 + ad) : ramc + 180 - f * (90 - ad);
+      if (Math.abs(next - ra) < 1e-7) { ra = next; break; }
+      ra = next;
+    }
+    return eclFromRA(ra, eps);
+  };
+  const c11 = cusp(true, 1 / 3), c12 = cusp(true, 2 / 3), c2 = cusp(false, 2 / 3), c3 = cusp(false, 1 / 3);
+  if ([c11, c12, c2, c3].some(Number.isNaN)) return null;
+  return { c11, c12, c2, c3 };
+}
+
+
+
+const VS = '\uFE0E';
+const SIGNS = [
+  ['เมษ','Aries','♈','fire','cardinal','กล้าหาญ ริเริ่มเร็ว ตรงไปตรงมา อาจใจร้อนบ้าง','ตรงไปตรงมา กระตือรือร้น อยากเริ่มก่อนใคร','ได้ลงมือทำอะไรสักอย่าง หรือได้ระบายออกมาทันที'],
+  ['พฤษภ','Taurus','♉','earth','fixed','มั่นคง อดทน รักความสบาย ยึดมั่นในสิ่งที่เลือก','ใจเย็น มั่นคง ค่อยเป็นค่อยไป ชอบสิ่งที่จับต้องได้','ความสงบ อาหารอร่อย และพื้นที่ที่คุ้นเคย'],
+  ['เมถุน','Gemini','♊','air','mutable','ช่างคิด ช่างพูด อยากรู้อยากเห็น ปรับตัวเร็ว','ช่างสงสัย คล่องแคล่ว ชอบพูดคุยแลกเปลี่ยน','ได้คุย ได้เล่า หรือได้เปลี่ยนบรรยากาศ'],
+  ['กรกฎ','Cancer','♋','water','cardinal','อ่อนโยน ห่วงใยคนใกล้ตัว ผูกพันกับบ้านและครอบครัว','อ่อนโยน ใช้ความรู้สึกนำ ปกป้องคนที่รัก','คนที่รักอยู่ใกล้ ๆ และบ้านที่อบอุ่น'],
+  ['สิงห์','Leo','♌','fire','fixed','มั่นใจ ใจกว้าง ชอบแสดงออก มีความภาคภูมิ','เปิดเผย อบอุ่น อยากให้คนเห็นคุณค่า','การยอมรับ คำชม และความเอาใจใส่'],
+  ['กันย์','Virgo','♍','earth','mutable','ละเอียด รอบคอบ ช่างวิเคราะห์ ชอบช่วยเหลือ','ละเอียด ใช้เหตุผล อยากทำให้ทุกอย่างดีขึ้น','ได้จัดระเบียบ วางแผน และรู้ว่าทุกอย่างอยู่ในการควบคุม'],
+  ['ตุลย์','Libra','♎','air','cardinal','รักความยุติธรรมและความงาม ชอบประสานความสัมพันธ์','นุ่มนวล ชอบความสมดุล คำนึงถึงคนรอบตัว','ความกลมกลืน บรรยากาศดี ๆ และคนที่รับฟัง'],
+  ['พิจิก','Scorpio','♏','water','fixed','ลึกซึ้ง มุ่งมั่น หยั่งรู้ เก็บความรู้สึกเก่ง','ลึกซึ้ง เข้มข้น ทุ่มสุดตัว ไม่ชอบความผิวเผิน','ความไว้ใจ ความเป็นส่วนตัว และความจริงใจแบบลึกซึ้ง'],
+  ['ธนู','Sagittarius','♐','fire','mutable','รักอิสระ มองโลกแง่ดี ชอบเรียนรู้และเดินทาง','กว้างไกล ร่าเริง ชอบสำรวจสิ่งใหม่','อิสระ พื้นที่กว้าง ๆ และมุมมองใหม่'],
+  ['มังกร','Capricorn','♑','earth','cardinal','มีวินัย ทะเยอทะยาน รับผิดชอบ คิดระยะยาว','จริงจัง มีแบบแผน มองเป้าหมายระยะยาว','ความสำเร็จที่จับต้องได้ และเวลาอยู่กับตัวเอง'],
+  ['กุมภ์','Aquarius','♒','air','fixed','คิดต่าง เป็นตัวของตัวเอง รักเพื่อน มองการณ์ไกล','อิสระ แหวกแนว ยึดหลักการและอุดมการณ์','พื้นที่ส่วนตัว เพื่อนที่เข้าใจ และการไม่ถูกบังคับ'],
+  ['มีน','Pisces','♓','water','mutable','เห็นอกเห็นใจ จินตนาการสูง อ่อนไหว มีหัวศิลปะ','อ่อนไหว ใช้สัญชาตญาณ เปิดรับความรู้สึกของผู้อื่น','ความเงียบ ดนตรี ศิลปะ หรือการได้หลบไปพักใจ'],
+].map(([th,en,g,el,mod,kw,style,need])=>({th,en,g:g+VS,el,mod,kw,style,need}));
+
+const ELEM = {
+  fire:{n:'ไฟ',d:'มีพลัง กระตือรือร้น ชอบลงมือทำมากกว่านั่งคิด'},
+  earth:{n:'ดิน',d:'ติดดิน มีเหตุผลเชิงปฏิบัติ ให้ความสำคัญกับผลลัพธ์ที่จับต้องได้'},
+  air:{n:'ลม',d:'ใช้ความคิด ชอบสื่อสาร แลกเปลี่ยนไอเดีย และเข้าสังคม'},
+  water:{n:'น้ำ',d:'ใช้ความรู้สึกและสัญชาตญาณ เข้าใจคนอื่นได้ลึก'},
+};
+const MODS = {
+  cardinal:{n:'ริเริ่ม',en:'Cardinal',d:'ชอบเปิดเรื่องใหม่ กล้าตัดสินใจ และมักเป็นคนเริ่มก่อน'},
+  fixed:{n:'มั่นคง',en:'Fixed',d:'มุ่งมั่น ทำอะไรต่อเนื่องจนสำเร็จ ไม่เปลี่ยนใจง่าย'},
+  mutable:{n:'ยืดหยุ่น',en:'Mutable',d:'ปรับตัวเก่ง รับมือกับความเปลี่ยนแปลงได้ดี มองได้หลายมุม'},
+};
+
+const PLANETS = [
+  ['sun','ดวงอาทิตย์','☉','ตัวตน','แก่นแท้ของคุณ สิ่งที่ทำให้รู้สึกมีชีวิตชีวา และทิศทางที่อยากเติบโตไป ราศีของดวงอาทิตย์คือ “ราศีเกิด” ที่คนส่วนใหญ่รู้จัก'],
+  ['moon','ดวงจันทร์','☽','อารมณ์','โลกภายใน อารมณ์ และสิ่งที่ทำให้รู้สึกปลอดภัย มักเป็นด้านที่คนใกล้ชิดเท่านั้นได้เห็น'],
+  ['mercury','ดาวพุธ','☿','ความคิด','วิธีคิด วิธีเรียนรู้ วิธีพูดและเขียน รวมถึงการตัดสินใจเรื่องประจำวัน'],
+  ['venus','ดาวศุกร์','♀','ความรัก','สิ่งที่คุณชอบและมองว่าสวยงาม วิธีแสดงความรักและวิธีที่อยากได้รับความรัก รวมถึงทัศนคติเรื่องเงินและความสุขสบาย'],
+  ['mars','ดาวอังคาร','♂','แรงขับ','พลังงาน ความกล้า วิธีไล่ตามสิ่งที่ต้องการ และวิธีรับมือเมื่อโกรธหรือต้องแข่งขัน'],
+  ['jupiter','ดาวพฤหัส','♃','โอกาส','ด้านที่คุณมีโอกาสเติบโต มีความมั่นใจ และมองโลกในแง่ดี ดาวพฤหัสอยู่ในราศีหนึ่งราว 1 ปี คนเกิดปีเดียวกันจึงมักมีตำแหน่งนี้ร่วมกัน'],
+  ['saturn','ดาวเสาร์','♄','วินัย','ด้านที่ชีวิตให้คุณฝึกความอดทนและความรับผิดชอบ ช่วงแรกอาจรู้สึกยากหรือไม่มั่นใจ แต่มักกลายเป็นจุดแข็งเมื่อโตขึ้น ดาวเสาร์อยู่ในราศีหนึ่งราว 2 ปีครึ่ง'],
+  ['uranus','ดาวยูเรนัส','♅','ความเป็นอิสระ','ด้านที่คุณอยากเป็นตัวของตัวเอง คิดนอกกรอบ และพร้อมแหกกฎ ดาวนี้เคลื่อนช้ามาก (ราศีละราว 7 ปี) ราศีจึงบอกลักษณะของคนทั้งรุ่น ให้ดูเรือนที่ดาวอยู่เป็นหลัก'],
+  ['neptune','ดาวเนปจูน','♆','จินตนาการ','ความฝัน ศิลปะ ความเชื่อ และความเห็นอกเห็นใจ แต่ก็อาจเป็นจุดที่มองอะไรไม่ชัดหรือหลงอุดมคติ ดาวนี้เคลื่อนช้ามาก (ราศีละราว 14 ปี) ให้ดูเรือนเป็นหลัก'],
+  ['pluto','ดาวพลูโต','♇','การเปลี่ยนแปลงลึก ๆ','ด้านที่คุณสัมผัสอารมณ์อย่างเข้มข้น ผ่านการเปลี่ยนแปลงครั้งใหญ่ และเรียนรู้เรื่องพลังอำนาจ ดาวนี้เคลื่อนช้าที่สุด ให้ดูเรือนเป็นหลัก'],
+  ['node','โหนดเหนือ','☊','ทิศทางการเติบโต','โหนดเหนือ (North Node) ไม่ใช่ดาว แต่เป็นจุดที่วงโคจรดวงจันทร์ตัดกับเส้นทางของดวงอาทิตย์ นักโหราศาสตร์ตะวันตกมองว่าเป็นทิศทางที่ชีวิตชวนให้คุณก้าวไป แม้จะไม่คุ้นเคยในตอนแรก'],
+].map(([k,th,g,theme,desc])=>({k,th,g:g+VS,theme,desc}));
+const POINTS_INFO = {
+  asc:{th:'ลัคนา',g:'AC',theme:'ภาพลักษณ์',desc:'ลัคนา (Ascendant) คือราศีที่กำลังขึ้นจากขอบฟ้าทิศตะวันออกตอนคุณเกิด บอกบุคลิกภายนอก ความประทับใจแรกที่คนอื่นมีต่อคุณ และวิธีที่คุณเริ่มต้นสิ่งใหม่ ลัคนาเปลี่ยนราศีราวทุก 2 ชั่วโมง จึงต้องใช้เวลาเกิดที่แม่นยำ'},
+  mc:{th:'กลางฟ้า',g:'MC',theme:'อาชีพ',desc:'กลางฟ้า (Midheaven) คือจุดสูงสุดของท้องฟ้าตอนคุณเกิด เกี่ยวกับอาชีพ เป้าหมายชีวิต และภาพที่สังคมมองคุณ'},
+};
+const HOUSES = [
+  ['ตัวตนและภาพลักษณ์','บุคลิก รูปลักษณ์ และวิธีที่คุณเริ่มต้นสิ่งต่าง ๆ จุดเริ่มของเรือนนี้คือลัคนา'],
+  ['เงินและสิ่งที่มีค่า','รายได้ ทรัพย์สิน ความสามารถที่สร้างรายได้ และสิ่งที่ทำให้รู้สึกมั่นคง'],
+  ['การสื่อสารและการเรียนรู้','การพูด การเขียน การเรียนรู้ พี่น้อง เพื่อนบ้าน และการเดินทางใกล้ ๆ'],
+  ['บ้านและครอบครัว','รากเหง้า ครอบครัว บ้าน และพื้นที่ที่ทำให้รู้สึกปลอดภัย'],
+  ['ความสนุกและความรัก','งานอดิเรก ความคิดสร้างสรรค์ การจีบและความรักแบบหวานใจ รวมถึงลูก'],
+  ['งานประจำวันและสุขภาพ','กิจวัตร การทำงานแต่ละวัน การดูแลร่างกาย และการช่วยเหลือผู้อื่น'],
+  ['คู่ครองและหุ้นส่วน','ความสัมพันธ์แบบหนึ่งต่อหนึ่ง คู่แต่งงาน หุ้นส่วนธุรกิจ และคนที่สะท้อนให้คุณเห็นตัวเอง'],
+  ['ความผูกพันลึกซึ้ง','ความใกล้ชิดทางใจ เงินที่ใช้ร่วมกับคนอื่น มรดก และการเปลี่ยนแปลงครั้งใหญ่ของชีวิต'],
+  ['ความเชื่อและการเดินทางไกล','การศึกษาขั้นสูง ปรัชญา ศาสนา ต่างประเทศ และการแสวงหาความหมายของชีวิต'],
+  ['อาชีพและชื่อเสียง','หน้าที่การงาน เป้าหมายชีวิต และภาพที่สังคมมองคุณ'],
+  ['เพื่อนและความหวัง','กลุ่มเพื่อน สังคม เครือข่าย และความฝันระยะยาว'],
+  ['โลกภายในและการพักใจ','จิตใต้สำนึก ความสงบ การปล่อยวาง และสิ่งที่ซ่อนอยู่เบื้องหลัง'],
+].map(([t,d])=>({t,d}));
+const ASPECTS = [
+  {a:0,n:'ร่วม',en:'Conjunction',orb:8,c:'conj',kind:'มุมผสานพลัง',d:'ดาวสองดวงอยู่ใกล้กันจนพลังรวมกัน ผลดีหรือท้าทายขึ้นกับว่าเป็นดาวคู่ไหน',
+    t:(x,y)=>`ด้าน${x}และด้าน${y}ของคุณผูกติดกันแน่น เวลาเรื่องหนึ่งเกิดขึ้น อีกเรื่องจะเข้ามาเกี่ยวด้วยเสมอ จุดนี้มักเป็นจุดเด่นที่คนรอบตัวสังเกตเห็น`},
+  {a:60,n:'เซกซ์ไทล์',en:'Sextile',orb:5,c:'harm',kind:'มุมเปิดโอกาส',d:'เป็นมิตรต่อกัน ช่วยเสริมกันได้ดีเมื่อคุณลงมือใช้',
+    t:(x,y)=>`ด้าน${x}และด้าน${y}ช่วยส่งเสริมกัน เป็นโอกาสดีที่จะเห็นผลชัดเมื่อคุณตั้งใจใช้มัน`},
+  {a:90,n:'สแควร์',en:'Square',orb:7,c:'tense',kind:'มุมท้าทาย',d:'ตึงเครียด ดึงไปคนละทาง สร้างแรงกดดันที่ผลักให้เติบโต',
+    t:(x,y)=>`ด้าน${x}และด้าน${y}มักดึงคุณไปคนละทาง บางครั้งอาจรู้สึกขัดใจหรือลังเล แต่แรงตึงนี้คือแรงผลักให้คุณลงมือและเก่งขึ้น`},
+  {a:120,n:'ไทรน์',en:'Trine',orb:7,c:'harm',kind:'มุมไหลลื่น',d:'เข้ากันได้อย่างเป็นธรรมชาติ เหมือนพรสวรรค์ที่ใช้ได้โดยไม่ต้องพยายาม',
+    t:(x,y)=>`ด้าน${x}และด้าน${y}เข้ากันได้อย่างเป็นธรรมชาติ เป็นจุดแข็งที่คุณอาจใช้อยู่ทุกวันโดยไม่รู้ตัว`},
+  {a:180,n:'ตรงข้าม',en:'Opposition',orb:8,c:'tense',kind:'มุมสองขั้ว',d:'สองพลังอยู่คนละฝั่ง ชีวิตชวนให้หาจุดสมดุล มักเห็นผ่านความสัมพันธ์กับคนอื่น',
+    t:(x,y)=>`ด้าน${x}และด้าน${y}อยู่คนละขั้ว คุณอาจเอนไปทางหนึ่งแล้วเหวี่ยงกลับอีกทาง การหาจุดกึ่งกลางคือบทเรียนสำคัญ และมักเห็นชัดผ่านคนรอบตัว`},
+];
+/* ความหมายของมุมแยกตามคู่ดาว: [ผลของมุมร่วม e=ส่งเสริม h=ท้าทาย m=ทั้งสองด้าน, แก่นของคู่นี้, เมื่อทำมุมส่งเสริม, เมื่อทำมุมท้าทาย, เมื่อทำมุมร่วม] */
+const PAIRS = {
+ 'sun-moon':['m','สิ่งที่คุณอยากเป็น (ดวงอาทิตย์) กับสิ่งที่ใจต้องการ (ดวงจันทร์)','สิ่งที่อยากได้กับสิ่งที่รู้สึกไปในทางเดียวกัน คุณจึงมักรู้ใจตัวเอง ตัดสินใจโดยไม่ค่อยขัดแย้งในใจ และมีความสุขกับชีวิตได้ง่าย','เป้าหมายกับความรู้สึกมักดึงไปคนละทาง เช่น อยากก้าวหน้าแต่ใจอยากพัก หรือทำสิ่งที่ถูกต้องแต่ไม่ได้ทำให้มีความสุข การยอมรับว่าทั้งสองฝั่งสำคัญพอกันจะช่วยได้มาก','คุณเกิดใกล้วันจันทร์ดับ ความคิดกับความรู้สึกเป็นหนึ่งเดียว มุ่งมั่นและรู้ว่าตัวเองต้องการอะไร แต่บางครั้งอาจมองไม่เห็นมุมของคนอื่น'],
+ 'sun-mercury':['m','ตัวตนกับความคิด','ความคิดกับตัวตนไปด้วยกันได้ดี พูดและคิดได้ตรงกับตัวเอง','ความคิดกับตัวตนไม่ค่อยลงรอย','ความคิดกับตัวตนผูกกันแน่น คุณคิดและพูดในแบบที่เป็นตัวเองชัดเจน แต่อาจยึดความเห็นตัวเองจนฟังคนอื่นยาก เพราะเมื่อความคิดถูกวิจารณ์ก็รู้สึกเหมือนตัวตนถูกวิจารณ์ไปด้วย'],
+ 'sun-venus':['e','ตัวตนกับความรัก','มีเสน่ห์และรักความงาม','อาจตามใจตัวเองเกินไป','มีเสน่ห์ อ่อนโยน รักความงามและความสงบ คนรอบตัวมักรู้สึกสบายใจเมื่ออยู่ใกล้ แต่อาจเลี่ยงความขัดแย้งจนไม่กล้าพูดสิ่งที่คิดจริง ๆ'],
+ 'sun-mars':['m','ตัวตนกับแรงขับ','มีพลังและความกล้าที่ใช้ได้ถูกจังหวะ ลงมือทำตามเป้าหมายได้จริง เหมาะกับการแข่งขันและกีฬา','พลังสูงแต่ใจร้อน อาจหงุดหงิดง่าย ปะทะกับคนอื่น หรือรีบเกินไปจนพลาด ควรมีที่ระบายพลัง เช่น การออกกำลังกาย','พลังแรง กล้าได้กล้าเสีย มีความเป็นผู้นำ แต่ใจร้อนและชอบแข่งขัน ต้องเรียนรู้ที่จะไม่มองทุกเรื่องเป็นการต่อสู้'],
+ 'sun-jupiter':['e','ตัวตนกับโอกาส','มองโลกแง่ดี ใจกว้าง มักมีโชคช่วยในจังหวะสำคัญ และคนรอบตัวอยากสนับสนุน','มั่นใจหรือคาดหวังเกินตัว อาจรับปากมากไป ใช้จ่ายเกินงบ หรือประเมินความยากต่ำไป ความพอดีคือกุญแจ','มั่นใจ ใจกว้าง และมักมีโชคช่วย คนรอบตัวรู้สึกถึงพลังบวกของคุณ แต่ระวังความมั่นใจเกินตัวหรือทำอะไรเกินพอดี'],
+ 'sun-saturn':['h','ตัวตนกับความรับผิดชอบ','มีวินัย อดทน และวางแผนเป็น ความสำเร็จมาแบบช้าแต่มั่นคง คนรอบตัวไว้ใจในความรับผิดชอบของคุณ','อาจรู้สึกถูกกดดันหรือรู้สึกว่าตัวเองไม่ดีพอมาตั้งแต่เด็ก เช่น มีพ่อหรือผู้ใหญ่ที่เข้มงวด หรือต้องรับผิดชอบเร็ว จึงตำหนิตัวเองง่ายและไม่กล้าแสดงตัวตนเต็มที่ ข่าวดีคือมุมนี้มักดีขึ้นตามอายุ คุณจะแข็งแกร่งและเป็นที่พึ่งของคนอื่นได้','ตัวตนกับความรับผิดชอบรวมเป็นเรื่องเดียวกัน คุณมักโตก่อนวัย จริงจังกับชีวิต และรู้สึกว่าต้องพิสูจน์ตัวเองอยู่เสมอ ช่วงเด็กหรือวัยรุ่นอาจขาดความมั่นใจ รู้สึกหนัก หรือถูกจำกัด เช่น มีพ่อหรือผู้ใหญ่ที่เข้มงวด แต่เมื่ออายุมากขึ้น (โดยเฉพาะหลังวัย 30) ความอดทนและวินัยนี้จะกลายเป็นความสำเร็จที่มั่นคงและน่าเคารพ สิ่งที่ควรฝึกคือใจดีกับตัวเองให้มากขึ้น'],
+ 'sun-uranus':['m','ตัวตนกับความเป็นอิสระ','เป็นตัวของตัวเองแบบสบาย ๆ มีไอเดียใหม่ และปรับตัวกับความเปลี่ยนแปลงได้ดี','ไม่ชอบถูกควบคุมจนอาจต่อต้านกฎหรือผู้มีอำนาจ ชีวิตมีการเปลี่ยนแปลงกะทันหันบ่อย และคนรอบตัวอาจคาดเดาคุณได้ยาก','แตกต่างและเป็นตัวของตัวเองชัดเจน คิดนอกกรอบ ไม่ชอบถูกบังคับ ชีวิตมักมีจุดเปลี่ยนกะทันหัน ต้องหาสมดุลระหว่างอิสระกับความมั่นคง'],
+ 'sun-neptune':['m','ตัวตนกับจินตนาการ','มีจินตนาการ ความเห็นอกเห็นใจ และหัวศิลปะ เข้าใจความรู้สึกคนอื่นได้ดี','อาจสับสนว่าตัวเองต้องการอะไร มองคนหรือสถานการณ์ในแง่อุดมคติเกินจริง หรือหลีกหนีปัญหา การมีเป้าหมายชัดและคนที่ตรงไปตรงมาอยู่ข้างกายช่วยได้มาก','อ่อนไหว มีจินตนาการและหัวศิลปะสูง แต่ภาพตัวตนอาจพร่ามัว บางครั้งไม่แน่ใจว่าตัวเองเป็นใครหรือต้องการอะไร และอาจเสียสละมากเกินไป'],
+ 'sun-pluto':['h','ตัวตนกับพลังการเปลี่ยนแปลง','มีพลังใจสูง ฟื้นตัวจากเรื่องยากได้เร็ว และมองทะลุปัญหาไปถึงต้นเหตุ','อาจรู้สึกว่าต้องควบคุมสถานการณ์ หรือเจอคนที่พยายามควบคุมคุณ ชีวิตมักผ่านเหตุการณ์ที่บังคับให้เปลี่ยนตัวเองครั้งใหญ่ แต่ทุกครั้งคุณจะกลับมาแข็งแกร่งขึ้น','เข้มข้น มุ่งมั่น มีพลังดึงดูด ชีวิตมักผ่านช่วงที่ต้องเปลี่ยนตัวเองครั้งใหญ่ ระวังความอยากควบคุมหรือการยึดติด'],
+ 'sun-asc':['e','ตัวตนภายในกับภาพลักษณ์ภายนอก','สิ่งที่คุณเป็นข้างในกับภาพที่คนเห็นสอดคล้องกัน คนจึงเข้าใจคุณได้ง่าย','คนที่เพิ่งรู้จักอาจเห็นคุณต่างจากตัวจริง ต้องใช้เวลาให้คนอื่นรู้จักแก่นแท้ของคุณ','บุคลิกโดดเด่น เป็นตัวของตัวเองชัด สิ่งที่คนเห็นคือตัวจริงของคุณ'],
+ 'sun-mc':['e','ตัวตนกับอาชีพ','งานกับตัวตนไปด้วยกันได้ดี มักได้รับการยอมรับในสิ่งที่ทำ','อาจรู้สึกว่างานหรือความคาดหวังของสังคมไม่ตรงกับตัวตน ต้องหาเส้นทางที่ใช่ด้วยตัวเอง','อยากประสบความสำเร็จและเป็นที่รู้จัก อาชีพสำคัญต่อตัวตนของคุณมาก'],
+ 'moon-mercury':['m','อารมณ์กับความคิด','สื่อสารความรู้สึกได้ดี เข้าใจทั้งเหตุผลและอารมณ์ คุยแล้วคนรู้สึกสบายใจ','ความคิดกับความรู้สึกไม่ตรงกัน อาจพูดตามอารมณ์แล้วเสียใจทีหลัง หรือคิดวนจนกังวล','คิดด้วยความรู้สึก จำเรื่องราวทางอารมณ์ได้แม่น พูดเรื่องใจได้เก่ง แต่อารมณ์ขึ้นลงมีผลต่อการตัดสินใจ'],
+ 'moon-venus':['e','อารมณ์กับความรัก','อ่อนโยน มีเสน่ห์ รู้จักดูแลทั้งคนอื่นและตัวเอง ความสัมพันธ์มักอบอุ่น','อยากได้รับความรักมากจนอาจตามใจคนอื่นหรือตัวเองเกินไป เช่น กินหรือช้อปเพื่อปลอบใจ','อ่อนโยน อบอุ่น มีรสนิยม รักความสงบ และต้องการความรักและความใส่ใจมาก'],
+ 'moon-mars':['h','อารมณ์กับแรงขับ','กล้าแสดงความรู้สึก ปกป้องคนที่รัก และมีพลังเมื่อได้ทำสิ่งที่ใจรัก','อารมณ์ร้อนและขึ้นเร็ว อาจหงุดหงิดง่ายหรือพูดแรงตอนโกรธ ฝึกหยุดก่อนตอบโต้และหาที่ระบายพลังจะช่วยได้มาก','อารมณ์แรงและตรงไปตรงมา รู้สึกอะไรก็แสดงออกทันที ปกป้องคนที่รักสุดตัว แต่ใจร้อนและโกรธง่าย'],
+ 'moon-jupiter':['e','อารมณ์กับโอกาส','ใจดี มองโลกแง่บวก ใจกว้าง และฟื้นตัวจากเรื่องเศร้าได้เร็ว','อารมณ์เกินพอดี เช่น สัญญามากไป ใช้จ่ายหรือกินเกินเพื่อให้รู้สึกดี','ใจกว้าง อบอุ่น มองโลกแง่ดี มักได้รับความช่วยเหลือ แต่อาจตามใจตัวเองเกินพอดี'],
+ 'moon-saturn':['h','อารมณ์กับความรับผิดชอบ','มีวุฒิภาวะทางอารมณ์ ใจเย็น รับมือเรื่องยากได้มั่นคง และเป็นที่พึ่งของคนอื่น','อาจเคยรู้สึกขาดความอบอุ่นหรือต้องเก็บความรู้สึกตั้งแต่เด็ก จึงแสดงอารมณ์ยาก กลัวการพึ่งพาคนอื่น และเครียดหรือเศร้าแบบเงียบ ๆ การอนุญาตให้ตัวเองรู้สึกและขอความช่วยเหลือคือบทเรียนสำคัญ','เก็บอารมณ์เก่ง ดูเข้มแข็งและเป็นผู้ใหญ่ แต่ข้างในอาจรู้สึกเหงาหรือกังวล และไม่ค่อยให้ตัวเองได้พักหรือได้รับการดูแล ยิ่งโตยิ่งมั่นคงทางใจ'],
+ 'moon-uranus':['m','อารมณ์กับความเป็นอิสระ','เปิดรับสิ่งใหม่ อารมณ์ไม่ยึดติด เป็นเพื่อนที่เข้าใจความแตกต่าง','อารมณ์เปลี่ยนเร็ว อยากใกล้ชิดแต่ก็อยากมีพื้นที่ส่วนตัว ความสัมพันธ์จึงอาจขึ้นลง','ต้องการอิสระทางใจมาก อารมณ์คาดเดายาก ไม่ชอบถูกผูกมัด แต่เป็นคนเปิดกว้างและไม่ตัดสินใคร'],
+ 'moon-neptune':['m','อารมณ์กับจินตนาการ','อ่อนโยน เห็นอกเห็นใจ มีสัญชาตญาณดี และมีหัวศิลปะ','ซึมซับอารมณ์คนอื่นง่ายจนเหนื่อย แยกความรู้สึกตัวเองกับคนอื่นไม่ออก หรือหนีปัญหาด้วยการเพ้อฝัน ควรตั้งขอบเขตให้ชัด','อ่อนไหวมาก สัมผัสความรู้สึกคนอื่นได้ลึก จินตนาการสูง แต่ต้องระวังการแบกอารมณ์คนอื่นไว้มากเกินไป'],
+ 'moon-pluto':['h','อารมณ์กับการเปลี่ยนแปลงลึก ๆ','อารมณ์ลึกซึ้ง เข้าใจจิตใจคนได้ดี และมีพลังใจในการเปลี่ยนแปลงตัวเอง','อารมณ์เข้มข้น อาจหึงหวง กลัวการสูญเสีย หรือเก็บความรู้สึกจนระเบิด ความสัมพันธ์มักลึกและเปลี่ยนชีวิต','อารมณ์ลึกและเข้มข้น รักใครก็รักจริง แต่ยึดติดและกลัวถูกทิ้ง บทเรียนคือการปล่อยวาง'],
+ 'moon-asc':['e','อารมณ์กับภาพลักษณ์','แสดงความรู้สึกออกมาอย่างเป็นธรรมชาติ คนรอบตัวรู้สึกอบอุ่นเมื่ออยู่ใกล้','สิ่งที่รู้สึกกับสิ่งที่แสดงออกไม่ตรงกัน คนจึงอาจอ่านอารมณ์คุณผิด','อารมณ์แสดงออกทางสีหน้าชัด อ่อนไหวต่อสภาพแวดล้อม และดูเป็นคนอบอุ่นเข้าถึงง่าย'],
+ 'moon-mc':['e','อารมณ์กับอาชีพ','ทำงานด้วยหัวใจ เหมาะกับงานที่ดูแลหรือเข้าใจผู้คน','อาจรู้สึกว่างานกับชีวิตครอบครัวแย่งเวลากัน ต้องหาสมดุล','อาชีพผูกกับความรู้สึก อยากทำงานที่ใจรัก และมักเป็นที่รู้จักในเรื่องการดูแลคนอื่น'],
+ 'mercury-venus':['e','ความคิดกับความรัก','พูดจาน่าฟัง มีศิลปะในการสื่อสาร เหมาะกับงานเขียน ออกแบบ หรือการเจรจา','อาจพูดเอาใจจนไม่จริงใจ หรือตัดสินใจด้วยความชอบมากกว่าเหตุผล','พูดจาไพเราะ มีรสนิยม สื่อสารอย่างนุ่มนวล ชอบภาษา ศิลปะ และการพูดคุยที่ราบรื่น'],
+ 'mercury-mars':['m','ความคิดกับแรงขับ','คิดเร็ว ตัดสินใจเด็ดขาด พูดตรงและโน้มน้าวเก่ง','พูดแรงหรือชอบเถียง อาจด่วนสรุป หรือใช้คำพูดทำร้ายคนอื่นโดยไม่ตั้งใจ','คิดเร็ว พูดตรง ชอบโต้แย้ง ความคิดคมแต่บางครั้งคำพูดก็คมเกินไป'],
+ 'mercury-jupiter':['e','ความคิดกับโอกาส','มองภาพกว้าง ชอบเรียนรู้ อธิบายเก่ง เหมาะกับการสอนหรือเผยแพร่ความรู้','มองภาพใหญ่จนพลาดรายละเอียด พูดเกินจริง หรือรับปากเกินกว่าที่ทำได้','ความคิดกว้างไกล รักการเรียนรู้ พูดเก่ง มีอารมณ์ขัน แต่อาจพูดมากหรือมองข้ามรายละเอียด'],
+ 'mercury-saturn':['m','ความคิดกับวินัย','คิดเป็นระบบ รอบคอบ จดจ่อได้นาน เหมาะกับงานที่ต้องการความแม่นยำ','กังวลหรือคิดลบเกินไป สงสัยในความสามารถของตัวเอง หรือรู้สึกว่าพูดแล้วไม่มีใครฟัง แต่เมื่อฝึกฝน ความคิดของคุณจะลึกและน่าเชื่อถือมาก','คิดจริงจัง ลึก และรอบคอบ พูดน้อยแต่มีน้ำหนัก อาจเรียนรู้ช้าในตอนแรกแต่เข้าใจได้ลึก ระวังการคิดลบ'],
+ 'mercury-uranus':['m','ความคิดกับความเป็นอิสระ','ไอเดียแปลกใหม่ หัวไว เข้าใจเทคโนโลยีและเรื่องอนาคตได้เร็ว','ความคิดกระโดด ใจร้อนกับคนที่คิดช้ากว่า หรือดื้อในความเห็นของตัวเอง','หัวไว คิดแหวกแนว มีไอเดียแบบปิ๊งแวบ แต่คิดเร็วจนคนอื่นตามไม่ทัน'],
+ 'mercury-neptune':['m','ความคิดกับจินตนาการ','จินตนาการดี เขียนหรือเล่าเรื่องเก่ง เข้าใจสิ่งที่ไม่ได้พูดออกมา','ความคิดสับสน ขี้ลืม หรือเข้าใจผิดง่าย ควรจดบันทึกและตรวจสอบข้อมูลให้ดี','คิดเป็นภาพ มีจินตนาการและสัญชาตญาณสูง เหมาะกับงานสร้างสรรค์ แต่อาจไม่ชัดเจนในเรื่องรายละเอียด'],
+ 'mercury-pluto':['m','ความคิดกับพลังการเปลี่ยนแปลง','คิดลึก วิเคราะห์เก่ง ชอบค้นหาความจริง เหมาะกับงานวิจัยหรือสืบสวน','คิดหมกมุ่น ระแวง หรือใช้คำพูดเพื่อควบคุม อาจโต้เถียงแบบต้องเอาชนะ','ความคิดเฉียบคมและลึก มองทะลุคำพูดคน พูดมีพลังโน้มน้าว แต่ระวังการคิดวนหรือหมกมุ่น'],
+ 'mercury-asc':['e','ความคิดกับภาพลักษณ์','สื่อสารเก่ง ดูเป็นคนฉลาดและคุยง่าย','คำพูดอาจทำให้คนอื่นเข้าใจคุณผิด ต้องเลือกคำให้ดี','ดูเป็นคนช่างพูด ช่างสังเกต หัวไว และมักเป็นที่รู้จักจากความคิดหรือคำพูด'],
+ 'mercury-mc':['e','ความคิดกับอาชีพ','อาชีพที่ใช้การสื่อสาร การเขียน หรือการคิดวิเคราะห์จะเหมาะกับคุณ','อาจลังเลเรื่องเส้นทางอาชีพหรือเปลี่ยนงานบ่อย','อาชีพเด่นด้านการสื่อสาร ความคิด การเขียน หรือการค้าขาย'],
+ 'venus-mars':['m','ความรักกับแรงขับ','มีเสน่ห์ดึงดูด รู้จักเข้าหาคนที่ชอบ ความรักมีทั้งความหวานและความตื่นเต้น','ความรักร้อนแรงแต่ขัดแย้งง่าย สิ่งที่อยากได้กับสิ่งที่ทำให้มีความสุขอาจไม่ตรงกัน','มีเสน่ห์แรง รักแบบเต็มที่ มีพลังสร้างสรรค์สูง แต่ความรักอาจร้อนแรงและเอาแต่ใจ'],
+ 'venus-jupiter':['e','ความรักกับโอกาส','ใจดี มีเสน่ห์ เป็นที่รัก และมักโชคดีเรื่องความสัมพันธ์และการเงิน','ตามใจตัวเองเกินไป ใช้จ่ายฟุ่มเฟือย หรือคาดหวังในความรักสูงเกินจริง','มีเสน่ห์ ใจกว้าง เป็นที่รักของคนรอบตัว และมักมีโชคเรื่องเงิน แต่ระวังความฟุ่มเฟือย'],
+ 'venus-saturn':['h','ความรักกับความรับผิดชอบ','รักอย่างมั่นคงและจริงจัง ซื่อสัตย์ ความสัมพันธ์ยิ่งนานยิ่งดี และจัดการเงินเก่ง','อาจรู้สึกไม่เป็นที่รักหรือกลัวถูกปฏิเสธ จึงระวังตัวในความรัก ความรักอาจมาช้าหรือมีอุปสรรค แต่เมื่อเจอคนที่ใช่ ความสัมพันธ์จะมั่นคงมาก','จริงจังกับความรัก รักช้าแต่รักนาน อาจเขินอายหรือไม่มั่นใจในเสน่ห์ของตัวเอง ความรักมักดีขึ้นตามวัย และมักชอบคนที่เป็นผู้ใหญ่'],
+ 'venus-uranus':['m','ความรักกับความเป็นอิสระ','ชอบความรักที่ให้อิสระ มีรสนิยมแปลกใหม่ และดึงดูดคนที่ไม่ธรรมดา','ความรักมาเร็วไปเร็ว อยากได้ทั้งความใกล้ชิดและอิสระ อาจเบื่อง่ายหรือดึงดูดความสัมพันธ์ที่ไม่มั่นคง','รักอิสระในความรัก ชอบความแปลกใหม่และตื่นเต้น ความสัมพันธ์ต้องมีพื้นที่ส่วนตัว'],
+ 'venus-neptune':['m','ความรักกับจินตนาการ','โรแมนติก อ่อนโยน มีหัวศิลปะ ดนตรี หรือการออกแบบ','มองคนรักในอุดมคติจนผิดหวัง หรือเสียสละในความรักมากเกินไป ควรมองความจริงให้ชัด','โรแมนติกมาก มีหัวศิลปะสูง รักแบบเสียสละ แต่อาจมองคนรักสวยงามเกินความจริง'],
+ 'venus-pluto':['h','ความรักกับพลังการเปลี่ยนแปลง','รักลึกซึ้งและจริงใจ ความสัมพันธ์ทำให้คุณเติบโต และมีเสน่ห์ลึกลับ','ความรักเข้มข้นจนหึงหวง ยึดติด หรือมีเรื่องอำนาจในความสัมพันธ์ ความรักมักเปลี่ยนชีวิตคุณ','มีเสน่ห์ลึกลับ รักแบบทุ่มสุดตัวและเข้มข้น แต่ต้องระวังความหึงหวงและการยึดติด'],
+ 'venus-asc':['e','ความรักกับภาพลักษณ์','มีเสน่ห์ เข้ากับคนง่าย ดูเป็นมิตร','อยากให้คนชอบมากจนเกรงใจเกินไป','มีเสน่ห์ ดูอ่อนโยน มีรสนิยม คนมักประทับใจตั้งแต่แรกเห็น'],
+ 'venus-mc':['e','ความรักกับอาชีพ','เหมาะกับงานด้านศิลปะ ความงาม หรือการประสานงาน และเป็นที่ชื่นชอบในที่ทำงาน','ความรักกับงานอาจแย่งความสำคัญกัน','อาชีพเด่นด้านศิลปะ ความงาม การออกแบบ หรือการเจรจา และมีภาพลักษณ์ที่น่าชื่นชม'],
+ 'mars-jupiter':['e','แรงขับกับโอกาส','กล้าลงมือ มีพลังและความกระตือรือร้น ทำเรื่องใหญ่ได้สำเร็จ','ทำเกินตัว รีบร้อน เสี่ยงเกินไป หรือรับงานมากจนหมดแรง','พลังเหลือล้น กล้าเสี่ยง ชอบความท้าทายใหญ่ ๆ แต่ระวังการทำเกินพอดี'],
+ 'mars-saturn':['h','แรงขับกับวินัย','อดทน ทำงานหนักได้ต่อเนื่อง ควบคุมพลังได้ดี เหมาะกับงานที่ต้องใช้ความอึด','รู้สึกเหมือนเหยียบคันเร่งกับเบรกพร้อมกัน อยากทำแต่ติดขัด หงุดหงิดเก็บกด หรือโกรธแบบเย็นชา การวางแผนทีละขั้นช่วยเปลี่ยนแรงต้านให้เป็นความแกร่ง','มีความอดทนและแรงขับแบบมีวินัย ทำงานหนักได้มาก แต่อาจรู้สึกถูกขัดขวางหรือเก็บความโกรธไว้ ต้องหาทางปล่อยพลังอย่างมีทิศทาง'],
+ 'mars-uranus':['m','แรงขับกับความเป็นอิสระ','กล้าทำสิ่งใหม่ คิดเร็วทำเร็ว เป็นผู้บุกเบิก','ใจร้อน หุนหันพลันแล่น ต่อต้านกฎ และอาจเสี่ยงอุบัติเหตุจากความรีบ ควรระวังเรื่องความปลอดภัย','พลังแบบฉับพลัน กล้าแหวกแนว ไม่ชอบถูกสั่ง แต่หุนหันและเสี่ยงอุบัติเหตุจากความรีบ'],
+ 'mars-neptune':['m','แรงขับกับจินตนาการ','ลงมือเพื่ออุดมการณ์หรือเพื่อช่วยเหลือคนอื่น มีพลังในงานศิลปะ การเต้น หรือดนตรี','พลังไม่สม่ำเสมอ ไม่แน่ใจว่าต้องการอะไร หรือเลี่ยงการเผชิญหน้าจนเก็บกด','แรงขับมาจากแรงบันดาลใจ เหมาะกับศิลปะหรืองานเพื่อคนอื่น แต่พลังอาจขึ้นลงและเป้าหมายไม่ชัด'],
+ 'mars-pluto':['h','แรงขับกับพลังการเปลี่ยนแปลง','มุ่งมั่นมหาศาล อดทน ไม่ยอมแพ้ และฟื้นตัวเก่ง','พลังและความโกรธรุนแรง อาจเกิดการแย่งชิงอำนาจกับคนอื่น ต้องฝึกใช้พลังนี้อย่างสร้างสรรค์ เช่น กีฬาหรือเป้าหมายใหญ่','พลังเข้มข้น มุ่งมั่นสุดขีด ทำในสิ่งที่คนอื่นยอมแพ้ได้ แต่ต้องระวังความรุนแรงและการต้องเอาชนะ'],
+ 'mars-asc':['m','แรงขับกับภาพลักษณ์','ดูกระตือรือร้น กล้าหาญ และมีพลัง','อาจดูก้าวร้าวหรือใจร้อนในสายตาคนอื่น','บุคลิกมีพลัง ตรงไปตรงมา กล้า และชอบแข่งขัน แต่อาจดูดุหรือใจร้อน'],
+ 'mars-mc':['e','แรงขับกับอาชีพ','ทะเยอทะยาน ทำงานด้วยพลังเต็มที่ เหมาะกับการเป็นผู้นำ','อาจขัดแย้งกับหัวหน้าหรือผู้มีอำนาจในที่ทำงาน','ทะเยอทะยานในอาชีพ ชอบการแข่งขัน และมักเป็นผู้นำหรือผู้บุกเบิก'],
+ 'jupiter-saturn':['m','โอกาสกับวินัย','รู้จักขยายตัวอย่างพอดี วางแผนได้ดีและทำได้จริง','ลังเลระหว่างความกล้ากับความระวัง จังหวะชีวิตอาจรู้สึกเดี๋ยวขยายเดี๋ยวหดตัว','ผสมความหวังกับความเป็นจริงได้ดี สร้างสิ่งที่ยั่งยืนได้'],
+ 'jupiter-uranus':['e','โอกาสกับความเป็นอิสระ','มีโชคแบบไม่คาดฝัน และไอเดียใหม่ ๆ ทำให้ก้าวหน้า','อยากเปลี่ยนแปลงแบบกะทันหัน หรือเสี่ยงเกินไปเพื่ออิสระ','โชคมักมาแบบไม่คาดคิด ชอบความแปลกใหม่และอิสระทางความคิด'],
+ 'jupiter-neptune':['m','โอกาสกับจินตนาการ','มีศรัทธา จิตใจดี ชอบช่วยเหลือ และมีจินตนาการกว้างไกล','มองโลกสวยเกินไป ใจอ่อนจนถูกเอาเปรียบ หรือหลงเชื่อง่าย','มีอุดมคติสูง ใจบุญ จินตนาการกว้าง แต่อาจเพ้อฝันเกินความจริง'],
+ 'jupiter-pluto':['m','โอกาสกับพลังการเปลี่ยนแปลง','มีพลังผลักดันให้ประสบความสำเร็จใหญ่ และมีอิทธิพลต่อคนอื่น','ทะเยอทะยานจนอยากได้มากเกินไป หรือขัดแย้งเรื่องอำนาจ','ทะเยอทะยานสูงและมีพลังผลักดันการเปลี่ยนแปลงครั้งใหญ่'],
+ 'jupiter-asc':['e','โอกาสกับภาพลักษณ์','ดูใจดี มองโลกแง่ดี คนอยากเข้าใกล้','อาจดูมั่นใจเกินไปหรือพูดเกินจริง','ดูใจดี ร่าเริง มีออร่าของคนโชคดี คนรอบตัวรู้สึกดีด้วย'],
+ 'jupiter-mc':['e','โอกาสกับอาชีพ','อาชีพมีโอกาสเติบโตและได้รับการสนับสนุน','ตั้งเป้าสูงเกินไปหรือเปลี่ยนทิศทางบ่อย','มีโชคในอาชีพ มีโอกาสก้าวหน้าและเป็นที่ยอมรับ'],
+ 'saturn-uranus':['m','วินัยกับความเป็นอิสระ','ผสมความใหม่กับความมั่นคงได้ดี ทำไอเดียใหม่ให้เป็นจริงได้','ติดอยู่ระหว่างอยากเปลี่ยนกับกลัวเปลี่ยน รู้สึกถูกบีบระหว่างกฎกับอิสระ','สร้างสิ่งใหม่บนพื้นฐานที่มั่นคง แต่ก็ต้องรับมือกับแรงดึงระหว่างของเก่ากับของใหม่'],
+ 'saturn-neptune':['m','วินัยกับจินตนาการ','ทำความฝันให้เป็นจริงได้ด้วยความอดทน','ความฝันกับความเป็นจริงชนกัน อาจรู้สึกผิดหวังหรือสับสนว่าควรเชื่ออะไร','พยายามทำอุดมคติให้เป็นรูปธรรม แต่อาจรู้สึกว่าความจริงไม่สวยอย่างที่หวัง'],
+ 'saturn-pluto':['h','วินัยกับพลังการเปลี่ยนแปลง','อดทนและแข็งแกร่งมากเมื่อเจอวิกฤต','รู้สึกถึงแรงกดดันหนักจากสถานการณ์ภายนอก และต้องสร้างความมั่นคงใหม่จากสิ่งที่พังไป','ความอดทนกับพลังเปลี่ยนแปลงรวมกัน มักต้องฝ่าวิกฤตใหญ่แล้วสร้างสิ่งใหม่ที่มั่นคงกว่าเดิม'],
+ 'saturn-asc':['h','วินัยกับภาพลักษณ์','ดูน่าเชื่อถือ เป็นผู้ใหญ่ และรับผิดชอบ','อาจดูเย็นชาหรือเคร่งเครียด คนอื่นเข้าถึงยาก','ดูจริงจังและเป็นผู้ใหญ่เกินวัย ระมัดระวังตัว ตอนเด็กอาจขี้อายหรือไม่มั่นใจ แต่ยิ่งโตยิ่งดูภูมิฐานน่าเชื่อถือ'],
+ 'saturn-mc':['m','วินัยกับอาชีพ','สร้างอาชีพอย่างมั่นคง ค่อย ๆ ไต่ระดับจนประสบความสำเร็จ','อาชีพมีอุปสรรคหรือเติบโตช้า หรือรู้สึกกดดันจากผู้มีอำนาจ แต่ความพยายามจะได้ผลในระยะยาว','ทะเยอทะยานและรับผิดชอบสูงในอาชีพ ความสำเร็จมาช้าแต่มั่นคงมาก'],
+ 'uranus-neptune':['m','ความเป็นอิสระกับจินตนาการ','คนรุ่นนี้เปิดรับแนวคิดใหม่ทั้งด้านจิตใจและเทคโนโลยี','คนรุ่นนี้อาจสับสนระหว่างอุดมคติกับการเปลี่ยนแปลง','คนรุ่นนี้ฝันถึงโลกแบบใหม่และเติบโตมาพร้อมเทคโนโลยีที่เปลี่ยนชีวิต'],
+ 'uranus-pluto':['m','ความเป็นอิสระกับการเปลี่ยนแปลงลึก ๆ','คนรุ่นนี้พร้อมปฏิรูปสิ่งเก่าอย่างสร้างสรรค์','คนรุ่นนี้เติบโตในช่วงที่สังคมเปลี่ยนแปลงครั้งใหญ่','คนรุ่นนี้มีพลังแห่งการปฏิวัติและเปลี่ยนแปลงสังคม'],
+ 'neptune-pluto':['m','จินตนาการกับการเปลี่ยนแปลงลึก ๆ','เป็นพลังเงียบ ๆ ที่คนเกิดในช่วงหลายสิบปีนี้มีร่วมกัน คือการแสวงหาความหมายและการเปลี่ยนแปลงทางความคิด','เป็นพลังของคนทั้งยุคมากกว่าตัวบุคคล','เป็นพลังของคนทั้งยุคมากกว่าตัวบุคคล'],
+ 'uranus-asc':['m','ความเป็นอิสระกับภาพลักษณ์','ดูมีเอกลักษณ์ ทันสมัย และเป็นมิตรแบบไม่เหมือนใคร','อาจดูแปลกหรือคาดเดายากในสายตาคนอื่น','ภาพลักษณ์แปลกใหม่ ไม่เหมือนใคร ชอบแหวกกรอบ'],
+ 'uranus-mc':['m','ความเป็นอิสระกับอาชีพ','เหมาะกับงานด้านนวัตกรรม เทคโนโลยี หรืองานอิสระ','อาชีพมีการเปลี่ยนแปลงกะทันหัน หรือไม่ชอบทำงานภายใต้คำสั่ง','อาชีพไม่ธรรมดา อาจเปลี่ยนสายงานหลายครั้ง และชอบงานที่มีอิสระ'],
+ 'neptune-asc':['m','จินตนาการกับภาพลักษณ์','ดูอ่อนโยน มีเสน่ห์แบบนุ่มนวลและลึกลับ','คนอื่นอาจมองคุณไม่ชัด หรือฉายภาพสิ่งที่เขาอยากเห็นใส่คุณ','มีเสน่ห์แบบนุ่มนวลลึกลับ อ่อนไหวต่อบรรยากาศรอบตัว แต่ขอบเขตของตัวเองอาจไม่ชัด'],
+ 'neptune-mc':['m','จินตนาการกับอาชีพ','เหมาะกับงานศิลปะ ภาพยนตร์ ดนตรี หรืองานช่วยเหลือผู้คน','อาจไม่แน่ใจเรื่องเป้าหมายอาชีพ หรือภาพลักษณ์ในที่ทำงานไม่ชัดเจน','อาชีพผูกกับความฝัน ศิลปะ หรือการช่วยเหลือ แต่เส้นทางอาจไม่ชัดในช่วงแรก'],
+ 'pluto-asc':['m','พลังการเปลี่ยนแปลงกับภาพลักษณ์','ดูมีพลัง น่าเกรงขาม และมีเสน่ห์ดึงดูด','อาจดูเข้มหรือเข้าถึงยาก คนรอบตัวรู้สึกถึงความเข้มข้นของคุณ','บุคลิกเข้มข้น มีพลังดึงดูด มองคนทะลุ และมักผ่านการเปลี่ยนแปลงตัวเองครั้งใหญ่'],
+ 'pluto-mc':['m','พลังการเปลี่ยนแปลงกับอาชีพ','มีความสามารถในการเปลี่ยนแปลงองค์กรหรือสังคม และมีอิทธิพลในงาน','อาชีพอาจมีการพลิกผันครั้งใหญ่ หรือมีเรื่องการแย่งชิงอำนาจ','ทะเยอทะยานสูง อยากมีอิทธิพล อาชีพมักผ่านการเปลี่ยนแปลงครั้งใหญ่'],
+};
+const NATURE = {e:'ส่งเสริม',h:'ท้าทาย',m:'มีทั้งสองด้าน'};
+const GEN_STRONG = new Set(['uranus-neptune','uranus-pluto','neptune-pluto']);
+const GEN_MILD = new Set(['jupiter-saturn','jupiter-uranus','jupiter-neptune','jupiter-pluto','saturn-uranus','saturn-neptune','saturn-pluto']);
+const TYPE_NOTE = {
+  60:'มุมเซกซ์ไทล์เป็นโอกาสที่ต้องลงมือใช้ จึงจะเห็นผลชัด',
+  90:'มุมสแควร์มักรู้สึกเป็นแรงกดดันภายในใจ ซึ่งผลักให้คุณลงมือแก้ไขและเติบโต ไม่ได้แปลว่าร้าย แต่เป็นบทเรียนที่ต้องใช้ความพยายาม',
+  120:'มุมไทรน์ทำให้เรื่องนี้มาอย่างเป็นธรรมชาติเหมือนพรสวรรค์ ข้อควรระวังคือความสบายจนไม่พัฒนาต่อ',
+  180:'มุมตรงข้ามมักแสดงออกผ่านคนอื่น เช่น คนใกล้ชิดที่สะท้อนอีกด้านหนึ่งของคุณ การหาจุดกึ่งกลางระหว่างสองขั้วคือกุญแจ',
+  e:'มุมร่วมของดาวคู่นี้มักให้ผลดี เพราะพลังทั้งสองเข้ากันได้',
+  h:'มุมร่วมของดาวคู่นี้เป็นบทเรียนมากกว่าของขวัญ ไม่ได้แปลว่าร้าย แต่ต้องใช้เวลาเรียนรู้ จึงจะกลายเป็นจุดแข็ง',
+  m:'มุมร่วมของดาวคู่นี้มีทั้งด้านดีและด้านท้าทาย ขึ้นอยู่กับว่าคุณใช้พลังนี้อย่างไร',
+};
+function aspectText(a) {
+  const key = a.p.k+'-'+a.q.k, P = PAIRS[key];
+  if (!P) return {nature: a.A.c==='tense'?'h':a.A.c==='harm'?'e':'m', html:`<p>${a.A.t(a.p.theme, a.q.theme)}</p>`, main:a.A.t(a.p.theme, a.q.theme)};
+  const [ct, core, easy, hard, conj] = P;
+  let nature, main;
+  if (a.A.c==='conj') { nature = ct; main = conj || (ct==='e'?easy:ct==='h'?hard:easy+' แต่อีกด้านหนึ่ง '+hard); }
+  else if (a.A.c==='harm') { nature = 'e'; main = easy; }
+  else { nature = 'h'; main = hard; }
+  let html = `<p>มุมนี้คือการพบกันของ<b>${core}</b></p><p>${main}</p><p>${TYPE_NOTE[a.A.c==='conj'?nature:a.A.a]}</p>`;
+  if (GEN_STRONG.has(key)) html += `<p class="gen">ดาวคู่นี้เคลื่อนช้ามาก คนที่เกิดในช่วงหลายปีเดียวกันมีมุมนี้เหมือนกัน จึงบอกลักษณะของคนทั้งรุ่นมากกว่าตัวคุณ</p>`;
+  else if (GEN_MILD.has(key)) html += `<p class="gen">ดาวคู่นี้เคลื่อนช้า คนที่เกิดในช่วงหลายสัปดาห์ถึงหลายเดือนเดียวกันก็มีมุมนี้ จะมีผลกับตัวคุณชัดขึ้นเมื่อดาวดวงใดดวงหนึ่งอยู่ใกล้ลัคนา กลางฟ้า หรือทำมุมกับดวงอาทิตย์หรือดวงจันทร์ด้วย</p>`;
+  return {nature, html, main};
+}
+/* ---------- เจ้าราศี ศักดิ์ดาว และความหมายดาวในเรือน ---------- */
+const RULER = ['mars','venus','mercury','moon','sun','mercury','venus','pluto','jupiter','saturn','uranus','neptune'];
+const TRAD = {7:'mars',10:'saturn',11:'jupiter'};
+const DIGN = {
+  sun:{dom:[4],ex:[0],det:[10],fall:[6]}, moon:{dom:[3],ex:[1],det:[9],fall:[7]},
+  mercury:{dom:[2,5],ex:[],det:[8,11],fall:[]}, venus:{dom:[1,6],ex:[11],det:[7,0],fall:[5]},
+  mars:{dom:[0,7],ex:[9],det:[6,1],fall:[3]}, jupiter:{dom:[8,11],ex:[3],det:[2,5],fall:[9]},
+  saturn:{dom:[9,10],ex:[6],det:[3,4],fall:[0]},
+};
+const DT = {
+  dom:{n:'อยู่บ้านตัวเอง (Domicile)',good:true,d:'ดาวอยู่ในราศีที่ตัวเองเป็นเจ้าของ พลังจึงแสดงออกได้เต็มที่และเป็นธรรมชาติ ถือเป็นจุดแข็ง'},
+  ex:{n:'ได้รับการยกย่อง (Exaltation)',good:true,d:'ดาวอยู่ในราศีที่ส่งเสริมด้านดีของมันมากที่สุด พลังนี้จึงโดดเด่นและน่าภูมิใจ'},
+  det:{n:'อยู่ตรงข้ามบ้าน (Detriment)',good:false,d:'ดาวอยู่ในราศีตรงข้ามกับบ้านของมัน พลังต้องทำงานในแบบที่ไม่คุ้นเคย อาจรู้สึกไม่ลงตัว แต่ทำให้คุณมองด้านนี้ได้ต่างจากคนอื่น'},
+  fall:{n:'ตกที่ (Fall)',good:false,d:'ดาวอยู่ในราศีที่พลังอ่อนที่สุด ด้านนี้ต้องใช้ความพยายามมากกว่าปกติ แต่เมื่อฝึกได้แล้วคุณจะเข้าใจมันลึกกว่าคนส่วนใหญ่'},
+};
+function dignity(k, lon) {
+  const d = DIGN[k]; if (!d) return null;
+  const s = Math.floor(norm(lon)/30);
+  for (const t of ['dom','ex','det','fall']) if (d[t].includes(s)) return t;
+  return null;
+}
+const VERB = {
+  sun:'คุณแสดงตัวตนแบบ', moon:'ใจของคุณรู้สึกและตอบสนองแบบ', mercury:'คุณคิดและสื่อสารแบบ', venus:'คุณรักและเลือกสิ่งที่ชอบแบบ',
+  mars:'คุณลงมือและไล่ตามเป้าหมายแบบ', jupiter:'คุณเติบโตและคว้าโอกาสในแบบ', saturn:'คุณสร้างความมั่นคงและรับผิดชอบแบบ',
+  uranus:'คนรุ่นคุณแหวกกรอบในแบบ', neptune:'คนรุ่นคุณฝันและหาแรงบันดาลใจในแบบ', pluto:'คนรุ่นคุณเผชิญการเปลี่ยนแปลงลึก ๆ ในแบบ',
+  node:'ชีวิตชวนให้คุณเติบโตไปเป็นคน', asc:'คนทั่วไปเห็นคุณเป็นคน', mc:'ในอาชีพ คุณอยากเป็นที่รู้จักในฐานะคน',
+};
+const PH = {
+  sun:['คุณเป็นคนเด่น มีตัวตนชัด และอยากเป็นผู้นำชีวิตตัวเอง คนมักจำคุณได้ตั้งแต่แรกพบ','ความภูมิใจในตัวเองผูกกับสิ่งที่หามาได้ด้วยตัวเอง คุณมั่นใจที่สุดเมื่อมีรายได้และทรัพย์สินที่สร้างเอง','คุณเปล่งประกายผ่านการพูด การเขียน และการเรียนรู้ ตัวตนของคุณสร้างขึ้นจากความคิดและการสื่อสาร','บ้านและครอบครัวคือศูนย์กลางชีวิต คุณเติบโตจากรากเหง้า และความสำเร็จสำคัญมักมาในช่วงหลังของชีวิต','คุณมีชีวิตชีวาเมื่อได้สร้างสรรค์ สนุก และแสดงออก มีความเป็นศิลปินและชอบอยู่บนเวที','คุณรู้สึกมีคุณค่าเมื่อได้ทำงานให้ดีและช่วยเหลือผู้อื่น กิจวัตรและสุขภาพมีผลต่อพลังของคุณมาก','คุณค้นพบตัวเองผ่านความสัมพันธ์ คู่ครองหรือหุ้นส่วนมีบทบาทสำคัญกับการเติบโตของคุณ','คุณสนใจเรื่องลึกลับและจิตใจคน ชีวิตมักผ่านการเปลี่ยนแปลงลึก ๆ ที่หล่อหลอมตัวตน','คุณเติบโตผ่านการเดินทาง การเรียนรู้ และการหาความหมายของชีวิต ชอบมองภาพกว้างและสอนผู้อื่น','คุณอยากประสบความสำเร็จและเป็นที่รู้จัก อาชีพคือเวทีหลักในการแสดงตัวตน','คุณเปล่งประกายในกลุ่มเพื่อนและสังคม มักเป็นศูนย์กลางของกลุ่มและมีความฝันเพื่อส่วนรวม','ตัวตนของคุณซ่อนอยู่ข้างใน ชอบทำงานเบื้องหลัง มีโลกภายในลึก และต้องการเวลาส่วนตัวเพื่อเติมพลัง'],
+  moon:['อารมณ์ของคุณแสดงออกทางสีหน้าชัด อ่อนไหวต่อสภาพแวดล้อม คนรอบตัวสัมผัสความรู้สึกคุณได้ทันที','คุณรู้สึกปลอดภัยเมื่อมีเงินเก็บและสิ่งของที่คุ้นเคย รายได้อาจขึ้นลงตามอารมณ์หรือช่วงชีวิต','คุณต้องได้พูดคุยเพื่อระบายอารมณ์ ผูกพันกับพี่น้องหรือคนใกล้ตัว และใจไวต่อข้อมูลรอบตัว','บ้านและครอบครัวคือที่พักใจที่สำคัญที่สุด คุณผูกพันกับแม่หรือรากเหง้ามาก','คุณมีความสุขเมื่อได้สนุก เล่น และสร้างสรรค์ ความรักทำให้อารมณ์ขึ้นลงมาก และคุณรักเด็ก','อารมณ์ส่งผลต่อสุขภาพและการทำงานโดยตรง คุณรู้สึกมั่นคงเมื่อมีกิจวัตรและได้ดูแลคนอื่น','คุณต้องการคู่ที่ให้ความรู้สึกปลอดภัย อารมณ์ขึ้นกับความสัมพันธ์มาก และมักดูแลคู่เหมือนครอบครัว','อารมณ์ของคุณลึกและเข้มข้น ต้องการความใกล้ชิดทางใจแบบจริงจัง และมักเก็บความรู้สึกไว้ลึก','คุณรู้สึกดีเมื่อได้เดินทาง เรียนรู้ หรือมีความเชื่อยึดเหนี่ยวใจ อาจรู้สึกเหมือนอยู่บ้านเมื่ออยู่ต่างแดน','ชีวิตส่วนตัวกับงานผูกกัน คุณเป็นที่รู้จักในสังคม และงานที่ดูแลผู้คนเหมาะกับคุณ','เพื่อนคือครอบครัวที่คุณเลือกเอง คุณรู้สึกปลอดภัยเมื่ออยู่ในกลุ่มที่เข้าใจกัน','คุณเก็บความรู้สึกไว้ข้างในมาก ต้องการเวลาอยู่คนเดียวเพื่อพักใจ และมีสัญชาตญาณลึก'],
+  mercury:['คุณดูหัวไว ช่างพูด ช่างสังเกต และคิดเร็ว ความคิดคือส่วนสำคัญของบุคลิก','คุณหาเงินได้ดีจากความคิด การพูด การเขียน หรือการค้าขาย และคิดเรื่องเงินอย่างเป็นระบบ','ความคิดและการสื่อสารคือจุดแข็งตามธรรมชาติ เรียนรู้เร็ว ชอบอ่าน ชอบคุย และเหมาะกับงานสื่อสาร','คุณคิดมากเรื่องบ้านและครอบครัว ชอบทำงานจากบ้าน และบ้านมักเต็มไปด้วยหนังสือหรือการพูดคุย','คุณคิดสร้างสรรค์ มีอารมณ์ขัน ชอบเกมที่ใช้สมอง และสื่อสารได้สนุก','คุณคิดเป็นระบบ ละเอียดกับงาน และเก่งการวางแผนกิจวัตร แต่อาจกังวลจนเครียด','คุณต้องการคู่ที่คุยกันรู้เรื่อง และเก่งการเจรจาและให้คำปรึกษา','คุณคิดลึก ชอบค้นหาความจริงและเรื่องที่ซ่อนอยู่ เหมาะกับงานวิจัยหรือการเงิน','คุณชอบเรียนรู้เรื่องใหญ่ ปรัชญา ภาษา หรือต่างประเทศ และสื่อสารความคิดได้กว้างไกล','อาชีพของคุณใช้การสื่อสาร ความคิด หรือการเขียน และคุณเป็นที่รู้จักจากคำพูดหรือความคิด','คุณคิดได้ดีที่สุดเมื่อได้แลกเปลี่ยนกับกลุ่มเพื่อน และมีเครือข่ายที่ให้ข้อมูลดี','คุณคิดเงียบ ๆ ในใจ มีจินตนาการและสัญชาตญาณ แต่บางครั้งพูดสิ่งที่คิดออกมาได้ยาก'],
+  venus:['คุณมีเสน่ห์ชัดเจน ดูอ่อนโยนและมีรสนิยม คนมักชอบคุณตั้งแต่แรกเห็น','คุณมีรสนิยมในการใช้เงิน ชอบของสวยและมีคุณภาพ และหาเงินได้ดีจากศิลปะ ความงาม หรือการบริการ','คุณพูดจาน่าฟัง เข้ากับพี่น้องและคนรอบตัวได้ดี และความรักมักเริ่มจากการพูดคุย','คุณรักบ้านที่สวยและอบอุ่น ครอบครัวกลมเกลียว และชอบตกแต่งบ้าน','ความรักโรแมนติกเป็นเรื่องสำคัญและสนุก คุณมีเสน่ห์ ชอบศิลปะ และมีความสุขกับงานอดิเรก','คุณชอบที่ทำงานที่บรรยากาศดี เข้ากับเพื่อนร่วมงานได้ และอาจเจอความรักจากที่ทำงาน','ความสัมพันธ์และการแต่งงานสำคัญมากและมักราบรื่น คุณดึงดูดคู่ที่ดีและเก่งการประสานงาน','ความรักของคุณลึกซึ้งและเข้มข้น และอาจได้ประโยชน์ทางการเงินผ่านคู่หรือคนอื่น','คุณอาจตกหลุมรักคนต่างชาติหรือคนที่มีมุมมองต่าง และรักการเดินทางกับศิลปะวัฒนธรรม','คุณมีภาพลักษณ์ดีในสังคม เหมาะกับงานศิลปะ ความงาม หรือการประสานงาน และเป็นที่ชื่นชอบในที่ทำงาน','คุณมีเพื่อนมากและเป็นที่รักในกลุ่ม ความรักอาจเริ่มจากมิตรภาพ','ความรักของคุณเงียบและเสียสละ อาจมีความรักที่เก็บเป็นความลับ และมีความสุขกับศิลปะหรือการได้อยู่เงียบ ๆ'],
+  mars:['คุณมีพลังสูง กล้า ตรงไปตรงมา และชอบเป็นคนเริ่ม แต่อาจใจร้อนและดูแข็งกร้าว','คุณขยันหาเงินและลงมือสร้างความมั่นคงเอง แต่ก็อาจใช้เงินเร็วตามใจ','คุณพูดตรง คิดเร็ว ชอบโต้แย้ง และอาจปะทะกับพี่น้องหรือคนใกล้ตัว','คุณทุ่มพลังกับเรื่องบ้าน อาจมีความขัดแย้งในครอบครัว หรือชอบซ่อมแซมและสร้างบ้านเอง','คุณมีพลังในการสร้างสรรค์ กีฬา และความรัก ชอบการแข่งขันและความตื่นเต้น','คุณทำงานหนักและเร็ว ต้องการงานที่ใช้พลัง แต่ต้องระวังความเครียดหรือการบาดเจ็บจากการทำเกินตัว','คุณดึงดูดคู่ที่มีพลังหรือเข้มแข็ง ความสัมพันธ์ตื่นเต้นแต่ก็มีการทะเลาะ ต้องเรียนรู้การประนีประนอม','คุณมีพลังลึกและมุ่งมั่นสูง สนใจเรื่องอำนาจ การเงินร่วม หรือการเปลี่ยนแปลง และมีความต้องการเข้มข้นในความใกล้ชิด','คุณกระตือรือร้นในการเรียนรู้ เดินทาง และปกป้องความเชื่อ อาจเถียงเรื่องหลักการได้แรง','คุณทะเยอทะยานในอาชีพ ชอบแข่งขันและเป็นผู้นำ แต่อาจขัดแย้งกับผู้มีอำนาจ','คุณมีพลังในกลุ่ม ชอบผลักดันโครงการร่วมกับเพื่อน แต่อาจมีความขัดแย้งในกลุ่มบ้าง','พลังและความโกรธมักถูกเก็บไว้ข้างใน ควรหาทางออกที่ดี เช่น การออกกำลังกายหรืองานเบื้องหลังที่มีความหมาย'],
+  jupiter:['คุณดูใจดี มองโลกแง่ดี และมีโชค คนรอบตัวอยากช่วยเหลือ โอกาสมักมาจากความมั่นใจของคุณเอง','โอกาสของคุณอยู่ที่เรื่องเงิน คุณหาเงินได้คล่องและมักมีทางให้รายได้เติบโต แต่ก็ใช้จ่ายง่ายเช่นกัน','โอกาสมาจากการเรียนรู้ การพูด การเขียน และเครือข่ายใกล้ตัว พี่น้องหรือเพื่อนบ้านมักช่วยเหลือ','ครอบครัวเป็นแหล่งโชคและความอบอุ่น มีโอกาสได้บ้านหรืออสังหาริมทรัพย์ และชีวิตช่วงหลังดีขึ้น','โชคของคุณอยู่ที่ความรัก ความสนุก ศิลปะ และลูก ยิ่งได้สร้างสรรค์ยิ่งมีโอกาสเข้ามา','คุณมีโชคในงานประจำและเพื่อนร่วมงาน งานที่ช่วยเหลือผู้อื่นทำให้คุณเติบโต แต่ระวังการกินหรือทำงานเกินพอดี','คู่ครองหรือหุ้นส่วนนำโอกาสมาให้ คุณมักเจอคนดีและมีโชคในความสัมพันธ์','คุณมีโอกาสได้ประโยชน์จากเงินของคนอื่น มรดก หรือการลงทุน และผ่านวิกฤตได้ดีอย่างน่าแปลกใจ','ดาวพฤหัสอยู่ในเรือนธรรมชาติของตัวเอง โอกาสมาจากการศึกษา ต่างประเทศ การสอน และความเชื่อ ยิ่งเปิดโลกยิ่งโชคดี','คุณมีโอกาสก้าวหน้าในอาชีพ ได้รับการยอมรับ และมักมีผู้ใหญ่สนับสนุน','โอกาสของคุณมาจากเพื่อนและเครือข่าย ยิ่งรู้จักคนมาก ประตูยิ่งเปิด และความฝันระยะยาวมีโอกาสเป็นจริง','คุณมีโชคแบบมีคนช่วยเงียบ ๆ ในยามลำบาก และเติบโตผ่านการให้ การภาวนา หรือการทำงานเบื้องหลัง'],
+  saturn:['คุณดูจริงจัง เป็นผู้ใหญ่ตั้งแต่เด็ก อาจขี้อายหรือระวังตัว แต่ยิ่งโตยิ่งน่าเชื่อถือ','บทเรียนของคุณอยู่ที่เรื่องเงิน อาจกังวลเรื่องความมั่นคง แต่เมื่ออดทนสะสมจะมั่นคงในระยะยาว','คุณคิดรอบคอบ อาจเคยรู้สึกว่าเรียนรู้ช้าหรือไม่กล้าพูด แต่เมื่อฝึกแล้วคำพูดมีน้ำหนักมาก','คุณอาจต้องรับผิดชอบครอบครัวตั้งแต่เด็ก หรือบ้านไม่ค่อยอบอุ่น จึงตั้งใจสร้างบ้านที่มั่นคงด้วยตัวเอง','คุณจริงจังกับความรักและการแสดงออก อาจไม่กล้าสนุกเต็มที่ แต่สร้างงานสร้างสรรค์ที่มีคุณภาพได้เมื่อฝึกฝน','คุณทำงานหนักและรับผิดชอบสูง ต้องระวังความเครียดสะสมและดูแลสุขภาพอย่างสม่ำเสมอ','คุณจริงจังกับความสัมพันธ์ อาจแต่งงานช้าหรือเลือกคู่ที่เป็นผู้ใหญ่ ความสัมพันธ์ยิ่งนานยิ่งมั่นคง','คุณระวังเรื่องการไว้ใจคนและการเงินร่วม การเปลี่ยนแปลงใหญ่ในชีวิตสอนให้คุณแข็งแกร่ง','คุณจริงจังกับความเชื่อและการศึกษา อาจเรียนต่อช้าแต่เข้าใจลึก และมีหลักการชัดเจน','คุณทะเยอทะยานและรับผิดชอบสูงในอาชีพ ความสำเร็จมาช้าแต่มั่นคงและน่านับถือ','คุณมีเพื่อนน้อยแต่จริงใจ อาจรู้สึกไม่เข้าพวกในวัยเด็ก แต่เครือข่ายที่ค่อย ๆ สร้างจะยั่งยืน','คุณอาจมีความกลัวหรือความกังวลลึก ๆ ที่มองไม่เห็น การใช้เวลากับตัวเองหรือการภาวนาช่วยให้ใจมั่นคง'],
+  uranus:['คุณดูแปลกใหม่ ไม่เหมือนใคร และไม่ชอบถูกกำหนด','รายได้ของคุณขึ้นลง หรือมาจากทางที่ไม่ธรรมดา เช่น เทคโนโลยีหรืองานอิสระ','คุณคิดแหวกแนว เรียนรู้แบบไม่ตามตำรา และมีไอเดียแปลกใหม่','บ้านหรือครอบครัวของคุณไม่เหมือนใคร อาจย้ายบ้านบ่อย หรือต้องการอิสระจากครอบครัว','ความรักมาแบบไม่คาดฝัน คุณชอบความแปลกใหม่และมีความคิดสร้างสรรค์แหวกแนว','คุณต้องการงานที่ยืดหยุ่น ไม่ชอบกิจวัตรซ้ำซาก และเหมาะกับงานเทคโนโลยี','คุณต้องการความสัมพันธ์ที่ให้อิสระ อาจเจอคู่แบบไม่คาดคิดหรือความสัมพันธ์ไม่ธรรมดา','ชีวิตมีการเปลี่ยนแปลงกะทันหัน การเงินร่วมขึ้นลงได้ และคุณสนใจเรื่องลึกลับแบบมีเหตุผล','คุณมีความเชื่อเป็นของตัวเอง ชอบแนวคิดใหม่ และอาจเดินทางแบบไม่ได้วางแผน','อาชีพของคุณไม่ธรรมดา อาจเปลี่ยนสายงานหลายครั้ง และไม่ชอบทำงานภายใต้คำสั่ง','คุณมีเพื่อนหลากหลายและแปลกใหม่ และชอบรวมกลุ่มเพื่อเปลี่ยนแปลงสังคม','คุณมีความคิดกบฏซ่อนอยู่ข้างใน และมีสัญชาตญาณแบบปิ๊งแวบ'],
+  neptune:['คุณดูอ่อนโยน เพ้อฝัน มีเสน่ห์ลึกลับ แต่บางครั้งภาพตัวเองไม่ชัด','คุณไม่ค่อยยึดติดกับเงิน อาจหาเงินจากศิลปะ แต่ต้องระวังการใช้จ่ายสับสนหรือถูกหลอก','คุณคิดเป็นภาพ มีจินตนาการ เขียนหรือเล่าเรื่องเก่ง แต่อาจสื่อสารคลุมเครือ','คุณฝันถึงบ้านที่เป็นที่พักใจ ครอบครัวอาจมีเรื่องที่ไม่ชัดเจนหรือการเสียสละ','คุณมีความคิดสร้างสรรค์สูง โรแมนติก และรักศิลปะ ดนตรี หรือภาพยนตร์','คุณอยากทำงานที่มีความหมายหรือช่วยเหลือผู้อื่น และร่างกายอ่อนไหวต่อสิ่งแวดล้อม','คุณมองคู่ในอุดมคติ อาจเสียสละในความสัมพันธ์ ควรมองความจริงให้ชัด','คุณมีสัญชาตญาณลึกและสนใจเรื่องจิตวิญญาณ ต้องระวังความคลุมเครือในการเงินร่วม','คุณมีความเชื่อทางจิตวิญญาณสูง ฝันถึงการเดินทางไกลและโลกที่ดีกว่า','อาชีพของคุณเกี่ยวกับศิลปะ การช่วยเหลือ หรือความฝัน แต่เป้าหมายอาจไม่ชัดในช่วงแรก','คุณมีอุดมการณ์เพื่อส่วนรวม แต่ต้องระวังการมองเพื่อนในแง่ดีเกินไป','คุณมีโลกภายในลึก สัญชาตญาณแรง และเติบโตผ่านการภาวนาหรือศิลปะ'],
+  pluto:['คุณมีบุคลิกเข้มข้น มีพลังดึงดูด และผ่านการเปลี่ยนแปลงตัวเองครั้งใหญ่หลายครั้ง','เรื่องเงินและทรัพย์สินผ่านการขึ้นลงครั้งใหญ่ และคุณมีพลังสร้างความมั่งคั่งขึ้นใหม่','คุณคิดลึก พูดมีพลังโน้มน้าว และชอบค้นหาความจริง','ครอบครัวมีพลังหรือเรื่องราวที่เข้มข้น และบ้านคือสถานที่ที่คุณเปลี่ยนแปลงตัวเอง','ความรักของคุณเข้มข้น และงานสร้างสรรค์มีพลังลึกซึ้ง','คุณทุ่มเทให้งานมาก อยากปรับปรุงทุกอย่างให้ดีขึ้นถึงราก และต้องดูแลทั้งสุขภาพกายและใจ','ความสัมพันธ์ของคุณเข้มข้นและเปลี่ยนชีวิต ต้องระวังเรื่องอำนาจหรือการควบคุมกันในคู่','คุณเข้าใจจิตใจคนลึก มีพลังฟื้นตัวสูง และเก่งเรื่องการเงินหรือการรับมือวิกฤต','ความเชื่อของคุณผ่านการเปลี่ยนแปลงลึก และคุณแสวงหาความจริงอย่างจริงจัง','คุณทะเยอทะยาน อยากมีอิทธิพล และอาชีพมักผ่านการพลิกผันครั้งใหญ่','คุณมีพลังในกลุ่มและเปลี่ยนแปลงสังคมได้ แต่ความสัมพันธ์กับเพื่อนอาจเข้มข้น','คุณมีพลังลึกที่ซ่อนอยู่ข้างใน และเติบโตผ่านการเผชิญความกลัวลึก ๆ ของตัวเอง'],
+  node:['ชีวิตชวนให้คุณกล้าเป็นตัวของตัวเองและพึ่งตัวเอง แทนที่จะคอยตามใจคนอื่น','ชีวิตชวนให้คุณสร้างคุณค่าและความมั่นคงด้วยตัวเอง และเรียนรู้ความพอเพียง','ชีวิตชวนให้คุณเรียนรู้ สื่อสาร และรับฟังความเห็นที่หลากหลาย','ชีวิตชวนให้คุณให้ความสำคัญกับบ้าน ครอบครัว และโลกภายใน มากกว่าความสำเร็จภายนอก','ชีวิตชวนให้คุณกล้าแสดงออก สนุก และทำตามหัวใจตัวเอง','ชีวิตชวนให้คุณสร้างกิจวัตรที่ดี ใส่ใจรายละเอียด และช่วยเหลือผู้อื่นอย่างเป็นรูปธรรม','ชีวิตชวนให้คุณเรียนรู้การร่วมมือ การประนีประนอม และการเปิดใจให้คู่','ชีวิตชวนให้คุณกล้าใกล้ชิดกับผู้อื่นอย่างลึกซึ้ง และยอมให้ตัวเองเปลี่ยนแปลง','ชีวิตชวนให้คุณเปิดโลก เดินทาง เรียนรู้ และหาความหมายที่ใหญ่กว่าตัวเอง','ชีวิตชวนให้คุณสร้างเป้าหมายและอาชีพที่มีความหมาย และกล้ารับบทบาทในสังคม','ชีวิตชวนให้คุณเข้าร่วมกลุ่ม แบ่งปันความฝัน และทำเพื่อส่วนรวม','ชีวิตชวนให้คุณวางการควบคุม ฟังเสียงภายใน และพัฒนาจิตใจ'],
+};
+const H_WHAT = ['ตัวตนและบุคลิกของคุณ','เรื่องเงินและสิ่งที่คุณให้คุณค่า','การสื่อสารและการเรียนรู้ของคุณ','เรื่องบ้านและครอบครัว','ความรัก ความสนุก และความคิดสร้างสรรค์ของคุณ','งานประจำวันและสุขภาพของคุณ','ความสัมพันธ์และคู่ครองของคุณ','ความผูกพันลึกซึ้งและทรัพย์สินที่ใช้ร่วมกับคนอื่น','ความเชื่อ การศึกษา และการเดินทางไกลของคุณ','อาชีพและชื่อเสียงของคุณ','เพื่อนและความฝันของคุณ','โลกภายในและการพักใจของคุณ'];
+const H_VIA = ['ตัวคุณเอง ความตั้งใจและการลงมือของคุณ','รายได้ ทรัพย์สิน และความสามารถที่สร้างเงิน','การพูด การเขียน การเรียนรู้ พี่น้อง และการเดินทางใกล้ ๆ','บ้าน ครอบครัว และรากเหง้า','งานอดิเรก ความรัก ความสนุก และการสร้างสรรค์','งานประจำวัน กิจวัตร และการช่วยเหลือผู้อื่น','คู่ครอง หุ้นส่วน และความสัมพันธ์แบบหนึ่งต่อหนึ่ง','เงินของคนอื่น การลงทุน ความใกล้ชิด และการเปลี่ยนแปลงครั้งใหญ่','การศึกษาขั้นสูง ต่างประเทศ ความเชื่อ และการเดินทางไกล','อาชีพ สถานะ และบทบาทในสังคม','เพื่อน กลุ่ม เครือข่าย และสังคมออนไลน์','งานเบื้องหลัง การอยู่กับตัวเอง จิตวิญญาณ และการช่วยเหลือแบบเงียบ ๆ'];
+const PK = Object.fromEntries(PLANETS.map(p=>[p.k,p]));
+/* ดาวกุมลัคนา: อยู่เลยลัคนาไม่เกิน 10° ฝั่งเรือน 1 หรือก่อนลัคนาไม่เกิน 5° ฝั่งเรือน 12; กุมกลางฟ้า: ไม่เกิน 8° */
+function kumAsc(ch, k) { if (ch.asc==null) return null; const d = norm(ch.lons[k]-ch.asc); if (d<=10) return {side:1, orb:d}; if (360-d<=5) return {side:12, orb:360-d}; return null; }
+function kumMc(ch, k) { if (ch.mc==null) return null; const o = sep(ch.lons[k], ch.mc); return o<=8 ? {orb:o} : null; }
+function kumList(ch, fn) { return PLANETS.map(p=>({p, r:fn(ch,p.k)})).filter(x=>x.r).sort((a,b)=>a.r.orb-b.r.orb); }
+const KUM_INTRO = 'ดาวที่กุมลัคนาคือดาวที่กำลังขึ้นจากขอบฟ้าทิศตะวันออกตอนคุณเกิด พลังของดาวนี้ผสมเข้ากับบุคลิกจนเด่นพอ ๆ กับราศีลัคนา และคนอื่นเห็นได้ตั้งแต่แรกพบ';
+function kumText(ch, p, r) {
+  const P = PAIRS[p.k+'-asc'];
+  const main = P ? (P[4]||P[2]) : 'ทิศทางการเติบโตของชีวิตอยู่ที่การพัฒนาตัวเอง กล้าเป็นตัวของตัวเอง และสร้างบุคลิกที่เป็นคุณจริง ๆ คนรอบตัวมักรู้สึกว่าคุณมีบทบาทสำคัญในชีวิตเขา';
+  const side = r.side===12 ? ' ดาวนี้อยู่ฝั่งเรือน 12 ก่อนถึงลัคนา พลังจึงเด่นแต่มักทำงานเงียบ ๆ อยู่เบื้องหลัง หรือค่อย ๆ เผยออกมาเมื่อสนิทกัน' : '';
+  return `${main} (คลาด ${r.orb.toFixed(1)}°)${side}`;
+}
+function mcText(p, r) {
+  const P = PAIRS[p.k+'-mc'];
+  const main = P ? (P[4]||P[2]) : 'ชีวิตชวนให้คุณสร้างอาชีพและบทบาทในสังคมที่มีความหมาย';
+  return `${main} (คลาด ${r.orb.toFixed(1)}°)`;
+}
+
+const MONTHS = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+
+const TH = [
+  ['กรุงเทพมหานคร',13.7563,100.5018],['กระบี่',8.0863,98.9063],['กาญจนบุรี',14.0228,99.5328],['กาฬสินธุ์',16.4322,103.5061],
+  ['กำแพงเพชร',16.4827,99.5226],['ขอนแก่น',16.4419,102.836],['จันทบุรี',12.6114,102.1039],['ฉะเชิงเทรา',13.6904,101.0779],
+  ['ชลบุรี',13.3611,100.9847],['ชัยนาท',15.1851,100.1251],['ชัยภูมิ',15.8068,102.0317],['ชุมพร',10.493,99.18],
+  ['เชียงราย',19.9105,99.8406],['เชียงใหม่',18.7883,98.9853],['ตรัง',7.5563,99.6114],['ตราด',12.2428,102.5175],
+  ['ตาก',16.884,99.1259],['นครนายก',14.2069,101.2131],['นครปฐม',13.8199,100.0621],['นครพนม',17.392,104.7695],
+  ['นครราชสีมา',14.9799,102.0977],['นครศรีธรรมราช',8.4304,99.9631],['นครสวรรค์',15.7047,100.1372],['นนทบุรี',13.8621,100.5144],
+  ['นราธิวาส',6.4255,101.8253],['น่าน',18.7756,100.773],['บึงกาฬ',18.3609,103.6464],['บุรีรัมย์',14.993,103.1029],
+  ['ปทุมธานี',14.0208,100.525],['ประจวบคีรีขันธ์',11.8124,99.7973],['ปราจีนบุรี',14.0509,101.3717],['ปัตตานี',6.8696,101.2501],
+  ['พระนครศรีอยุธยา',14.3532,100.5689],['พะเยา',19.1665,99.9019],['พังงา',8.4511,98.5251],['พัทลุง',7.6167,100.074],
+  ['พิจิตร',16.4429,100.3487],['พิษณุโลก',16.8211,100.2659],['เพชรบุรี',13.1112,99.9447],['เพชรบูรณ์',16.419,101.1606],
+  ['แพร่',18.1446,100.1403],['ภูเก็ต',7.8804,98.3923],['มหาสารคาม',16.1851,103.3029],['มุกดาหาร',16.542,104.7232],
+  ['แม่ฮ่องสอน',19.302,97.9654],['ยโสธร',15.7926,104.1453],['ยะลา',6.5411,101.2804],['ร้อยเอ็ด',16.0538,103.652],
+  ['ระนอง',9.9529,98.6085],['ระยอง',12.6814,101.2816],['ราชบุรี',13.5283,99.8134],['ลพบุรี',14.7995,100.6534],
+  ['ลำปาง',18.2888,99.4909],['ลำพูน',18.5745,99.0087],['เลย',17.486,101.7223],['ศรีสะเกษ',15.1186,104.322],
+  ['สกลนคร',17.1545,104.1348],['สงขลา',7.1898,100.5954],['สงขลา (หาดใหญ่)',7.0084,100.4767],['สตูล',6.6238,100.0674],
+  ['สมุทรปราการ',13.5991,100.5998],['สมุทรสงคราม',13.4098,100.0023],['สมุทรสาคร',13.5475,100.2744],['สระแก้ว',13.824,102.0646],
+  ['สระบุรี',14.5289,100.9101],['สิงห์บุรี',14.8936,100.3967],['สุโขทัย',17.0156,99.823],['สุพรรณบุรี',14.4745,100.1177],
+  ['สุราษฎร์ธานี',9.1382,99.3215],['สุรินทร์',14.8818,103.4936],['หนองคาย',17.8783,102.742],['หนองบัวลำภู',17.2042,102.4407],
+  ['อ่างทอง',14.5896,100.4551],['อำนาจเจริญ',15.8657,104.6258],['อุดรธานี',17.4138,102.7872],['อุตรดิตถ์',17.62,100.0993],
+  ['อุทัยธานี',15.3835,100.0246],['อุบลราชธานี',15.2287,104.8564],
+].map(([n,lat,lon])=>({n,lat,lon,tz:'Asia/Bangkok'}));
+const WORLD = [
+  ['เวียงจันทน์ ลาว',17.9757,102.6331,'Asia/Vientiane'],['ย่างกุ้ง เมียนมา',16.8409,96.1735,'Asia/Yangon'],
+  ['พนมเปญ กัมพูชา',11.5564,104.9282,'Asia/Phnom_Penh'],['ฮานอย เวียดนาม',21.0278,105.8342,'Asia/Ho_Chi_Minh'],
+  ['โฮจิมินห์ซิตี เวียดนาม',10.8231,106.6297,'Asia/Ho_Chi_Minh'],['กัวลาลัมเปอร์ มาเลเซีย',3.139,101.6869,'Asia/Kuala_Lumpur'],
+  ['สิงคโปร์',1.3521,103.8198,'Asia/Singapore'],['จาการ์ตา อินโดนีเซีย',-6.2088,106.8456,'Asia/Jakarta'],
+  ['มะนิลา ฟิลิปปินส์',14.5995,120.9842,'Asia/Manila'],['ฮ่องกง',22.3193,114.1694,'Asia/Hong_Kong'],
+  ['ไทเป ไต้หวัน',25.033,121.5654,'Asia/Taipei'],['ปักกิ่ง จีน',39.9042,116.4074,'Asia/Shanghai'],
+  ['เซี่ยงไฮ้ จีน',31.2304,121.4737,'Asia/Shanghai'],['โตเกียว ญี่ปุ่น',35.6762,139.6503,'Asia/Tokyo'],
+  ['โซล เกาหลีใต้',37.5665,126.978,'Asia/Seoul'],['นิวเดลี อินเดีย',28.6139,77.209,'Asia/Kolkata'],
+  ['มุมไบ อินเดีย',19.076,72.8777,'Asia/Kolkata'],['ดูไบ สหรัฐอาหรับเอมิเรตส์',25.2048,55.2708,'Asia/Dubai'],
+  ['อิสตันบูล ตุรกี',41.0082,28.9784,'Europe/Istanbul'],['มอสโก รัสเซีย',55.7558,37.6173,'Europe/Moscow'],
+  ['ลอนดอน สหราชอาณาจักร',51.5074,-0.1278,'Europe/London'],['ปารีส ฝรั่งเศส',48.8566,2.3522,'Europe/Paris'],
+  ['เบอร์ลิน เยอรมนี',52.52,13.405,'Europe/Berlin'],['อัมสเตอร์ดัม เนเธอร์แลนด์',52.3676,4.9041,'Europe/Amsterdam'],
+  ['โรม อิตาลี',41.9028,12.4964,'Europe/Rome'],['มาดริด สเปน',40.4168,-3.7038,'Europe/Madrid'],
+  ['สตอกโฮล์ม สวีเดน',59.3293,18.0686,'Europe/Stockholm'],['ไคโร อียิปต์',30.0444,31.2357,'Africa/Cairo'],
+  ['โจฮันเนสเบิร์ก แอฟริกาใต้',-26.2041,28.0473,'Africa/Johannesburg'],['ซิดนีย์ ออสเตรเลีย',-33.8688,151.2093,'Australia/Sydney'],
+  ['เมลเบิร์น ออสเตรเลีย',-37.8136,144.9631,'Australia/Melbourne'],['โอ๊คแลนด์ นิวซีแลนด์',-36.8485,174.7633,'Pacific/Auckland'],
+  ['นิวยอร์ก สหรัฐอเมริกา',40.7128,-74.006,'America/New_York'],['ชิคาโก สหรัฐอเมริกา',41.8781,-87.6298,'America/Chicago'],
+  ['ลอสแอนเจลิส สหรัฐอเมริกา',34.0522,-118.2437,'America/Los_Angeles'],['ซานฟรานซิสโก สหรัฐอเมริกา',37.7749,-122.4194,'America/Los_Angeles'],
+  ['โตรอนโต แคนาดา',43.6532,-79.3832,'America/Toronto'],['แวนคูเวอร์ แคนาดา',49.2827,-123.1207,'America/Vancouver'],
+  ['เม็กซิโกซิตี เม็กซิโก',19.4326,-99.1332,'America/Mexico_City'],['เซาเปาลู บราซิล',-23.5505,-46.6333,'America/Sao_Paulo'],
+  ['บัวโนสไอเรส อาร์เจนตินา',-34.6037,-58.3816,'America/Argentina/Buenos_Aires'],
+].map(([n,lat,lon,tz])=>({n,lat,lon,tz}));
+const PLACES = [...TH, ...WORLD];
+
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2,'0');
+const SVGNS = 'http://www.w3.org/2000/svg';
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- form setup ---------- */
+$('month').innerHTML = '<option value="">เลือก</option>' + MONTHS.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+$('place').innerHTML =
+  `<optgroup label="ประเทศไทย">${TH.map((p,i)=>`<option value="${i}">${p.n}</option>`).join('')}</optgroup>` +
+  `<optgroup label="ต่างประเทศ">${WORLD.map((p,i)=>`<option value="${TH.length+i}">${p.n}</option>`).join('')}</optgroup>` +
+  `<optgroup label="อื่น ๆ"><option value="custom">กำหนดพิกัดเอง</option></optgroup>`;
+{
+  const opts = [];
+  for (let h=-12; h<=14; h+=0.5) { const s=h<0?'−':'+', a=Math.abs(h); opts.push(`<option value="${h}">UTC${s}${Math.floor(a)}:${a%1?'30':'00'}</option>`); }
+  $('utcoff').innerHTML = opts.join(''); $('utcoff').value = '7';
+}
+$('place').addEventListener('change', () => { $('customLoc').hidden = $('place').value !== 'custom'; });
+$('notime').addEventListener('change', () => { $('hour').disabled = $('minute').disabled = $('notime').checked; });
+
+/* ---------- time zones ---------- */
+function tzOffsetMin(zone, ms) {
+  const f = new Intl.DateTimeFormat('en-US',{timeZone:zone,hourCycle:'h23',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const p = Object.fromEntries(f.formatToParts(new Date(ms)).map(x=>[x.type,x.value]));
+  const d = new Date(0); d.setUTCFullYear(+p.year, +p.month-1, +p.day); d.setUTCHours(+p.hour%24, +p.minute, +p.second, 0);
+  return Math.round((d.getTime() - Math.floor(ms/1000)*1000)/60000);
+}
+function utcMs(y,mo,d,h,mi) { const t = new Date(0); t.setUTCFullYear(y,mo-1,d); t.setUTCHours(h,mi,0,0); return t.getTime(); }
+function localToUTC(y,mo,d,h,mi,loc) {
+  const guess = utcMs(y,mo,d,h,mi);
+  if (loc.tz == null) return { ms: guess - loc.off*60000, off: loc.off };
+  let off = tzOffsetMin(loc.tz, guess), ms = guess - off*60000;
+  const off2 = tzOffsetMin(loc.tz, ms);
+  if (off2 !== off) { ms = guess - off2*60000; off = off2; }
+  return { ms, off };
+}
+const fmtOff = m => { const s = m<0?'−':'+', a=Math.abs(m); return `UTC${s}${Math.floor(a/60)}${a%60?':'+pad(a%60):''}`; };
+
+/* ---------- chart computation ---------- */
+const sep = (a,b) => { const d = Math.abs(norm(a-b)); return d>180 ? 360-d : d; };
+function compute(inp) {
+  const jd = inp.ms/86400000 + 2440587.5;
+  const L0 = longitudes(jd), Lb = longitudes(jd-0.5), La = longitudes(jd+0.5);
+  const lons = {}, retro = {};
+  for (const p of PLANETS) {
+    lons[p.k] = L0[p.k];
+    retro[p.k] = !['sun','moon','node'].includes(p.k) && norm(La[p.k]-Lb[p.k]) > 180;
+  }
+  let asc=null, mc=null, cusps=null, houseNote='';
+  if (inp.timeKnown) {
+    const an = angles(jd, inp.lat, inp.lon);
+    asc = an.asc; mc = an.mc;
+    let sys = inp.houses;
+    if (sys === 'placidus') {
+      const pl = placidus(an.ramc, an.eps, inp.lat);
+      if (pl) cusps = [asc, pl.c2, pl.c3, mc+180, pl.c11+180, pl.c12+180, asc+180, pl.c2+180, pl.c3+180, mc, pl.c11, pl.c12].map(norm);
+      else { sys = 'whole'; houseNote = 'ระบบ Placidus ใช้ไม่ได้ในพื้นที่ใกล้ขั้วโลก จึงใช้ระบบ Whole Sign แทน'; }
+    }
+    if (sys === 'whole') cusps = Array.from({length:12},(_,i)=>norm(Math.floor(asc/30)*30 + 30*i));
+    if (sys === 'equal') cusps = Array.from({length:12},(_,i)=>norm(asc + 30*i));
+  }
+  const houseOf = lon => {
+    if (!cusps) return null;
+    for (let i=0;i<12;i++) { const a=cusps[i], b=cusps[(i+1)%12]; if (norm(lon-a) < norm(b-a)) return i+1; }
+    return 1;
+  };
+  const points = PLANETS.filter(p=>p.k!=='node').map(p=>({...p, lon:lons[p.k]}));
+  if (asc!=null) points.push({k:'asc',...POINTS_INFO.asc,lon:asc},{k:'mc',...POINTS_INFO.mc,lon:mc});
+  const aspects = [];
+  for (let i=0;i<points.length;i++) for (let j=i+1;j<points.length;j++) {
+    if (points[i].k==='asc' && points[j].k==='mc') continue;
+    const s = sep(points[i].lon, points[j].lon);
+    for (const A of ASPECTS) { const orb = Math.abs(s-A.a); if (orb <= A.orb) aspects.push({p:points[i],q:points[j],A,orb}); }
+  }
+  aspects.sort((x,y)=>x.orb-y.orb);
+  aspects.forEach((a,i)=>a.id='as-'+i);
+  const core = PLANETS.filter(p=>p.k!=='node');
+  const group = f => { const g={}; core.forEach(p=>{ const k=f(lons[p.k]); if (k!=null) (g[k]=g[k]||[]).push(p); }); return Object.entries(g).filter(([,a])=>a.length>=3).map(([k,a])=>({k:+k, ps:a})); };
+  const stSigns = group(l=>Math.floor(norm(l)/30)), stHouses = cusps ? group(houseOf) : [];
+  return { jd, lons, retro, asc, mc, cusps, houseOf, aspects, houseNote, stSigns, stHouses };
+}
+
+/* ---------- formatting ---------- */
+const signOf = lon => SIGNS[Math.floor(norm(lon)/30)];
+function degStr(lon) {
+  const x = norm(lon)%30; let d = Math.floor(x), m = Math.round((x-d)*60);
+  if (m===60) { d++; m=0; }
+  return `${d}°${pad(m)}′`;
+}
+const glyphSpan = p => (p.k==='asc'||p.k==='mc') ? `<span class="gl txt">${p.g}</span>` : `<span class="gl">${p.g}</span>`;
+
+/* ---------- tabs & opening items ---------- */
+const TABS = ['overview','planets','houses','aspects','summary'];
+function selectTab(name, focus) {
+  TABS.forEach(t=>{
+    const on = t===name, b=$('t-'+t);
+    b.setAttribute('aria-selected', on); b.tabIndex = on?0:-1; $('p-'+t).hidden = !on;
+  });
+  if (focus) $('t-'+name).focus();
+}
+TABS.forEach((t,i)=>{
+  $('t-'+t).addEventListener('click', ()=>selectTab(t));
+  $('t-'+t).addEventListener('keydown', e=>{
+    let j=null;
+    if (e.key==='ArrowRight') j=(i+1)%TABS.length; else if (e.key==='ArrowLeft') j=(i+TABS.length-1)%TABS.length;
+    else if (e.key==='Home') j=0; else if (e.key==='End') j=TABS.length-1;
+    if (j!=null) { e.preventDefault(); selectTab(TABS[j], true); }
+  });
+});
+function openItem(tab, id) {
+  selectTab(tab);
+  const d = $(id); if (!d) return;
+  if (d.tagName==='DETAILS') d.open = true;
+  d.scrollIntoView({behavior: reduceMotion?'auto':'smooth', block:'center'});
+  d.classList.add('flash'); setTimeout(()=>d.classList.remove('flash'), 1400);
+  const sm = d.querySelector('summary'); if (sm) sm.focus({preventScroll:true});
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-open]'); if (!b) return;
+  const [tab,id] = b.dataset.open.split('|'); openItem(tab,id);
+});
+
+/* ---------- wheel ---------- */
+const C = 320, R_OUT = 290, R_ZOD = 250, R_PL = 223, R_DEG = 197, R_HO = 176, R_HI = 150;
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  parent && parent.appendChild(e); return e;
+}
+function clickable(node, tab, id, label) {
+  node.setAttribute('tabindex','0'); node.setAttribute('role','button'); node.setAttribute('aria-label',label);
+  node.addEventListener('click', ()=>openItem(tab,id));
+  node.addEventListener('keydown', e=>{ if (e.key==='Enter'||e.key===' ') { e.preventDefault(); openItem(tab,id); } });
+}
+function drawWheel(ch) {
+  const svg = $('wheel'); svg.innerHTML = '';
+  const base = ch.asc != null ? ch.asc : 0;
+  const ang = lon => (lon - base + 180) * D2R;
+  const P = (r, lon) => [C + r*Math.cos(ang(lon)), C - r*Math.sin(ang(lon))];
+  const xy = (r, lon) => { const [x,y] = P(r,lon); return {x:x.toFixed(2), y:y.toFixed(2)}; };
+  const seg = (r1, l1, r2, l2, attrs, g) => { const a=P(r1,l1), b=P(r2,l2); return el('line',{x1:a[0].toFixed(2),y1:a[1].toFixed(2),x2:b[0].toFixed(2),y2:b[1].toFixed(2),...attrs},g||svg); };
+  const line = (r1, r2, lon, cls, g) => seg(r1, lon, r2, lon, {class:cls}, g);
+
+  for (let i=0;i<12;i++) {
+    const pts = [];
+    for (let l=i*30; l<=i*30+30; l+=2) pts.push(P(R_OUT,l));
+    for (let l=i*30+30; l>=i*30; l-=2) pts.push(P(R_ZOD,l));
+    el('polygon',{points:pts.map(p=>p.map(v=>v.toFixed(2)).join(',')).join(' '),class:i%2?'w-band2':'w-band'},svg);
+    line(R_ZOD, R_OUT, i*30, 'w-line');
+    const t = el('text',{...xy((R_OUT+R_ZOD)/2, i*30+15),class:'w-sign'},svg, SIGNS[i].g);
+    el('title',{},t,`ราศี${SIGNS[i].th} (${SIGNS[i].en})`);
+  }
+  for (let l=0;l<360;l++) { if (l%30===0) continue; line(R_ZOD, R_ZOD-(l%5===0?7:3.5), l, 'w-tick'); }
+  const band = (r1, r2, l1, l2, cls, label) => { const pts=[]; const span=norm(l2-l1)||360;
+    for (let x=0;x<=span;x+=1.5) pts.push(P(r1,l1+x)); pts.push(P(r1,l1+span));
+    for (let x=span;x>=0;x-=1.5) pts.push(P(r2,l1+x)); pts.push(P(r2,l1));
+    const g = el('polygon',{points:pts.map(p=>p.map(v=>v.toFixed(2)).join(',')).join(' '),class:cls},svg); el('title',{},g,label); };
+  ch.stSigns.forEach(st=>band(R_OUT, R_OUT+5, st.k*30, st.k*30+30, 'w-st', `สเตเลียมในราศี${SIGNS[st.k].th}`));
+  if (ch.cusps) ch.stHouses.forEach(st=>band(R_HI, R_HO, ch.cusps[st.k-1], ch.cusps[st.k%12], 'w-sth', `สเตเลียมในเรือน ${st.k}`));
+  el('circle',{cx:C,cy:C,r:R_OUT,class:'w-ink'},svg);
+  el('circle',{cx:C,cy:C,r:R_ZOD,class:'w-ink'},svg);
+  el('circle',{cx:C,cy:C,r:R_HI,class:'w-line'},svg);
+
+  if (ch.cusps) {
+    el('circle',{cx:C,cy:C,r:R_HO,class:'w-line'},svg);
+    ch.cusps.forEach((c,i)=>{
+      const next = ch.cusps[(i+1)%12];
+      if (i%3!==0) line(R_HI, R_ZOD, c, 'w-cusp');
+      const g = el('g',{class:'w-hclick'},svg);
+      const mid = c + norm(next-c)/2, pos = xy((R_HO+R_HI)/2, mid);
+      el('circle',{cx:pos.x,cy:pos.y,r:11,fill:'transparent'},g);
+      el('text',{...pos,class:'w-house'},g, String(i+1));
+      clickable(g,'houses','ho-'+(i+1),`เรือน ${i+1} ${HOUSES[i].t}`);
+    });
+    [[ch.asc,'AC','pl-asc'],[ch.mc,'MC','pl-mc'],[ch.asc+180,'DC',null],[ch.mc+180,'IC',null]].forEach(([l,t,id])=>{
+      line(R_HI, R_OUT+8, l, 'w-axis');
+      const tx = el('text',{...xy(R_OUT+20,l),class:'w-axlbl'},svg,t);
+      if (id) { tx.classList.add('w-click'); clickable(tx,'planets',id, t==='AC'?'ลัคนา':'กลางฟ้า'); }
+    });
+  }
+
+  const ag = el('g',{class:'w-aspects'},svg);
+  for (const a of ch.aspects) {
+    if (a.A.c==='conj' || ['asc','mc'].includes(a.p.k) || ['asc','mc'].includes(a.q.k)) continue;
+    seg(R_HI-2, a.p.lon, R_HI-2, a.q.lon, {class:a.A.c==='tense'?'w-a-t':'w-a-h','stroke-width':(1.6-a.orb*0.12).toFixed(2),opacity:(1-a.orb/10).toFixed(2)}, ag);
+    const hit = seg(R_HI-2, a.p.lon, R_HI-2, a.q.lon, {class:'w-hit'}, ag);
+    el('title',{},hit,`${a.p.th} ${a.A.n} ${a.q.th}`);
+    clickable(hit,'aspects',a.id,`${a.p.th} ${a.A.n} ${a.q.th}`);
+  }
+
+  const pg = el('g',{class:'w-planets'},svg);
+  const items = PLANETS.map(p=>({p, lon:ch.lons[p.k], d:ch.lons[p.k]})).sort((a,b)=>a.lon-b.lon);
+  const MIN = 8.5;
+  let gi = 0, gmax = -1;
+  for (let i=0;i<items.length;i++) { const g = norm(items[(i+1)%items.length].lon - items[i].lon); if (g>gmax) { gmax=g; gi=i; } }
+  const seq = items.slice(gi+1).concat(items.slice(0, gi+1)), base0 = seq[0].lon;
+  seq.forEach(it=>{ it.d = base0 + norm(it.lon - base0); });
+  for (let it=0; it<400; it++) {
+    let moved = false;
+    for (let i=0;i<seq.length-1;i++) { const gap = seq[i+1].d - seq[i].d; if (gap < MIN-1e-6) { const push=(MIN-gap)/2; seq[i].d -= push; seq[i+1].d += push; moved = true; } }
+    if (!moved) break;
+  }
+  for (const it of items) {
+    line(R_ZOD, R_ZOD-9, it.lon, 'w-ptick', pg);
+    if (sep(it.d, it.lon) > 1) seg(R_ZOD-9, it.lon, R_PL+12, it.d, {class:'w-conn'}, pg);
+    const g = el('g',{class:'w-click'+(kumAsc(ch,it.p.k)||kumMc(ch,it.p.k)?' w-kum':'')},pg), pos = xy(R_PL,it.d);
+    el('circle',{cx:pos.x,cy:pos.y,r:13},g);
+    el('text',{...pos,class:'w-pl'},g,it.p.g);
+    el('text',{...xy(R_DEG,it.d),class:'w-deg'},g, Math.floor(norm(it.lon)%30)+'°'+(ch.retro[it.p.k]?'R':''));
+    el('title',{},g,`${it.p.th} ${degStr(it.lon)} ราศี${signOf(it.lon).th}`);
+    clickable(g,'planets','pl-'+it.p.k,`${it.p.th} ราศี${signOf(it.lon).th}`);
+  }
+}
+
+/* ---------- panels ---------- */
+function renderOverview(inp, ch) {
+  const sun = signOf(ch.lons.sun), moon = signOf(ch.lons.moon);
+  const card = (k, s, text, open) => `<div><div class="k">${k}</div><div class="v"><span class="g">${s.g}</span>ราศี${s.th}</div><div class="d">${text}</div><button class="more" type="button" data-open="${open}">อ่านเพิ่มเติม</button></div>`;
+  let html = `<p class="intro">ดวงกำเนิดคือภาพท้องฟ้า ณ เวลาและสถานที่ที่คุณเกิด เริ่มอ่านจาก 3 จุดหลักด้านล่างก่อน แล้วค่อยดูรายละเอียดในแท็บอื่น หรือดูภาพรวมที่เชื่อมทุกอย่างเข้าด้วยกันในหน้าสรุป</p><button class="cta" type="button" data-open="summary|sum-top">อ่านสรุปไฮไลต์ของดวง</button><div class="big3">`;
+  html += card('ดวงอาทิตย์ ตัวตน', sun, `แก่นแท้ของคุณเป็นแบบชาวราศี${sun.th}: ${sun.kw}`, 'planets|pl-sun');
+  html += card('ดวงจันทร์ อารมณ์', moon, `ลึก ๆ แล้วคุณรู้สึกและตอบสนองแบบ${moon.style} เวลาเหนื่อยหรือเครียด คุณต้องการ${moon.need}` + (inp.timeKnown?'':' (เมื่อไม่ทราบเวลาเกิด ดวงจันทร์อาจคลาดได้ถึงราว 7°)'), 'planets|pl-moon');
+  if (ch.asc!=null) { const a = signOf(ch.asc), kl = kumList(ch, kumAsc); html += card('ลัคนา ภาพลักษณ์', a, `คนที่เพิ่งรู้จักมักมองว่าคุณ${a.style}${kl.length?` และมี${kl.map(x=>x.p.th).join(' ')}กุมลัคนา บุคลิกจึงมีพลังเรื่อง${kl.map(x=>x.p.theme).join(' และ')}ผสมอยู่ชัดเจน`:''}`, 'planets|pl-asc'); }
+  else html += `<div><div class="k">ลัคนา ภาพลักษณ์</div><div class="v">ต้องใช้เวลาเกิด</div><div class="d">ลัคนาเปลี่ยนราศีราวทุก 2 ชั่วโมง ใส่เวลาเกิดเพื่อดูลัคนาและเรือนชะตา</div></div>`;
+  html += '</div>';
+
+  const els = {fire:0,earth:0,air:0,water:0}, mods = {cardinal:0,fixed:0,mutable:0};
+  const pts = PLANETS.filter(p=>p.k!=='node').map(p=>ch.lons[p.k]); if (ch.asc!=null) pts.push(ch.asc);
+  pts.forEach(l=>{ const s=signOf(l); els[s.el]++; mods[s.mod]++; });
+  const bars = (obj, names) => { const max=Math.max(...Object.values(obj)), tot=pts.length;
+    return `<div class="bars">${Object.keys(obj).map(k=>`<div class="bar${obj[k]===max?' top':''}"><span>${names(k)}</span><span class="t"><i style="width:${(obj[k]/tot*100).toFixed(0)}%"></i></span><span class="num">${obj[k]}</span></div>`).join('')}</div>`; };
+  const tops = obj => { const max=Math.max(...Object.values(obj)); return Object.keys(obj).filter(k=>obj[k]===max); };
+  const eTop = tops(els), mTop = tops(mods), eZero = Object.keys(els).filter(k=>els[k]===0);
+  let eText = eTop.length===1 ? `ธาตุเด่นของคุณคือ<b>ธาตุ${ELEM[eTop[0]].n}</b> คุณจึงเป็นคน${ELEM[eTop[0]].d}`
+    : `คุณมีธาตุ${eTop.map(k=>ELEM[k].n).join('และธาตุ')}เด่นพอ ๆ กัน ผสมกันระหว่างความ${eTop.map(k=>ELEM[k].d.split(' ')[0]).join('และ')}`;
+  if (eZero.length) eText += ` ส่วนธาตุ${eZero.map(k=>ELEM[k].n).join(' ธาตุ')}ไม่มีดาวอยู่เลย ไม่ได้แปลว่าขาดไป แต่อาจเป็นด้านที่ต้องตั้งใจฝึกมากกว่าคนอื่น`;
+  const mText = mTop.length===1 ? `คุณมีพลังแบบ<b>${MODS[mTop[0]].n}</b> (${MODS[mTop[0]].en}) มากที่สุด หมายถึง${MODS[mTop[0]].d}`
+    : `คุณมีพลังแบบ${mTop.map(k=>MODS[k].n).join('และ')}พอ ๆ กัน`;
+  html += `<div class="split"><div><h3>ธาตุ</h3><p class="explain" style="margin:0 0 12px;color:var(--ink-soft);font-size:14px">นับจากดาว 10 ดวง${ch.asc!=null?' และลัคนา':''} ว่าอยู่ในราศีธาตุใด</p>${bars(els,k=>'ธาตุ'+ELEM[k].n)}<p class="explain">${eText}</p></div>`;
+  html += `<div><h3>รูปแบบพลัง</h3><p class="explain" style="margin:0 0 12px;color:var(--ink-soft);font-size:14px">แต่ละราศีมีจังหวะการใช้พลังต่างกัน 3 แบบ</p>${bars(mods,k=>MODS[k].n)}<p class="explain">${mText}</p></div></div>`;
+  $('p-overview').innerHTML = html;
+}
+
+function item(id, summary, body) {
+  return `<details class="item" id="${id}"><summary>${summary}</summary><div class="body">${body}</div></details>`;
+}
+
+const lk = (tab, id, label) => `<button class="more inl" type="button" data-open="${tab}|${id}">${label}</button>`;
+function houseRulers(ch) {
+  if (!ch.cusps) return [];
+  return ch.cusps.map((c,i)=>{
+    const si = Math.floor(norm(c)/30), r = RULER[si], t = TRAD[si];
+    return { h:i+1, si, r, rh:ch.houseOf(ch.lons[r]), t:t||null, th:t?ch.houseOf(ch.lons[t]):null };
+  });
+}
+function rulerText(ch, R) {
+  const P = PK[R.r], rs = signOf(ch.lons[R.r]);
+  let s;
+  if (R.rh === R.h) s = `${P.th}ซึ่งเป็นเจ้าราศี${SIGNS[R.si].th} อยู่ในเรือนนี้เอง เรื่องนี้จึงแข็งแรงและพึ่งตัวเองได้ ${H_WHAT[R.h-1]}ทำงานได้ตรงตัว ไม่ต้องอาศัยเรื่องอื่นมาช่วย`;
+  else s = `${P.th}ซึ่งเป็นเจ้าราศี${SIGNS[R.si].th} ไปอยู่ในเรือน ${R.rh} (${HOUSES[R.rh-1].t}) จึงเชื่อมสองเรือนนี้เข้าด้วยกัน ${H_WHAT[R.h-1]}มักเกิดขึ้น เติบโต หรือได้ผลลัพธ์ผ่าน${H_VIA[R.rh-1]}`;
+  s += ` และเพราะ${P.th}อยู่ราศี${rs.th} คุณจึงจัดการเรื่องนี้แบบ${rs.style}`;
+  if (R.t && R.t !== R.r) s += ` ส่วนเจ้าราศีแบบดั้งเดิมคือ${PK[R.t].th} อยู่เรือน ${R.th} ทำให้เรื่องนี้เชื่อมกับ${HOUSES[R.th-1].t}ด้วย`;
+  return s;
+}
+function aspectsOf(ch, k) { return ch.aspects.filter(a=>a.p.k===k || a.q.k===k); }
+function aspLinks(ch, k) {
+  return aspectsOf(ch,k).map(a=>{ const o = a.p.k===k ? a.q : a.p; const X = aspectText(a);
+    return `${lk('aspects', a.id, `${a.A.n}${o.th}`)}<span class="tag n-${X.nature}">${NATURE[X.nature]}</span>`; }).join(' ');
+}
+function inStellium(ch, k) {
+  const l = ch.lons[k]; const out = [];
+  ch.stSigns.forEach(st=>{ if (st.ps.some(p=>p.k===k)) out.push(`ราศี${SIGNS[st.k].th}`); });
+  ch.stHouses.forEach(st=>{ if (st.ps.some(p=>p.k===k)) out.push(`เรือน ${st.k}`); });
+  return out;
+}
+
+function renderPlanets(inp, ch) {
+  let html = `<p class="intro">ดาวแต่ละดวงคือพลังด้านหนึ่งในตัวคุณ <b>ราศี</b>บอกว่าพลังนั้นทำงานในสไตล์ไหน <b>เรือน</b>บอกว่าทำงานในเรื่องใดของชีวิต และ<b>มุม</b>บอกว่าพลังนั้นร่วมมือหรือขัดกับดาวดวงอื่นอย่างไร กดที่แต่ละดวงเพื่ออ่าน</p><div class="list">`;
+  const list = PLANETS.map(p=>({...p, lon:ch.lons[p.k]}));
+  if (ch.asc!=null) list.push({k:'asc',...POINTS_INFO.asc,lon:ch.asc},{k:'mc',...POINTS_INFO.mc,lon:ch.mc});
+  const HR = houseRulers(ch);
+  for (const p of list) {
+    const s = signOf(p.lon), h = (p.k==='asc'||p.k==='mc') ? null : ch.houseOf(p.lon), rx = ch.retro[p.k], dg = dignity(p.k, p.lon), st = inStellium(ch, p.k), isPt = p.k==='asc'||p.k==='mc', ka = isPt?null:kumAsc(ch,p.k), km = isPt?null:kumMc(ch,p.k);
+    const sum = `${glyphSpan(p)}<span><span class="sm-name">${p.th}</span>${rx?'<span class="rx" title="ถอยหลัง">Rx</span>':''}${ka?'<span class="tag n-k">กุมลัคนา</span>':''}${km?'<span class="tag n-k">กุมกลางฟ้า</span>':''}${st.length?'<span class="tag n-m">สเตเลียม</span>':''}<br><span class="sm-sub">เรื่อง${p.theme}</span></span><span class="sm-right"><span class="sg">${s.g}</span> ${s.th} <span class="num">${degStr(p.lon)}</span>${h?`<br>เรือน ${h}`:''}</span>`;
+    let body = `<p class="lead"><b>${p.th}ในราศี${s.th}${h?` เรือน ${h}`:''}</b> ${VERB[p.k]}${s.style}`;
+    if (h && PH[p.k]) body += ` ในเรือน ${h} (${HOUSES[h-1].t}) ${PH[p.k][h-1]}`;
+    body += `</p><p class="sub">${p.desc}</p>`;
+    if (dg) body += `<p><b>${DT[dg].n}</b> ${DT[dg].d}</p>`;
+    if (ka) body += `<p><b>กุมลัคนา</b> ${KUM_INTRO} ${kumText(ch,p,ka)}</p>`;
+    if (km) body += `<p><b>กุมกลางฟ้า</b> ดาวนี้อยู่จุดสูงสุดของท้องฟ้าตอนคุณเกิด จึงเด่นในเรื่องอาชีพและภาพลักษณ์ในสังคม ${mcText(p,km)}</p>`;
+    if (p.k==='asc') { const kl = kumList(ch, kumAsc); body += kl.length ? `<p><b>ดาวกุมลัคนา</b> ${kl.map(x=>lk('planets','pl-'+x.p.k,x.p.th)).join(' ')} พลังของดาวเหล่านี้ผสมเข้ากับบุคลิกของคุณจนเด่นพอ ๆ กับราศีลัคนา</p>` : `<p><b>ไม่มีดาวกุมลัคนา</b> บุคลิกภายนอกจึงเป็นไปตามราศี${s.th}เป็นหลัก</p>`; }
+    const rules = HR.filter(R=>R.r===p.k);
+    if (rules.length) body += `<p><b>เป็นเจ้าเรือน ${rules.map(R=>R.h).join(' และ ')}</b> ${rules.map(R=> R.rh===R.h ? `${p.th}อยู่ในเรือน ${R.h} ที่ตัวเองเป็นเจ้าของ เรื่อง${HOUSES[R.h-1].t}จึงแข็งแรงเป็นพิเศษ` : `${p.th}พาเรื่อง${HOUSES[R.h-1].t} (เรือน ${R.h}) มาเชื่อมกับเรือน ${h} หมายความว่า${H_WHAT[R.h-1]}มักได้ผลผ่าน${H_VIA[h-1]}`).join(' ')}</p>`;
+    if (p.k==='asc' && HR.length) { const r = HR[0]; body += `<p><b>ดาวเจ้าชะตา</b> เจ้าราศี${s.th}คือ${lk('planets','pl-'+r.r,PK[r.r].th)} อยู่เรือน ${r.rh} ชีวิตโดยรวมของคุณจึงหมุนรอบเรื่อง${HOUSES[r.rh-1].t}เป็นพิเศษ</p>`; }
+    if (st.length) body += `<p><b>อยู่ในสเตเลียม (${st.join(' และ ')})</b> ดาวดวงนี้รวมกลุ่มกับดาวอื่นอีกหลายดวง พลังจึงไม่ทำงานเดี่ยว ๆ แต่ผสมกับดาวในกลุ่มจนเป็นเรื่องเด่นของดวง</p>`;
+    const al = aspLinks(ch, p.k);
+    if (al) body += `<p><b>มุมกับดาวอื่น</b> ${al}</p>`;
+    if (rx) body += `<p><b>เดินถอยหลัง (Retrograde)</b> ตอนคุณเกิด ดาวนี้ดูเหมือนเดินถอยหลังเมื่อมองจากโลก นักโหราศาสตร์มองว่าพลังด้านนี้หันเข้าด้านใน คุณอาจคิดทบทวนหลายรอบก่อนแสดงออก และพัฒนาด้านนี้ในแบบของตัวเอง</p>`;
+    html += item('pl-'+p.k, sum, body);
+  }
+  html += '</div>';
+  if (ch.asc==null) html += `<p class="empty">ใส่เวลาเกิดเพื่อดูลัคนา กลางฟ้า และเรือนที่ดาวแต่ละดวงอยู่</p>`;
+  $('p-planets').innerHTML = html;
+}
+
+function renderHouses(inp, ch) {
+  let html = `<p class="intro">วงดวงแบ่งเป็น 12 เรือน แต่ละเรือนคือเรื่องหนึ่งของชีวิต ดาวในเรือนบอกว่าเรื่องนั้นมีพลังอะไรเข้ามาเกี่ยว ส่วน<b>เจ้าราศี</b>ของราศีที่เริ่มต้นเรือน (ดาวที่เป็นเจ้าของราศีนั้น) จะพาเรื่องของเรือนนี้ไปเชื่อมกับเรือนที่ดาวดวงนั้นอยู่ ใช้อ่านได้ทุกเรือน และสำคัญเป็นพิเศษกับเรือนที่ไม่มีดาว</p>`;
+  if (!ch.cusps) { $('p-houses').innerHTML = html + `<p class="empty">เรือนคำนวณจากเวลาและสถานที่เกิด ใส่เวลาเกิดแล้วกด ดูดวงกำเนิด อีกครั้งเพื่อดูเรือนทั้ง 12</p>`; return; }
+  html += '<div class="list">';
+  const inHouse = Array.from({length:12},()=>[]);
+  PLANETS.forEach(p=>inHouse[ch.houseOf(ch.lons[p.k])-1].push(p));
+  const HR = houseRulers(ch);
+  ch.cusps.forEach((c,i)=>{
+    const s = signOf(c), H = HOUSES[i], ps = inHouse[i], R = HR[i], st = ch.stHouses.find(x=>x.k===i+1);
+    const sum = `<span class="gl num" style="font-family:var(--display);font-size:18px">${i+1}</span><span><span class="sm-name">${H.t}</span>${ps.length?`<span class="cnt">${ps.length} ดาว</span>`:''}${st?'<span class="tag n-m">สเตเลียม</span>':''}<br><span class="sm-sub">ราศี${s.th} เจ้าราศีอยู่เรือน ${R.rh}</span></span><span class="sm-right sg" style="font-size:17px">${ps.map(p=>p.g).join(' ')}</span>`;
+    let body = `<p class="sub">เรือนนี้เกี่ยวกับ${H.d}</p><p><b>เริ่มต้นที่ราศี${s.th} (${s.en})</b> คุณรับมือกับเรื่องนี้แบบ${s.style}</p>`;
+    if (ps.length) {
+      body += `<p><b>ดาวในเรือนนี้</b></p><ul class="pl">${ps.map(p=>`<li>${lk('planets','pl-'+p.k,p.th)} ${PH[p.k][i]}</li>`).join('')}</ul>`;
+      if (st) body += `<p><b>สเตเลียม</b> มีดาว ${st.ps.length} ดวงรวมอยู่ในเรือนนี้ เรื่อง${H.t}จึงเป็นเวทีหลักของชีวิตคุณ พลังของดาวเหล่านี้ผสมกันและแสดงออกผ่าน${H_VIA[i]}เป็นพิเศษ</p>`;
+    } else body += `<p><b>ไม่มีดาวในเรือนนี้</b> ไม่ได้แปลว่าเรื่องนี้ไม่สำคัญหรือไม่ดี ให้ดูจากเจ้าราศีของเรือนแทน</p>`;
+    body += `<div class="rbox"><b>เจ้าราศีของเรือนนี้</b> ${rulerText(ch, R)} ${lk('planets','pl-'+R.r,`อ่านเรื่อง${PK[R.r].th}`)}</div>`;
+    html += item('ho-'+(i+1), sum, body);
+  });
+  $('p-houses').innerHTML = html + '</div>';
+}
+
+function renderSummary(inp, ch) {
+  const L = ch.lons, hk = k => ch.houseOf(L[k]);
+  const sun = signOf(L.sun), moon = signOf(L.moon);
+  let html = `<p class="intro">หน้านี้รวมดาว ราศี เรือน และมุมเข้าด้วยกัน เพื่อให้เห็นภาพใหญ่ของดวงในที่เดียว กดชื่อดาวหรือมุมเพื่ออ่านรายละเอียด</p>`;
+
+  // ตัวตน
+  html += `<section class="sec" id="sum-top"><h3>ตัวตนของคุณ</h3>`;
+  html += `<p>แก่นแท้ของคุณคือคน${sun.kw} (${lk('planets','pl-sun',`ดวงอาทิตย์ราศี${sun.th}`)}${hk('sun')?` เรือน ${hk('sun')}`:''})${hk('sun')?` ${PH.sun[hk('sun')-1]}`:''}</p>`;
+  html += `<p>ด้านอารมณ์ ใจของคุณรู้สึกและตอบสนองแบบ${moon.style} (${lk('planets','pl-moon',`ดวงจันทร์ราศี${moon.th}`)}${hk('moon')?` เรือน ${hk('moon')}`:''})${hk('moon')?` ${PH.moon[hk('moon')-1]}`:''}</p>`;
+  const HR = houseRulers(ch);
+  if (ch.asc!=null) {
+    const a = signOf(ch.asc), r = HR[0], rs = signOf(L[r.r]);
+    html += `<p>ภายนอก คนมักเห็นคุณเป็นคน${a.style} (${lk('planets','pl-asc',`ลัคนาราศี${a.th}`)}) ดาวเจ้าชะตาของคุณคือ${lk('planets','pl-'+r.r,PK[r.r].th)} อยู่ราศี${rs.th} เรือน ${r.rh} ชีวิตโดยรวมจึงหมุนรอบเรื่อง${HOUSES[r.rh-1].t}เป็นพิเศษ ${PH[r.r][r.rh-1]}</p>`;
+  } else html += `<p class="sub">ใส่เวลาเกิดเพื่อดูลัคนา ดาวกุมลัคนา ดาวเจ้าชะตา และเรือน ซึ่งทำให้ภาพตัวตนครบขึ้น</p>`;
+  const kA = kumList(ch, kumAsc), kM = kumList(ch, kumMc);
+  if (ch.asc!=null) html += kA.length
+    ? `<p><b>ดาวกุมลัคนา</b> ${KUM_INTRO}</p><ul class="hl">${kA.map(x=>`<li><span class="tag n-k">กุมลัคนา</span> <b>${lk('planets','pl-'+x.p.k,x.p.th)}</b> ${kumText(ch,x.p,x.r)}</li>`).join('')}</ul>`
+    : `<p class="sub">ไม่มีดาวกุมลัคนา บุคลิกภายนอกของคุณจึงเป็นไปตามราศีลัคนา${signOf(ch.asc).th}เป็นหลัก</p>`;
+  if (kM.length) html += `<p><b>ดาวกุมกลางฟ้า</b> ดาวที่อยู่จุดสูงสุดของท้องฟ้าตอนคุณเกิดจะเด่นในเรื่องอาชีพและภาพลักษณ์ในสังคม</p><ul class="hl">${kM.map(x=>`<li><span class="tag n-k">กุมกลางฟ้า</span> <b>${lk('planets','pl-'+x.p.k,x.p.th)}</b> ${mcText(x.p,x.r)}</li>`).join('')}</ul>`;
+  const coreAsp = ch.aspects.filter(a=>a.orb<=5 && ['sun','moon','asc'].some(k=>a.p.k===k||a.q.k===k) && !(a.A.c==='conj' && ['asc','mc'].some(k=>a.p.k===k||a.q.k===k))).slice(0,3);
+  if (coreAsp.length) html += `<p><b>มุมที่หล่อหลอมตัวตน</b></p><ul class="hl">${coreAsp.map(a=>{const X=aspectText(a); return `<li><span class="tag n-${X.nature}">${NATURE[X.nature]}</span> ${lk('aspects',a.id,`${a.p.th} ${a.A.n} ${a.q.th}`)} ${X.main}</li>`;}).join('')}</ul>`;
+  html += `</section>`;
+
+  // จุดเด่นของดวง
+  const hi = [];
+  ch.stSigns.forEach(st=>{ const S=SIGNS[st.k]; hi.push(`<b>สเตเลียมในราศี${S.th}</b> ${st.ps.map(p=>lk('planets','pl-'+p.k,p.th)).join(' ')} รวมกัน ${st.ps.length} ดวง คุณจึงมีความเป็นราศี${S.th}เข้มข้นมาก คือ${S.kw} มากกว่าที่ราศีอาทิตย์บอกไว้`); });
+  ch.stHouses.forEach(st=>{ hi.push(`<b>สเตเลียมในเรือน ${st.k} (${HOUSES[st.k-1].t})</b> ${st.ps.map(p=>lk('planets','pl-'+p.k,p.th)).join(' ')} รวมกันในเรือนนี้ ชีวิตคุณจึงทุ่มพลังกับ${H_VIA[st.k-1]}เป็นพิเศษ ${lk('houses','ho-'+st.k,'อ่านเรือนนี้')}`); });
+  if (ch.asc!=null) {
+    const angs = [];
+    kA.forEach(x=>angs.push({p:x.p,l:'กุมลัคนา'})); kM.forEach(x=>angs.push({p:x.p,l:'กุมกลางฟ้า'}));
+    PLANETS.filter(p=>p.k!=='node').forEach(p=>{
+      [['ใกล้จุดตก (DC)',ch.asc+180],['ใกล้จุดฟ้าต่ำ (IC)',ch.mc+180]].forEach(([l,v])=>{ if (sep(L[p.k],v)<=8) angs.push({p,l}); });
+    });
+    if (angs.length) hi.push(`<b>ดาวบนมุมหลักของดวง</b> ${angs.map(x=>`${lk('planets','pl-'+x.p.k,x.p.th)}${x.l}`).join(', ')} ดาวที่อยู่ใกล้มุมหลักมีพลังเด่นมาก แสดงออกชัดในบุคลิกและเหตุการณ์ชีวิต`);
+  }
+  const els = {fire:0,earth:0,air:0,water:0}; PLANETS.filter(p=>p.k!=='node').forEach(p=>els[signOf(L[p.k]).el]++);
+  const eMax = Math.max(...Object.values(els)), eTop = Object.keys(els).filter(k=>els[k]===eMax);
+  hi.push(`<b>ธาตุเด่น: ${eTop.map(k=>'ธาตุ'+ELEM[k].n).join(' และ ')}</b> คุณจึงเป็นคน${eTop.map(k=>ELEM[k].d).join(' และ')}`);
+  if (ch.cusps) {
+    const cnt = Array(12).fill(0); PLANETS.filter(p=>p.k!=='node').forEach(p=>cnt[hk(p.k)-1]++);
+    const mx = Math.max(...cnt), top = cnt.map((c,i)=>[c,i]).filter(x=>x[0]===mx && mx>=2).map(x=>x[1]+1);
+    if (top.length && !ch.stHouses.length) hi.push(`<b>เรือนที่มีดาวมากที่สุด</b> ${top.map(h=>`${lk('houses','ho-'+h,`เรือน ${h} ${HOUSES[h-1].t}`)}`).join(' และ ')} เป็นเรื่องที่ชีวิตให้น้ำหนักมาก`);
+  }
+  if (!ch.stSigns.length && !ch.stHouses.length) hi.push(`<b>ไม่มีสเตเลียม</b> ไม่มีดาว 3 ดวงขึ้นไปรวมกันในราศีหรือเรือนเดียว พลังของคุณจึงกระจายไปหลายด้าน เป็นคนรอบด้านมากกว่าเจาะลึกเรื่องเดียว`);
+  html += `<section class="sec"><h3>จุดเด่นของดวง</h3><ul class="hl">${hi.map(x=>`<li>${x}</li>`).join('')}</ul></section>`;
+
+  // จุดแข็ง
+  const strong = [];
+  PLANETS.forEach(p=>{ const d = dignity(p.k, L[p.k]); if (d && DT[d].good) strong.push(`${lk('planets','pl-'+p.k,p.th)} ${DT[d].n} ในราศี${signOf(L[p.k]).th} ด้าน${p.theme}ของคุณจึงทำงานได้ดีเป็นธรรมชาติ`); });
+  ch.aspects.filter(a=>a.orb<=5 && !GEN_STRONG.has(a.p.k+'-'+a.q.k) && aspectText(a).nature==='e').slice(0,4)
+    .forEach(a=>strong.push(`${lk('aspects',a.id,`${a.p.th} ${a.A.n} ${a.q.th}`)} ${aspectText(a).main}`));
+  if (ch.cusps) HR.filter(R=>R.rh===R.h).forEach(R=>strong.push(`เจ้าเรือน ${R.h} (${PK[R.r].th}) อยู่ในเรือนตัวเอง เรื่อง${HOUSES[R.h-1].t}จึงมั่นคงและพึ่งตัวเองได้`));
+  html += `<section class="sec"><h3>จุดแข็ง</h3>${strong.length?`<ul class="hl good">${strong.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p class="sub">ไม่มีตำแหน่งที่โดดเด่นเป็นพิเศษ จุดแข็งของคุณกระจายอยู่ในหลายด้านตามที่อ่านในแท็บอื่น</p>'}</section>`;
+
+  // จุดอ่อน
+  const weak = [];
+  PLANETS.forEach(p=>{ const d = dignity(p.k, L[p.k]); if (d && !DT[d].good) weak.push(`${lk('planets','pl-'+p.k,p.th)} ${DT[d].n} ในราศี${signOf(L[p.k]).th} ด้าน${p.theme}อาจรู้สึกไม่ลงตัวและต้องใช้ความพยายามมากกว่าคนอื่น`); });
+  Object.keys(els).filter(k=>els[k]===0).forEach(k=>weak.push(`ไม่มีดาวในธาตุ${ELEM[k].n} ด้านที่${ELEM[k].d}อาจไม่ใช่สิ่งที่คุณทำได้เองโดยธรรมชาติ ต้องตั้งใจฝึกหรือหาคนที่มีด้านนี้มาช่วย`));
+  Object.keys(els).filter(k=>els[k]>=5).forEach(k=>weak.push(`ธาตุ${ELEM[k].n}มากเป็นพิเศษ (${els[k]} ดวง) จุดแข็งนี้อาจกลายเป็นจุดอ่อนได้ถ้าใช้มากเกินไป ควรหาสมดุลกับธาตุอื่น`));
+  html += `<section class="sec"><h3>จุดอ่อนที่ควรรู้</h3>${weak.length?`<ul class="hl bad">${weak.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p class="sub">ไม่มีดาวตกที่หรือธาตุที่ขาดหายไป ดวงค่อนข้างสมดุล</p>'}</section>`;
+
+  // โอกาส
+  const opp = [];
+  const jh = hk('jupiter'), js = signOf(L.jupiter);
+  opp.push(`${lk('planets','pl-jupiter','ดาวพฤหัส')}ในราศี${js.th}${jh?` เรือน ${jh}`:''} คุณเติบโตและคว้าโอกาสในแบบ${js.style}${jh?` ${PH.jupiter[jh-1]}`:''}`);
+  const nh = hk('node'); opp.push(`${lk('planets','pl-node','โหนดเหนือ')}ในราศี${signOf(L.node).th}${nh?` เรือน ${nh} ${PH.node[nh-1]}`:` ชีวิตชวนให้คุณเติบโตไปเป็นคน${signOf(L.node).style}`}`);
+  ch.aspects.filter(a=>['jupiter','venus'].some(k=>a.p.k===k||a.q.k===k) && a.orb<=6 && aspectText(a).nature==='e' && !GEN_MILD.has(a.p.k+'-'+a.q.k)).slice(0,2)
+    .forEach(a=>opp.push(`${lk('aspects',a.id,`${a.p.th} ${a.A.n} ${a.q.th}`)} ${aspectText(a).main}`));
+  html += `<section class="sec"><h3>โอกาส</h3><ul class="hl good">${opp.map(x=>`<li>${x}</li>`).join('')}</ul></section>`;
+
+  // ความท้าทาย
+  const ch2 = [];
+  const sh = hk('saturn'), ss = signOf(L.saturn);
+  ch2.push(`${lk('planets','pl-saturn','ดาวเสาร์')}ในราศี${ss.th}${sh?` เรือน ${sh}`:''} คุณสร้างความมั่นคงและรับผิดชอบแบบ${ss.style}${sh?` ${PH.saturn[sh-1]}`:''}`);
+  ch.aspects.filter(a=>a.orb<=5 && !GEN_STRONG.has(a.p.k+'-'+a.q.k) && aspectText(a).nature==='h').slice(0,4)
+    .forEach(a=>ch2.push(`${lk('aspects',a.id,`${a.p.th} ${a.A.n} ${a.q.th}`)} ${aspectText(a).main}`));
+  html += `<section class="sec"><h3>ความท้าทายและบทเรียน</h3><ul class="hl bad">${ch2.map(x=>`<li>${x}</li>`).join('')}</ul><p class="sub">ความท้าทายในดวงไม่ใช่เรื่องร้าย แต่เป็นจุดที่ชีวิตผลักให้คุณเติบโต คนจำนวนมากพบว่าจุดเหล่านี้กลายเป็นจุดแข็งที่สุดเมื่ออายุมากขึ้น</p></section>`;
+
+  $('p-summary').innerHTML = html;
+}
+
+function renderAspects(inp, ch) {
+  let html = `<p class="intro">มุมคือระยะห่างระหว่างดาวสองดวงบนวงดวง บางระยะทำให้พลังของสองดาวช่วยกัน บางระยะทำให้ขัดกัน ความหมายจึงขึ้นกับทั้งชนิดของมุมและคู่ดาว เช่น มุมร่วมของดาวศุกร์กับดาวพฤหัสมักเป็นผลดี แต่มุมร่วมของดวงอาทิตย์กับดาวเสาร์เป็นบทเรียนที่ต้องใช้เวลา ตัวเลข <b>คลาด</b> ยิ่งน้อย มุมยิ่งชัดและมีผลมาก</p>`;
+  html += `<div class="legend">${ASPECTS.map(A=>`<div class="c-${A.c}"><b>${A.n} ${A.a}°</b> ${A.kind}<br>${A.d}</div>`).join('')}</div>`;
+  if (!ch.aspects.length) { $('p-aspects').innerHTML = html + '<p class="empty">ไม่พบมุมหลักในดวงนี้</p>'; return; }
+  html += '<div class="list">';
+  for (const a of ch.aspects) {
+    const strength = a.orb < 2 ? 'ชัดมาก' : a.orb < 5 ? 'ชัด' : 'มีผลเบา ๆ';
+    const X = aspectText(a);
+    const sum = `<span class="gl c-${a.A.c}" style="color:var(--c);font-family:var(--body);font-size:13px;font-weight:600">${a.A.a}°</span><span><span class="sm-name">${a.p.th} <span class="asp-name c-${a.A.c}">${a.A.n}</span> ${a.q.th}</span><br><span class="sm-sub">${a.p.theme} กับ ${a.q.theme}</span><span class="tag n-${X.nature}">${NATURE[X.nature]}</span></span><span class="sm-right">คลาด <span class="num">${a.orb.toFixed(1)}°</span></span>`;
+    const body = `${X.html}<p>มุมนี้คลาด ${a.orb.toFixed(1)}° ถือว่า${strength}</p>`;
+    html += item(a.id, sum, body);
+  }
+  $('p-aspects').innerHTML = html + '</div>';
+}
+
+function render(inp, ch) {
+  const dtf = new Intl.DateTimeFormat('th-TH',{dateStyle:'long',...(inp.timeKnown?{timeStyle:'short'}:{}),timeZone:'UTC'});
+  const localShown = dtf.format(new Date(inp.ms + inp.off*60000));
+  $('cTitle').textContent = inp.title;
+  $('cSub').textContent = inp.sub || `${localShown}${inp.timeKnown?' น.':' (ไม่ทราบเวลาเกิด คำนวณที่เที่ยงวัน)'} ที่${inp.placeName} (${fmtOff(inp.off)})`;
+  drawWheel(ch);
+  renderOverview(inp, ch); renderPlanets(inp, ch); renderHouses(inp, ch); renderAspects(inp, ch); renderSummary(inp, ch);
+  const notes = [];
+  if (ch.houseNote) notes.push(ch.houseNote);
+  notes.push('ใช้ระบบราศีแบบตะวันตก (Tropical) ตำแหน่งดาวคำนวณในเบราว์เซอร์ของคุณ ไม่มีการส่งข้อมูลออกไป ความคลาดเคลื่อนราว 1 ถึง 2 ลิปดา ใช้ได้กับปีเกิด ค.ศ. 1800 ถึง 2100 คำอธิบายเป็นความหมายทั่วไปเพื่อการเรียนรู้และความบันเทิง');
+  $('note').textContent = notes.join(' ');
+}
+
+/* ---------- input handling ---------- */
+function readForm() {
+  const d = +$('day').value, mo = +$('month').value; let y = +$('year').value;
+  const timeKnown = !$('notime').checked;
+  const h = timeKnown ? +$('hour').value : 12, mi = timeKnown ? +($('minute').value||0) : 0;
+  if (!d || !mo || !y) return {error:'กรอกวัน เดือน และปีเกิดให้ครบ'};
+  if (y > 2300) y -= 543;
+  if (y < 1800 || y > 2100) return {error:'ปีเกิดต้องอยู่ระหว่าง ค.ศ. 1800 ถึง 2100 (พ.ศ. 2343 ถึง 2643)'};
+  const leap = y%4===0 && (y%100!==0 || y%400===0);
+  const dim = [31,leap?29:28,31,30,31,30,31,31,30,31,30,31][mo-1];
+  if (d<1 || d>dim) return {error:`เดือน${MONTHS[mo-1]}ปีนั้นมี ${dim} วัน ตรวจวันเกิดอีกครั้ง`};
+  if (timeKnown && ($('hour').value==='' || h<0 || h>23 || mi<0 || mi>59)) return {error:'กรอกเวลาเกิด (ชั่วโมง 0 ถึง 23) หรือเลือก ไม่ทราบเวลาเกิด'};
+  let loc;
+  if ($('place').value === 'custom') {
+    const lat = parseFloat($('lat').value), lon = parseFloat($('lon').value);
+    if (isNaN(lat)||isNaN(lon)||Math.abs(lat)>90||Math.abs(lon)>180) return {error:'กรอกละติจูด (−90 ถึง 90) และลองจิจูด (−180 ถึง 180)'};
+    loc = {n:`พิกัด ${lat.toFixed(3)}, ${lon.toFixed(3)}`, lat, lon, tz:null, off:+$('utcoff').value*60};
+  } else loc = PLACES[+$('place').value];
+  const {ms, off} = localToUTC(y,mo,d,h,mi,loc);
+  const name = $('name').value.trim();
+  return { ms, off, lat:loc.lat, lon:loc.lon, timeKnown, placeName:loc.n, houses:$('houses').value,
+    title: name ? `ดวงกำเนิดของ${name}` : 'ดวงกำเนิดของคุณ' };
+}
+const FIELDS = ['name','day','month','year','hour','minute','place','lat','lon','utcoff','houses'];
+function save() { try { const o={}; FIELDS.forEach(f=>o[f]=$(f).value); o.notime=$('notime').checked; localStorage.setItem('birthchart:last', JSON.stringify(o)); } catch(e) {} }
+function restore() {
+  try {
+    const o = JSON.parse(localStorage.getItem('birthchart:last')||'null'); if (!o) return false;
+    FIELDS.forEach(f=>{ if (o[f]!=null && o[f]!=='') $(f).value=o[f]; });
+    $('notime').checked = !!o.notime; $('notime').dispatchEvent(new Event('change')); $('place').dispatchEvent(new Event('change'));
+    return true;
+  } catch(e) { return false; }
+}
+function showNow() {
+  const now = Date.now(), loc = TH[0];
+  const inp = { ms:now, off:tzOffsetMin(loc.tz, now), lat:loc.lat, lon:loc.lon, timeKnown:true, placeName:loc.n, houses:$('houses').value,
+    title:'ท้องฟ้าขณะนี้เหนือกรุงเทพฯ', sub:'ตัวอย่างดวง ณ เวลาปัจจุบัน กรอกข้อมูลเกิดเพื่อดูดวงของคุณเอง' };
+  render(inp, compute(inp));
+}
+$('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const inp = readForm();
+  if (inp.error) { $('err').textContent = inp.error; return; }
+  $('err').textContent = '';
+  render(inp, compute(inp)); save(); selectTab('overview');
+  if (window.matchMedia('(max-width:860px)').matches) $('out').scrollIntoView({behavior: reduceMotion?'auto':'smooth'});
+});
+$('houses').addEventListener('change', ()=>{ const inp=readForm(); if (!inp.error) { render(inp,compute(inp)); save(); } else showNow(); });
+
+$('place').value = '0';
+if (restore()) { const inp = readForm(); inp.error ? showNow() : render(inp, compute(inp)); } else showNow();
+</script>
+</body>
+</html>
