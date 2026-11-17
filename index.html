@@ -479,15 +479,15 @@ const HOUSES = [
   ['โลกภายในและการพักใจ','จิตใต้สำนึก ความสงบ การปล่อยวาง และสิ่งที่ซ่อนอยู่เบื้องหลัง'],
 ].map(([t,d])=>({t,d}));
 const ASPECTS = [
-  {a:0,n:'ร่วม',en:'Conjunction',orb:8,c:'conj',kind:'มุมผสานพลัง',d:'ดาวสองดวงอยู่ใกล้กันจนพลังรวมกัน ผลดีหรือท้าทายขึ้นกับว่าเป็นดาวคู่ไหน',
+  {a:0,n:'มุมร่วม',en:'Conjunction',orb:8,c:'conj',kind:'มุมผสานพลัง',d:'ดาวสองดวงอยู่ใกล้กันจนพลังรวมกัน ผลดีหรือท้าทายขึ้นกับว่าเป็นดาวคู่ไหน',
     t:(x,y)=>`ด้าน${x}และด้าน${y}ของคุณผูกติดกันแน่น เวลาเรื่องหนึ่งเกิดขึ้น อีกเรื่องจะเข้ามาเกี่ยวด้วยเสมอ จุดนี้มักเป็นจุดเด่นที่คนรอบตัวสังเกตเห็น`},
-  {a:60,n:'เซกซ์ไทล์',en:'Sextile',orb:5,c:'harm',kind:'มุมเปิดโอกาส',d:'เป็นมิตรต่อกัน ช่วยเสริมกันได้ดีเมื่อคุณลงมือใช้',
+  {a:60,n:'มุมหกเหลี่ยม',en:'Sextile',orb:5,c:'harm',kind:'มุมเปิดโอกาส',d:'เป็นมิตรต่อกัน ช่วยเสริมกันได้ดีเมื่อคุณลงมือใช้',
     t:(x,y)=>`ด้าน${x}และด้าน${y}ช่วยส่งเสริมกัน เป็นโอกาสดีที่จะเห็นผลชัดเมื่อคุณตั้งใจใช้มัน`},
-  {a:90,n:'สแควร์',en:'Square',orb:7,c:'tense',kind:'มุมท้าทาย',d:'ตึงเครียด ดึงไปคนละทาง สร้างแรงกดดันที่ผลักให้เติบโต',
+  {a:90,n:'มุมฉาก',en:'Square',orb:7,c:'tense',kind:'มุมท้าทาย',d:'ตึงเครียด ดึงไปคนละทาง สร้างแรงกดดันที่ผลักให้เติบโต',
     t:(x,y)=>`ด้าน${x}และด้าน${y}มักดึงคุณไปคนละทาง บางครั้งอาจรู้สึกขัดใจหรือลังเล แต่แรงตึงนี้คือแรงผลักให้คุณลงมือและเก่งขึ้น`},
-  {a:120,n:'ไทรน์',en:'Trine',orb:7,c:'harm',kind:'มุมไหลลื่น',d:'เข้ากันได้อย่างเป็นธรรมชาติ เหมือนพรสวรรค์ที่ใช้ได้โดยไม่ต้องพยายาม',
+  {a:120,n:'มุมตรีโกณ',en:'Trine',orb:7,c:'harm',kind:'มุมไหลลื่น',d:'เข้ากันได้อย่างเป็นธรรมชาติ เหมือนพรสวรรค์ที่ใช้ได้โดยไม่ต้องพยายาม',
     t:(x,y)=>`ด้าน${x}และด้าน${y}เข้ากันได้อย่างเป็นธรรมชาติ เป็นจุดแข็งที่คุณอาจใช้อยู่ทุกวันโดยไม่รู้ตัว`},
-  {a:180,n:'ตรงข้าม',en:'Opposition',orb:8,c:'tense',kind:'มุมสองขั้ว',d:'สองพลังอยู่คนละฝั่ง ชีวิตชวนให้หาจุดสมดุล มักเห็นผ่านความสัมพันธ์กับคนอื่น',
+  {a:180,n:'มุมตรงข้าม',en:'Opposition',orb:8,c:'tense',kind:'มุมสองขั้ว',d:'สองพลังอยู่คนละฝั่ง ชีวิตชวนให้หาจุดสมดุล มักเห็นผ่านความสัมพันธ์กับคนอื่น',
     t:(x,y)=>`ด้าน${x}และด้าน${y}อยู่คนละขั้ว คุณอาจเอนไปทางหนึ่งแล้วเหวี่ยงกลับอีกทาง การหาจุดกึ่งกลางคือบทเรียนสำคัญ และมักเห็นชัดผ่านคนรอบตัว`},
 ];
 /* ความหมายของมุมแยกตามคู่ดาว: [ผลของมุมร่วม e=ส่งเสริม h=ท้าทาย m=ทั้งสองด้าน, แก่นของคู่นี้, เมื่อทำมุมส่งเสริม, เมื่อทำมุมท้าทาย, เมื่อทำมุมร่วม] */
@@ -562,13 +562,13 @@ const NATURE = {e:'ส่งเสริม',h:'ท้าทาย',m:'มีท
 const GEN_STRONG = new Set(['uranus-neptune','uranus-pluto','neptune-pluto']);
 const GEN_MILD = new Set(['jupiter-saturn','jupiter-uranus','jupiter-neptune','jupiter-pluto','saturn-uranus','saturn-neptune','saturn-pluto']);
 const TYPE_NOTE = {
-  60:'มุมเซกซ์ไทล์เป็นโอกาสที่ต้องลงมือใช้ จึงจะเห็นผลชัด',
-  90:'มุมสแควร์มักรู้สึกเป็นแรงกดดันภายในใจ ซึ่งผลักให้คุณลงมือแก้ไขและเติบโต ไม่ได้แปลว่าร้าย แต่เป็นบทเรียนที่ต้องใช้ความพยายาม',
-  120:'มุมไทรน์ทำให้เรื่องนี้มาอย่างเป็นธรรมชาติเหมือนพรสวรรค์ ข้อควรระวังคือความสบายจนไม่พัฒนาต่อ',
-  180:'มุมตรงข้ามมักแสดงออกผ่านคนอื่น เช่น คนใกล้ชิดที่สะท้อนอีกด้านหนึ่งของคุณ การหาจุดกึ่งกลางระหว่างสองขั้วคือกุญแจ',
-  e:'มุมร่วมของดาวคู่นี้มักให้ผลดี เพราะพลังทั้งสองเข้ากันได้',
-  h:'มุมร่วมของดาวคู่นี้เป็นบทเรียนมากกว่าของขวัญ ไม่ได้แปลว่าร้าย แต่ต้องใช้เวลาเรียนรู้ จึงจะกลายเป็นจุดแข็ง',
-  m:'มุมร่วมของดาวคู่นี้มีทั้งด้านดีและด้านท้าทาย ขึ้นอยู่กับว่าคุณใช้พลังนี้อย่างไร',
+  60:'มุมหกเหลี่ยม (Sextile) เป็นโอกาสที่ต้องลงมือใช้ จึงจะเห็นผลชัด',
+  90:'มุมฉาก (Square) มักรู้สึกเป็นแรงกดดันภายในใจ ซึ่งผลักให้คุณลงมือแก้ไขและเติบโต ไม่ได้แปลว่าร้าย แต่เป็นบทเรียนที่ต้องใช้ความพยายาม',
+  120:'มุมตรีโกณ (Trine) ทำให้เรื่องนี้มาอย่างเป็นธรรมชาติเหมือนพรสวรรค์ ข้อควรระวังคือความสบายจนไม่พัฒนาต่อ',
+  180:'มุมตรงข้าม (Opposition) มักแสดงออกผ่านคนอื่น เช่น คนใกล้ชิดที่สะท้อนอีกด้านหนึ่งของคุณ การหาจุดกึ่งกลางระหว่างสองขั้วคือกุญแจ',
+  e:'มุมร่วม (Conjunction) ของดาวคู่นี้มักให้ผลดี เพราะพลังทั้งสองเข้ากันได้',
+  h:'มุมร่วม (Conjunction) ของดาวคู่นี้เป็นบทเรียนมากกว่าของขวัญ ไม่ได้แปลว่าร้าย แต่ต้องใช้เวลาเรียนรู้ จึงจะกลายเป็นจุดแข็ง',
+  m:'มุมร่วม (Conjunction) ของดาวคู่นี้มีทั้งด้านดีและด้านท้าทาย ขึ้นอยู่กับว่าคุณใช้พลังนี้อย่างไร',
 };
 function aspectText(a) {
   const key = a.p.k+'-'+a.q.k, P = PAIRS[key];
@@ -886,8 +886,8 @@ function drawWheel(ch) {
     if (a.A.c==='conj' || ['asc','mc'].includes(a.p.k) || ['asc','mc'].includes(a.q.k)) continue;
     seg(R_HI-2, a.p.lon, R_HI-2, a.q.lon, {class:a.A.c==='tense'?'w-a-t':'w-a-h','stroke-width':(1.6-a.orb*0.12).toFixed(2),opacity:(1-a.orb/10).toFixed(2)}, ag);
     const hit = seg(R_HI-2, a.p.lon, R_HI-2, a.q.lon, {class:'w-hit'}, ag);
-    el('title',{},hit,`${a.p.th} ${a.A.n} ${a.q.th}`);
-    clickable(hit,'aspects',a.id,`${a.p.th} ${a.A.n} ${a.q.th}`);
+    el('title',{},hit,`${a.p.th} ${a.A.n} (${a.A.en}) ${a.q.th}`);
+    clickable(hit,'aspects',a.id,`${a.p.th} ${a.A.n} (${a.A.en}) ${a.q.th}`);
   }
 
   const pg = el('g',{class:'w-planets'},svg);
@@ -966,7 +966,7 @@ function rulerText(ch, R) {
 function aspectsOf(ch, k) { return ch.aspects.filter(a=>a.p.k===k || a.q.k===k); }
 function aspLinks(ch, k) {
   return aspectsOf(ch,k).map(a=>{ const o = a.p.k===k ? a.q : a.p; const X = aspectText(a);
-    return `${lk('aspects', a.id, `${a.A.n}${o.th}`)}<span class="tag n-${X.nature}">${NATURE[X.nature]}</span>`; }).join(' ');
+    return `${lk('aspects', a.id, `${a.A.n} (${a.A.en}) กับ${o.th}`)}<span class="tag n-${X.nature}">${NATURE[X.nature]}</span>`; }).join(' ');
 }
 function inStellium(ch, k) {
   const l = ch.lons[k]; const out = [];
@@ -1045,7 +1045,7 @@ function renderSummary(inp, ch) {
     : `<p class="sub">ไม่มีดาวกุมลัคนา บุคลิกภายนอกของคุณจึงเป็นไปตามราศีลัคนา${signOf(ch.asc).th}เป็นหลัก</p>`;
   if (kM.length) html += `<p><b>ดาวกุมกลางฟ้า</b> ดาวที่อยู่จุดสูงสุดของท้องฟ้าตอนคุณเกิดจะเด่นในเรื่องอาชีพและภาพลักษณ์ในสังคม</p><ul class="hl">${kM.map(x=>`<li><span class="tag n-k">กุมกลางฟ้า</span> <b>${lk('planets','pl-'+x.p.k,x.p.th)}</b> ${mcText(x.p,x.r)}</li>`).join('')}</ul>`;
   const coreAsp = ch.aspects.filter(a=>a.orb<=5 && ['sun','moon','asc'].some(k=>a.p.k===k||a.q.k===k) && !(a.A.c==='conj' && ['asc','mc'].some(k=>a.p.k===k||a.q.k===k))).slice(0,3);
-  if (coreAsp.length) html += `<p><b>มุมที่หล่อหลอมตัวตน</b></p><ul class="hl">${coreAsp.map(a=>{const X=aspectText(a); return `<li><span class="tag n-${X.nature}">${NATURE[X.nature]}</span> ${lk('aspects',a.id,`${a.p.th} ${a.A.n} ${a.q.th}`)} ${X.main}</li>`;}).join('')}</ul>`;
+  if (coreAsp.length) html += `<p><b>มุมที่หล่อหลอมตัวตน</b></p><ul class="hl">${coreAsp.map(a=>{const X=aspectText(a); return `<li><span class="tag n-${X.nature}">${NATURE[X.nature]}</span> ${lk('aspects',a.id,`${a.p.th} ${a.A.n} (${a.A.en}) ${a.q.th}`)} ${X.main}</li>`;}).join('')}</ul>`;
   html += `</section>`;
 
   // จุดเด่นของดวง
@@ -1076,7 +1076,7 @@ function renderSummary(inp, ch) {
   const strong = [];
   PLANETS.forEach(p=>{ const d = dignity(p.k, L[p.k]); if (d && DT[d].good) strong.push(`${lk('planets','pl-'+p.k,p.th)} ${DT[d].n} ในราศี${signOf(L[p.k]).th} ด้าน${p.theme}ของคุณจึงทำงานได้ดีเป็นธรรมชาติ`); });
   ch.aspects.filter(a=>a.orb<=5 && !GEN_STRONG.has(a.p.k+'-'+a.q.k) && aspectText(a).nature==='e').slice(0,4)
-    .forEach(a=>strong.push(`${lk('aspects',a.id,`${a.p.th} ${a.A.n} ${a.q.th}`)} ${aspectText(a).main}`));
+    .forEach(a=>strong.push(`${lk('aspects',a.id,`${a.p.th} ${a.A.n} (${a.A.en}) ${a.q.th}`)} ${aspectText(a).main}`));
   if (ch.cusps) HR.filter(R=>R.rh===R.h).forEach(R=>strong.push(`เจ้าเรือน ${R.h} (${PK[R.r].th}) อยู่ในเรือนตัวเอง เรื่อง${HOUSES[R.h-1].t}จึงมั่นคงและพึ่งตัวเองได้`));
   html += `<section class="sec"><h3>จุดแข็ง</h3>${strong.length?`<ul class="hl good">${strong.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p class="sub">ไม่มีตำแหน่งที่โดดเด่นเป็นพิเศษ จุดแข็งของคุณกระจายอยู่ในหลายด้านตามที่อ่านในแท็บอื่น</p>'}</section>`;
 
@@ -1093,7 +1093,7 @@ function renderSummary(inp, ch) {
   opp.push(`${lk('planets','pl-jupiter','ดาวพฤหัส')}ในราศี${js.th}${jh?` เรือน ${jh}`:''} คุณเติบโตและคว้าโอกาสในแบบ${js.style}${jh?` ${PH.jupiter[jh-1]}`:''}`);
   const nh = hk('node'); opp.push(`${lk('planets','pl-node','โหนดเหนือ')}ในราศี${signOf(L.node).th}${nh?` เรือน ${nh} ${PH.node[nh-1]}`:` ชีวิตชวนให้คุณเติบโตไปเป็นคน${signOf(L.node).style}`}`);
   ch.aspects.filter(a=>['jupiter','venus'].some(k=>a.p.k===k||a.q.k===k) && a.orb<=6 && aspectText(a).nature==='e' && !GEN_MILD.has(a.p.k+'-'+a.q.k)).slice(0,2)
-    .forEach(a=>opp.push(`${lk('aspects',a.id,`${a.p.th} ${a.A.n} ${a.q.th}`)} ${aspectText(a).main}`));
+    .forEach(a=>opp.push(`${lk('aspects',a.id,`${a.p.th} ${a.A.n} (${a.A.en}) ${a.q.th}`)} ${aspectText(a).main}`));
   html += `<section class="sec"><h3>โอกาส</h3><ul class="hl good">${opp.map(x=>`<li>${x}</li>`).join('')}</ul></section>`;
 
   // ความท้าทาย
@@ -1101,21 +1101,21 @@ function renderSummary(inp, ch) {
   const sh = hk('saturn'), ss = signOf(L.saturn);
   ch2.push(`${lk('planets','pl-saturn','ดาวเสาร์')}ในราศี${ss.th}${sh?` เรือน ${sh}`:''} คุณสร้างความมั่นคงและรับผิดชอบแบบ${ss.style}${sh?` ${PH.saturn[sh-1]}`:''}`);
   ch.aspects.filter(a=>a.orb<=5 && !GEN_STRONG.has(a.p.k+'-'+a.q.k) && aspectText(a).nature==='h').slice(0,4)
-    .forEach(a=>ch2.push(`${lk('aspects',a.id,`${a.p.th} ${a.A.n} ${a.q.th}`)} ${aspectText(a).main}`));
+    .forEach(a=>ch2.push(`${lk('aspects',a.id,`${a.p.th} ${a.A.n} (${a.A.en}) ${a.q.th}`)} ${aspectText(a).main}`));
   html += `<section class="sec"><h3>ความท้าทายและบทเรียน</h3><ul class="hl bad">${ch2.map(x=>`<li>${x}</li>`).join('')}</ul><p class="sub">ความท้าทายในดวงไม่ใช่เรื่องร้าย แต่เป็นจุดที่ชีวิตผลักให้คุณเติบโต คนจำนวนมากพบว่าจุดเหล่านี้กลายเป็นจุดแข็งที่สุดเมื่ออายุมากขึ้น</p></section>`;
 
   $('p-summary').innerHTML = html;
 }
 
 function renderAspects(inp, ch) {
-  let html = `<p class="intro">มุมคือระยะห่างระหว่างดาวสองดวงบนวงดวง บางระยะทำให้พลังของสองดาวช่วยกัน บางระยะทำให้ขัดกัน ความหมายจึงขึ้นกับทั้งชนิดของมุมและคู่ดาว เช่น มุมร่วมของดาวศุกร์กับดาวพฤหัสมักเป็นผลดี แต่มุมร่วมของดวงอาทิตย์กับดาวเสาร์เป็นบทเรียนที่ต้องใช้เวลา ตัวเลข <b>คลาด</b> ยิ่งน้อย มุมยิ่งชัดและมีผลมาก</p>`;
-  html += `<div class="legend">${ASPECTS.map(A=>`<div class="c-${A.c}"><b>${A.n} ${A.a}°</b> ${A.kind}<br>${A.d}</div>`).join('')}</div>`;
+  let html = `<p class="intro">มุมคือระยะห่างระหว่างดาวสองดวงบนวงดวง บางระยะทำให้พลังของสองดาวช่วยกัน บางระยะทำให้ขัดกัน ความหมายจึงขึ้นกับทั้งชนิดของมุมและคู่ดาว เช่น มุมร่วม (Conjunction) ของดาวศุกร์กับดาวพฤหัสมักเป็นผลดี แต่มุมร่วมของดวงอาทิตย์กับดาวเสาร์เป็นบทเรียนที่ต้องใช้เวลา ตัวเลข <b>คลาด</b> ยิ่งน้อย มุมยิ่งชัดและมีผลมาก</p>`;
+  html += `<div class="legend">${ASPECTS.map(A=>`<div class="c-${A.c}"><b>${A.n} (${A.en}) ${A.a}°</b> ${A.kind}<br>${A.d}</div>`).join('')}</div>`;
   if (!ch.aspects.length) { $('p-aspects').innerHTML = html + '<p class="empty">ไม่พบมุมหลักในดวงนี้</p>'; return; }
   html += '<div class="list">';
   for (const a of ch.aspects) {
     const strength = a.orb < 2 ? 'ชัดมาก' : a.orb < 5 ? 'ชัด' : 'มีผลเบา ๆ';
     const X = aspectText(a);
-    const sum = `<span class="gl c-${a.A.c}" style="color:var(--c);font-family:var(--body);font-size:13px;font-weight:600">${a.A.a}°</span><span><span class="sm-name">${a.p.th} <span class="asp-name c-${a.A.c}">${a.A.n}</span> ${a.q.th}</span><br><span class="sm-sub">${a.p.theme} กับ ${a.q.theme}</span><span class="tag n-${X.nature}">${NATURE[X.nature]}</span></span><span class="sm-right">คลาด <span class="num">${a.orb.toFixed(1)}°</span></span>`;
+    const sum = `<span class="gl c-${a.A.c}" style="color:var(--c);font-family:var(--body);font-size:13px;font-weight:600">${a.A.a}°</span><span><span class="sm-name">${a.p.th} <span class="asp-name c-${a.A.c}">${a.A.n} (${a.A.en})</span> ${a.q.th}</span><br><span class="sm-sub">${a.p.theme} กับ ${a.q.theme}</span><span class="tag n-${X.nature}">${NATURE[X.nature]}</span></span><span class="sm-right">คลาด <span class="num">${a.orb.toFixed(1)}°</span></span>`;
     const body = `${X.html}<p>มุมนี้คลาด ${a.orb.toFixed(1)}° ถือว่า${strength}</p>`;
     html += item(a.id, sum, body);
   }
@@ -1357,8 +1357,8 @@ function renderWork(inp, ch) {
       body += `<p><b>การสื่อสารและจังหวะ</b> ${S.cr[1]} ${S.pr[1]}</p>`;
       if (S.comp.length) body += `<p><b>เติมเต็มกัน</b> ${S.comp.join(' ')}</p>`;
       body += `<p><b>งานแต่ละประเภท</b></p><ul class="pl">${split}</ul>`;
-      if (good.length) body += `<p><b>จุดที่ส่งเสริมกัน</b></p><ul class="hl good">${good.map(x=>`<li><span class="tag n-e">${PK[x.a].th}ของคุณ ${x.asp.n} ${PK[x.b].th}ของ${esc(m.n)}</span> ${esc(x.txt)}</li>`).join('')}</ul>`;
-      if (hard.length) body += `<p><b>จุดที่ต้องระวัง</b></p><ul class="hl bad">${hard.map(x=>`<li><span class="tag n-h">${PK[x.a].th}ของคุณ ${x.asp.n} ${PK[x.b].th}ของ${esc(m.n)}</span> ${esc(x.txt)}</li>`).join('')}</ul>`;
+      if (good.length) body += `<p><b>จุดที่ส่งเสริมกัน</b></p><ul class="hl good">${good.map(x=>`<li><span class="tag n-e">${PK[x.a].th}ของคุณ ${x.asp.n} (${x.asp.en}) ${PK[x.b].th}ของ${esc(m.n)}</span> ${esc(x.txt)}</li>`).join('')}</ul>`;
+      if (hard.length) body += `<p><b>จุดที่ต้องระวัง</b></p><ul class="hl bad">${hard.map(x=>`<li><span class="tag n-h">${PK[x.a].th}ของคุณ ${x.asp.n} (${x.asp.en}) ${PK[x.b].th}ของ${esc(m.n)}</span> ${esc(x.txt)}</li>`).join('')}</ul>`;
       if (m.o.notime) body += `<p class="sub">ไม่ทราบเวลาเกิดของ${esc(m.n)} ตำแหน่งดวงจันทร์อาจคลาดได้ถึงราว 7°</p>`;
       body += `<button class="more" type="button" data-remove="${i}">ลบ${esc(m.n)}ออกจากรายการ</button>`;
       html += item('mb-'+i, sum, body);
@@ -1510,7 +1510,7 @@ function renderLove(inp, ch) {
   </dl></section>`;
 
   const good = S.list.filter(x=>x.nature==='e').slice(0,5), hard = S.list.filter(x=>x.nature==='h').slice(0,5), mixed = S.list.filter(x=>x.nature==='m').slice(0,3);
-  const li = (x, c) => `<li><span class="tag n-${c}">${LBL(x.a)}ของคุณ ${x.asp.n} ${LBL(x.b)}ของ${nB}</span> ${x.txt}</li>`;
+  const li = (x, c) => `<li><span class="tag n-${c}">${LBL(x.a)}ของคุณ ${x.asp.n} (${x.asp.en}) ${LBL(x.b)}ของ${nB}</span> ${x.txt}</li>`;
   html += `<section class="sec"><h3>สิ่งที่ส่งเสริมกัน</h3>${good.length?`<ul class="hl good">${good.map(x=>li(x,'e')).join('')}${mixed.map(x=>li(x,'m')).join('')}</ul>`:'<p class="sub">ไม่มีมุมส่งเสริมที่ชัด ความสัมพันธ์นี้ต้องสร้างจากความตั้งใจของทั้งคู่มากกว่าความง่ายตามธรรมชาติ</p>'}</section>`;
   html += `<section class="sec"><h3>ความท้าทาย</h3>${hard.length?`<ul class="hl bad">${hard.map(x=>li(x,'h')).join('')}</ul>`:'<p class="sub">ไม่มีมุมท้าทายที่ชัด ความสัมพันธ์ค่อนข้างราบรื่น</p>'}</section>`;
 
