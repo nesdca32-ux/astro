@@ -4,16 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ดวงกำเนิด</title>
+<script>try{var t=localStorage.getItem("birthchart:theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Serif+Thai:wght@500;700&family=Noto+Sans+Symbols&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Noto+Sans+Symbols&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:"PSK";src:local("TH Sarabun PSK"),local("THSarabunPSK"),local("TH SarabunPSK"),local("TH Sarabun New"),local("THSarabunNew");font-weight:400;size-adjust:135%}
+@font-face{font-family:"PSK";src:local("TH Sarabun PSK Bold"),local("THSarabunPSK-Bold"),local("TH SarabunPSK Bold"),local("TH Sarabun New Bold"),local("THSarabunNew-Bold");font-weight:700;size-adjust:135%}
 :root{
   --paper:#E8EDF2; --surface:#F5F7FA; --ink:#1B3A6B; --ink-soft:#5B7396; --line:#B7C5D7; --line-soft:#D3DCE7;
   --band:#DCE4EE; --accent:#B97A10; --tense:#B0402C; --harmony:#2C6AA3; --field:#FFFFFF; --error:#A33A28; --flash:#F6E7C8;
   --sym:"Noto Sans Symbols","Noto Sans Symbols 2","Segoe UI Symbol","Apple Symbols","DejaVu Sans",sans-serif;
-  --body:"IBM Plex Sans Thai","Noto Sans Thai","Leelawadee UI","Thonburi",system-ui,sans-serif;
-  --display:"Noto Serif Thai","Noto Serif","Georgia",serif;
+  --body:"PSK","Sarabun","Leelawadee UI","Thonburi",system-ui,sans-serif;
+  --display:"PSK","Sarabun","Leelawadee UI","Thonburi",system-ui,sans-serif;
   color-scheme:light;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
@@ -32,7 +35,7 @@
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 56px}
 header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 20px;margin-bottom:22px;border-bottom:1px solid var(--line);padding-bottom:16px}
 h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,44px);line-height:1.2;margin:0;letter-spacing:.01em}
@@ -155,6 +158,13 @@ dl.dl dt{color:var(--ink-soft);font-size:14px} dl.dl dd{margin:0;max-width:64ch}
 .mform{position:static;display:grid;gap:12px;max-width:420px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:12px}
 table.tt td.hi{font-weight:700;color:var(--ink)}
 table.tt{border-collapse:collapse;width:100%;font-size:14px;margin-bottom:12px} table.tt th{text-align:left;font-weight:500;color:var(--ink-soft);font-size:13px;padding:6px 8px;border-bottom:1px solid var(--line)} table.tt td{padding:7px 8px;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);white-space:nowrap}
+.theme-btn{margin-left:auto;font:inherit;font-size:14px;font-weight:500;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer;align-self:center}
+.theme-btn:hover{border-color:var(--ink-soft)}
+.love-head{display:flex;gap:18px;align-items:center}
+.love-score{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:84px}
+.love-score .num{font-family:var(--display);font-size:44px;font-weight:700;line-height:1}
+.love-score .tag{margin:0}
+.bars.wide .bar{grid-template-columns:140px 1fr 26px}
 .gen{font-size:14px !important;color:var(--ink-soft);border-left:2px solid var(--line);padding-left:10px}
 .note{font-size:13px;color:var(--ink-soft);margin-top:32px;border-top:1px solid var(--line-soft);padding-top:14px;max-width:72ch}
 
@@ -192,6 +202,7 @@ table.tt{border-collapse:collapse;width:100%;font-size:14px;margin-bottom:12px} 
   <header>
     <h1>ดวงกำเนิด</h1>
     <p>กรอกวัน เวลา และสถานที่เกิด แล้วอ่านความหมายของดวงคุณตามโหราศาสตร์ตะวันตก ทีละเรื่องอย่างเข้าใจง่าย</p>
+    <button id="themeBtn" class="theme-btn" type="button"></button>
   </header>
 
   <div class="layout">
@@ -250,6 +261,7 @@ table.tt{border-collapse:collapse;width:100%;font-size:14px;margin-bottom:12px} 
         <button class="tab" role="tab" id="t-houses" aria-controls="p-houses" aria-selected="false" tabindex="-1">เรือน</button>
         <button class="tab" role="tab" id="t-aspects" aria-controls="p-aspects" aria-selected="false" tabindex="-1">มุม</button>
         <button class="tab" role="tab" id="t-work" aria-controls="p-work" aria-selected="false" tabindex="-1">การทำงาน</button>
+        <button class="tab" role="tab" id="t-love" aria-controls="p-love" aria-selected="false" tabindex="-1">Relationship Compatibility</button>
         <button class="tab" role="tab" id="t-summary" aria-controls="p-summary" aria-selected="false" tabindex="-1">สรุปไฮไลต์</button>
       </div>
       <section class="panel" role="tabpanel" id="p-overview" aria-labelledby="t-overview"></section>
@@ -257,6 +269,7 @@ table.tt{border-collapse:collapse;width:100%;font-size:14px;margin-bottom:12px} 
       <section class="panel" role="tabpanel" id="p-houses" aria-labelledby="t-houses" hidden></section>
       <section class="panel" role="tabpanel" id="p-aspects" aria-labelledby="t-aspects" hidden></section>
       <section class="panel" role="tabpanel" id="p-work" aria-labelledby="t-work" hidden></section>
+      <section class="panel" role="tabpanel" id="p-love" aria-labelledby="t-love" hidden></section>
       <section class="panel" role="tabpanel" id="p-summary" aria-labelledby="t-summary" hidden></section>
       <p class="note" id="note"></p>
     </main>
@@ -685,6 +698,13 @@ const SVGNS = 'http://www.w3.org/2000/svg';
 const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* ---------- theme ---------- */
+function effTheme() { const t = document.documentElement.getAttribute('data-theme'); return t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+function paintThemeBtn() { const d = effTheme()==='dark'; $('themeBtn').textContent = d ? '\u2600\uFE0E โหมดกลางวัน' : '\u263E\uFE0E โหมดกลางคืน'; $('themeBtn').setAttribute('aria-label', d ? 'เปลี่ยนเป็นโหมดกลางวัน' : 'เปลี่ยนเป็นโหมดกลางคืน'); }
+$('themeBtn').addEventListener('click', () => { const n = effTheme()==='dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); try { localStorage.setItem('birthchart:theme', n); } catch(e) {} paintThemeBtn(); });
+try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paintThemeBtn); } catch(e) {}
+paintThemeBtn();
+
 /* ---------- form setup ---------- */
 $('month').innerHTML = '<option value="">เลือก</option>' + MONTHS.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
 $('place').innerHTML =
@@ -771,7 +791,7 @@ function degStr(lon) {
 const glyphSpan = p => (p.k==='asc'||p.k==='mc') ? `<span class="gl txt">${p.g}</span>` : `<span class="gl">${p.g}</span>`;
 
 /* ---------- tabs & opening items ---------- */
-const TABS = ['overview','planets','houses','aspects','work','summary'];
+const TABS = ['overview','planets','houses','aspects','work','love','summary'];
 function selectTab(name, focus) {
   TABS.forEach(t=>{
     const on = t===name, b=$('t-'+t);
@@ -1370,6 +1390,160 @@ document.addEventListener('click', e=>{
   TEAM.splice(+b.dataset.remove, 1); saveTeam(); renderWork(CUR.inp, CUR.ch); openItem('work','team');
 });
 
+/* ---------- ความเข้ากันของคู่รัก ---------- */
+const LOVE_SET = ['sun','moon','mercury','venus','mars','jupiter','saturn','asc'];
+const LOVE_W = {sun:3, moon:3, mercury:1.5, venus:3, mars:2.5, jupiter:1.2, saturn:2.2, asc:2};
+const LOVE_ORB = {0:8,60:4,90:6,120:6,180:7};
+const LBL = k => k==='asc' ? 'ลัคนา' : PK[k].th;
+/* [ผลของมุมร่วม, เมื่อส่งเสริม, เมื่อท้าทาย, เมื่อร่วม, สิ่งที่ควรปรับ] */
+const LOVE = {
+  'sun-sun':['m','มีเป้าหมายชีวิตไปทางเดียวกัน เป็นทั้งคู่รักและเพื่อนที่เข้าใจกัน','ตัวตนและสิ่งที่ต้องการจากชีวิตต่างกัน อาจรู้สึกว่าอีกฝ่ายไม่เข้าใจตัวตนจริง ๆ','คล้ายกันมากจนเหมือนเห็นตัวเองในอีกคน เข้าใจกันง่าย แต่อาจแย่งกันเป็นศูนย์กลาง','ยอมรับว่าความต่างไม่ใช่ความผิด และให้พื้นที่แต่ละคนได้เป็นตัวของตัวเอง'],
+  'sun-moon':['e','เป็นหนึ่งในมุมที่ดีที่สุดของคู่รัก {1}ให้ทิศทางและความมั่นใจ ส่วน{2}ให้ความอบอุ่นและความรู้สึกเหมือนบ้าน','สิ่งที่{1}เป็นกับสิ่งที่{2}ต้องการทางใจไม่ตรงกัน {2}อาจรู้สึกไม่ได้รับการดูแลเท่าที่ต้องการ','คู่คลาสสิกของความรัก ผูกพันลึกซึ้ง เหมือนต่างฝ่ายต่างเติมเต็มกัน','{1}ควรถามว่า{2}ต้องการอะไรเวลาเหนื่อย แทนการเดาเอง'],
+  'sun-mercury':['e','{2}เข้าใจและคุยกับ{1}ได้ลึก คุยกันได้ทุกเรื่อง','{2}อาจแย้งหรือวิจารณ์{1}บ่อย จน{1}รู้สึกไม่ได้รับการยอมรับ','คุยกันถูกคอ ความคิดของ{2}สะท้อนตัวตนของ{1}ได้ดี','ชมก่อนติ และแยกการแย้งความคิดออกจากการตัดสินตัวคน'],
+  'sun-venus':['e','{2}ชื่นชมและรักในตัวตนของ{1} ความสัมพันธ์อบอุ่นและอ่อนโยน','รสนิยมหรือวิธีแสดงความรักไม่ตรงกัน อาจรู้สึกว่าอีกฝ่ายไม่เห็นคุณค่าในแบบที่อยากได้','มุมรักที่หวานมาก {2}หลงใหลในตัว{1} และ{1}ทำให้{2}รู้สึกพิเศษ','เรียนรู้ภาษารักของกันและกัน แล้วแสดงความรักในแบบที่อีกฝ่ายอยากได้'],
+  'sun-mars':['m','มีเคมีและแรงดึงดูด {2}กระตุ้นให้{1}กล้าและมีชีวิตชีวา','ดึงดูดกันแต่ก็ปะทะกันง่าย อาจแข่งกันหรือทะเลาะเรื่องใครถูก','แรงดึงดูดสูงและเร่าร้อน แต่ถ้าอีโก้ชนกันก็ร้อนแรงพอกัน','ตั้งกติกาการทะเลาะ เช่น พักก่อนพูดเมื่อโกรธ และไม่ขุดเรื่องเก่า'],
+  'sun-jupiter':['e','{2}ทำให้{1}รู้สึกมั่นใจ เติบโต และมองโลกแง่ดี เป็นคู่ที่นำโชคให้กัน','อาจตามใจกันเกินไป หรือคาดหวังในตัวกันสูงเกินจริง','อยู่ด้วยกันแล้วรู้สึกโชคดีและใจกว้างขึ้น','ตั้งความคาดหวังที่เป็นไปได้ และระวังการใช้จ่ายเกินตัวด้วยกัน'],
+  'sun-saturn':['h','{2}ให้ความมั่นคงและจริงจังกับ{1} เป็นคู่ที่คิดถึงอนาคตระยะยาว','{2}อาจดูเย็นชา จู้จี้ หรือควบคุม{1} จน{1}รู้สึกไม่ได้เป็นตัวเอง','ความสัมพันธ์จริงจังและผูกพันระยะยาว แต่{1}อาจรู้สึกหนักหรือถูกจำกัด ต้องเติมความสนุกเข้าไปบ้าง','{2}ควรแสดงความรักออกมาเป็นคำพูดและการกระทำ ไม่ใช่แค่ความรับผิดชอบ'],
+  'sun-asc':['e','{1}ชอบบุคลิกของ{2} และ{2}รู้สึกว่า{1}เข้าใจตัวตนของตัวเอง','บุคลิกภายนอกของ{2}อาจขัดใจ{1}','แรงดึงดูดตั้งแต่แรกพบ {2}รู้สึกว่า{1}คือคนที่ใช่','มองให้ลึกกว่าบุคลิกภายนอก'],
+  'moon-moon':['m','ความต้องการทางใจคล้ายกัน รู้ใจกันโดยไม่ต้องพูด','ต้องการการดูแลทางใจคนละแบบ เวลาเครียดอาจไม่รู้ว่าจะปลอบอีกฝ่ายอย่างไร','ผูกพันเหมือนครอบครัว อารมณ์ไหลไปด้วยกัน แต่ถ้าอารมณ์ไม่ดีก็พากันดิ่ง','บอกกันตรง ๆ ว่าเวลาเครียดอยากให้อีกฝ่ายทำอะไร'],
+  'moon-mercury':['e','{2}พูดแล้ว{1}รู้สึกปลอดภัยและเข้าใจ คุยเรื่องความรู้สึกกันได้ง่าย','คำพูดของ{2}อาจกระทบใจ{1} หรือ{2}ใช้เหตุผลในเรื่องที่{1}อยากได้ความเข้าใจ','คุยกันรู้เรื่องทั้งหัวและใจ','{2}ฟังให้จบก่อนให้เหตุผล และถามว่า{1}อยากได้คำแนะนำหรืออยากให้ฟังเฉย ๆ'],
+  'moon-venus':['e','อ่อนโยน อบอุ่น และใส่ใจกัน อยู่ด้วยกันแล้วสบายใจ','วิธีแสดงความรักกับสิ่งที่ใจต้องการไม่ตรงกัน อาจน้อยใจกันเล็ก ๆ บ่อย ๆ','หวานและอบอุ่นมาก รู้สึกเป็นที่รักและปลอดภัย','สังเกตว่าอะไรทำให้อีกฝ่ายรู้สึกถูกรัก แล้วทำสิ่งนั้นให้สม่ำเสมอ'],
+  'moon-mars':['h','{2}ปกป้อง{1} และทำให้{1}รู้สึกมีพลัง มีแรงดึงดูดทางอารมณ์','{2}อาจใจร้อนหรือพูดแรงจน{1}เสียใจ อารมณ์ปะทะกันง่าย','เร่าร้อนทางอารมณ์ ดึงดูดกันมาก แต่ทะเลาะกันได้แรงเช่นกัน','{2}ควรลดความแรงของคำพูด ส่วน{1}ควรบอกความรู้สึกตรง ๆ แทนการเก็บไว้'],
+  'moon-jupiter':['e','{2}ใจกว้างและให้กำลังใจ{1} อยู่ด้วยกันแล้วอุ่นใจ','อาจสัญญาเกินที่ทำได้ หรือตามใจกันจนเสียนิสัย','{2}ทำให้{1}รู้สึกได้รับการดูแลอย่างใจกว้าง','ทำตามสัญญาเล็ก ๆ ให้ได้สม่ำเสมอ'],
+  'moon-saturn':['h','{2}ให้ความรู้สึกมั่นคงและพึ่งพาได้กับ{1} เป็นคู่ที่อยู่กันยาว','{2}อาจดูเย็นชาหรือไม่ค่อยแสดงความรู้สึก ทำให้{1}เหงาแม้อยู่ด้วยกัน','ผูกพันจริงจัง แต่{1}อาจรู้สึกว่าความต้องการทางใจถูกมองข้าม','{2}ควรแสดงความอบอุ่นให้เห็นบ่อยขึ้น ส่วน{1}ควรเข้าใจว่าความรับผิดชอบคือภาษารักแบบหนึ่งของ{2}'],
+  'moon-asc':['e','{1}รู้สึกสบายใจเมื่ออยู่ใกล้{2}','บุคลิกของ{2}อาจทำให้{1}รู้สึกไม่ปลอดภัย','อยู่ด้วยกันแล้วรู้สึกเหมือนบ้าน','แสดงความอ่อนโยนให้อีกฝ่ายเห็น'],
+  'mercury-mercury':['m','คิดและคุยกันถูกคอ ไม่เคยเบื่อที่จะคุยกัน','วิธีคิดและวิธีพูดต่างกัน เข้าใจผิดกันง่าย','คิดเหมือนกันมาก คุยกันไม่รู้จบ','ทวนสิ่งที่ได้ยินก่อนตอบ เพื่อให้แน่ใจว่าเข้าใจตรงกัน'],
+  'mercury-venus':['e','พูดจาหวาน ๆ ต่อกัน คุยกันแล้วรู้สึกดี','คนหนึ่งอาจพูดตรงเกินไปสำหรับอีกคน','คุยกันสนุกและโรแมนติก','เลือกคำพูดที่นุ่มนวลขึ้นในเรื่องที่อ่อนไหว'],
+  'mercury-mars':['h','{2}กระตุ้นความคิดของ{1} ถกกันสนุกและเร้าใจ','ถกกันแล้วกลายเป็นทะเลาะ อาจใช้คำพูดแรงใส่กัน','คุยกันได้เร็วและตรง แต่คำพูดอาจคมเกินไป','ตกลงกันว่าจะไม่ใช้คำพูดทำร้ายกันแม้ตอนโกรธ'],
+  'mercury-jupiter':['e','คุยกันแล้วเปิดโลก ชอบวางแผนอนาคตด้วยกัน','คนหนึ่งมองรายละเอียด อีกคนมองภาพใหญ่ อาจรู้สึกว่าอีกฝ่ายไม่ฟัง','ชอบเรียนรู้และคุยเรื่องใหญ่ ๆ ด้วยกัน','ให้เกียรติมุมมองของอีกฝ่าย แม้จะต่างจากเรา'],
+  'mercury-saturn':['h','{2}ช่วยให้{1}คิดรอบคอบ คุยกันอย่างมีเหตุผล','{2}อาจไม่ฟังหรือดูแคลนความคิดของ{1} จน{1}ไม่กล้าพูด','คุยกันจริงจังและลึก แต่บางทีหนักเกินไป','{2}ควรรับฟังก่อนวิจารณ์'],
+  'mercury-asc':['e','คุยกันถูกคอตั้งแต่แรกพบ','อาจเข้าใจกันผิดจากท่าทีภายนอก','{1}เข้าใจความคิดของ{2}ได้ง่าย','ถามก่อนตัดสินจากท่าที'],
+  'venus-venus':['e','รสนิยมและวิธีรักคล้ายกัน ชอบสิ่งเดียวกัน','ภาษารักและรสนิยมต่างกัน ต้องเรียนรู้กันมากขึ้น','ชอบอะไรเหมือนกัน รักในแบบเดียวกัน','ลองทำสิ่งที่อีกฝ่ายชอบบ้าง แม้ไม่ใช่สไตล์เรา'],
+  'venus-mars':['m','แรงดึงดูดทั้งกายและใจดีมาก เป็นมุมสำคัญของความโรแมนติก','ดึงดูดกันแรงแต่จังหวะความรักไม่ตรงกัน คนหนึ่งอยากโรแมนติก อีกคนอยากตรงไปตรงมา','เคมีแรงมาก เป็นหนึ่งในมุมที่ทำให้หลงใหลกัน','คุยเรื่องความต้องการและจังหวะของกันและกันอย่างเปิดใจ'],
+  'venus-jupiter':['e','รักกันอย่างใจกว้าง สนุก และมีความสุข','อาจฟุ่มเฟือยหรือคาดหวังความรักแบบอุดมคติเกินไป','ความรักที่อบอุ่นและใจกว้าง','ตั้งงบและความคาดหวังที่พอดี'],
+  'venus-saturn':['h','รักจริงจัง มั่นคง และซื่อสัตย์ ยิ่งนานยิ่งแน่น','{2}อาจไม่ค่อยแสดงความรักหรือจู้จี้ ทำให้{1}รู้สึกไม่ได้รับความชื่นชม','ผูกพันระยะยาว แต่ต้องเติมความหวานและความสนุกเข้าไป','{2}ควรชมและแสดงความรักบ่อยขึ้น'],
+  'venus-asc':['e','{1}มองว่า{2}มีเสน่ห์และน่ารัก','รสนิยมของ{1}กับสไตล์ของ{2}ไม่ตรงกัน','แรงดึงดูดสูง {1}หลงเสน่ห์{2}','ชื่นชมสิ่งที่อีกฝ่ายเป็น'],
+  'mars-mars':['m','จังหวะชีวิตและพลังตรงกัน ทำกิจกรรมด้วยกันได้สนุก','ทะเลาะกันง่ายเพราะต่างคนต่างไม่ยอม','พลังเหมือนกัน เร่าร้อนทั้งความรักและการทะเลาะ','หาทางระบายพลังร่วมกัน เช่น ออกกำลังกายด้วยกัน'],
+  'mars-jupiter':['e','กล้าลุยเรื่องใหม่ด้วยกัน เดินทางและผจญภัยสนุก','อาจเสี่ยงหรือหุนหันไปด้วยกัน','ผจญภัยด้วยกันแล้วมีพลัง','ก่อนตัดสินใจเรื่องใหญ่ให้นอนคิดอีกคืน'],
+  'mars-saturn':['h','{2}ช่วยให้{1}ใจเย็นลงและมีทิศทาง','{2}อาจขัดหรือห้าม{1}จน{1}รู้สึกถูกจำกัด เกิดความหงุดหงิดสะสม','มีแรงต้านกันอยู่เสมอ ต้องเรียนรู้จังหวะของกัน','บอกความหงุดหงิดตั้งแต่ยังเป็นเรื่องเล็ก ไม่เก็บสะสม'],
+  'mars-asc':['m','{1}ทำให้{2}รู้สึกมีพลังและกล้า','{1}อาจดูก้าวร้าวหรือกดดัน{2}','แรงดึงดูดทางกายสูง แต่ก็ปะทะกันง่าย','{1}ควรลดความเร่งรีบและความแรงลง'],
+  'jupiter-jupiter':['e','มีความเชื่อและมุมมองชีวิตคล้ายกัน','มองเรื่องความเชื่อหรือการใช้ชีวิตต่างกัน','มองโลกไปทางเดียวกัน','เคารพความเชื่อของกันและกัน'],
+  'jupiter-saturn':['m','สมดุลระหว่างความสนุกกับความรับผิดชอบ','คนหนึ่งอยากใช้ชีวิต อีกคนอยากเก็บออม','วางแผนชีวิตคู่ระยะยาวได้ดี','ตกลงเรื่องเงินและแผนอนาคตให้ชัด'],
+  'jupiter-asc':['e','{1}ทำให้{2}รู้สึกมั่นใจและมีความสุข','{1}อาจคาดหวังหรือสอน{2}มากไป','{1}เป็นเหมือนผู้นำโชคให้{2}','สนับสนุนโดยไม่สั่งสอน'],
+  'saturn-saturn':['m','มีมุมมองเรื่องความรับผิดชอบคล้ายกัน','กลัวหรือกังวลคนละเรื่อง อาจไม่เข้าใจความกดดันของกัน','เข้าใจบทเรียนชีวิตของกันและกัน','แบ่งปันความกังวลกันอย่างเปิดเผย'],
+  'saturn-asc':['h','{1}ให้ความมั่นคงกับ{2}','{1}อาจทำให้{2}รู้สึกถูกตัดสินหรือถูกจำกัด','{1}จริงจังกับ{2} แต่{2}อาจรู้สึกกดดัน','{1}ควรยอมรับ{2}อย่างที่เป็น'],
+  'asc-asc':['m','บุคลิกเข้ากันได้ดี เข้ากันง่าย','บุคลิกต่างกันชัด ต้องใช้เวลาปรับ','บุคลิกคล้ายกันมาก','เรียนรู้สไตล์ของอีกฝ่าย'],
+};
+const LOVE_LANG = {fire:'การชื่นชม ความตื่นเต้น และการทำกิจกรรมสนุก ๆ ด้วยกัน', earth:'การดูแลที่จับต้องได้ เช่น ของขวัญ อาหาร การช่วยเหลือ และความสม่ำเสมอ', air:'การพูดคุย ข้อความ การแลกเปลี่ยนความคิด และการให้พื้นที่ส่วนตัว', water:'ความใส่ใจทางใจ การกอด เวลาคุณภาพ และการรู้สึกว่าเป็นคนสำคัญ'};
+const COMFORT = {fire:'ปลุกกำลังใจ ชวนออกไปทำอะไรสักอย่าง ไม่ปล่อยให้จมอยู่กับปัญหา', earth:'อยู่ข้าง ๆ อย่างมั่นคง ช่วยแก้ปัญหาที่จับต้องได้ หรือทำอาหารให้กิน', air:'รับฟังและคุยด้วยเหตุผล ให้ได้ระบายออกมาเป็นคำพูด', water:'ฟังด้วยใจ ไม่ต้องรีบแก้ปัญหา กอด และบอกว่าเข้าใจ'};
+const FIGHT = {fire:'โกรธเร็วหายเร็ว อยากเคลียร์ให้จบทันที', earth:'เก็บเงียบและสะสม แล้วอาจระเบิดทีเดียว ต้องการเวลา', air:'อยากคุยด้วยเหตุผล อาจใช้คำพูดเป็นอาวุธ หรือถอยห่างแบบเย็นชา', water:'น้อยใจ เก็บความรู้สึก อาจเงียบใส่หรือประชด'};
+const EL_LOVE = {same:'อยู่ธาตุเดียวกัน เข้าใจกันโดยธรรมชาติ', friend:'อยู่ธาตุที่เข้ากัน เติมพลังให้กันได้ดี',
+  'fire-earth':'ธาตุไฟกับดิน คนหนึ่งอยากไปเร็ว อีกคนอยากมั่นคง ต้องหาจังหวะร่วมกัน', 'fire-water':'ธาตุไฟกับน้ำ คนหนึ่งตรงและร้อนแรง อีกคนอ่อนไหว ระวังคำพูดที่กระทบใจ',
+  'earth-air':'ธาตุดินกับลม คนหนึ่งเน้นความจริงที่จับต้องได้ อีกคนเน้นความคิดและอิสระ ต้องเคารพวิธีของกัน', 'air-water':'ธาตุลมกับน้ำ คนหนึ่งใช้เหตุผล อีกคนใช้ความรู้สึก ต้องฟังกันทั้งหัวและใจ'};
+function elLove(x, y) { const r = elRel(x,y); if (r!=='diff') return {s: r==='same'?1.5:1.2, t:EL_LOVE[r]}; const ord=['fire','earth','air','water']; const k=[x,y].sort((a,b)=>ord.indexOf(a)-ord.indexOf(b)).join('-'); return {s:-0.8, t:EL_LOVE[k]}; }
+
+function loveSynastry(A, B, nA, nB) {
+  const L = (ch,k) => k==='asc' ? ch.asc : ch.lons[k];
+  const list = [];
+  for (const a of LOVE_SET) for (const b of LOVE_SET) {
+    const la = L(A,a), lb = L(B,b); if (la==null || lb==null) continue;
+    const s = sep(la, lb);
+    for (const asp of ASPECTS) {
+      const orb = Math.abs(s-asp.a); if (orb > LOVE_ORB[asp.a]) continue;
+      const ia = LOVE_SET.indexOf(a), ib = LOVE_SET.indexOf(b), fwd = ia<=ib;
+      const T = LOVE[fwd ? a+'-'+b : b+'-'+a], first = fwd ? nA : nB, second = fwd ? nB : nA;
+      const nature = asp.c==='conj' ? T[0] : asp.c==='harm' ? 'e' : 'h';
+      const fill = x => x.replaceAll('{1}', first).replaceAll('{2}', second);
+      const txt = fill(asp.c==='conj' ? T[3] : asp.c==='harm' ? T[1] : T[2]);
+      const w = (LOVE_W[a]+LOVE_W[b])/2 * (1 - orb/(LOVE_ORB[asp.a]+1));
+      list.push({a, b, asp, orb, nature, txt, tip:fill(T[4]), w});
+    }
+  }
+  list.sort((x,y)=>y.w-x.w);
+  const val = x => x.w * (x.nature==='e' ? 1 : x.nature==='h' ? -0.85 : 0.35);
+  const sub = keys => list.filter(x=>keys.includes(x.a)||keys.includes(x.b)).reduce((s,x)=>s+val(x),0);
+  const E = k => signOf(A.lons[k]).el, F = k => signOf(B.lons[k]).el;
+  const sunR = elLove(E('sun'), F('sun')), moonR = elLove(E('moon'), F('moon')), merR = elLove(E('mercury'), F('mercury'));
+  const longT = list.filter(x=>x.a==='saturn'||x.b==='saturn'||(x.a==='sun'&&x.b==='moon')||(x.a==='moon'&&x.b==='sun')).reduce((s,x)=>s + x.w*(x.nature==='e'?1:x.nature==='h'?-0.4:0.6), 0);
+  const attract = Math.round(clamp(50 + 5*(sub(['venus','mars','asc']) - 1.5), 5, 95));
+  const emo = Math.round(clamp(50 + 5*(sub(['moon']) + moonR.s - 1.2), 5, 95));
+  const talk = Math.round(clamp(50 + 6*(sub(['mercury']) + merR.s - 1), 5, 95));
+  const stable = Math.round(clamp(50 + 8*(longT - 1), 5, 95));
+  const total = Math.round(clamp(50 + 2.2*(list.reduce((s,x)=>s+val(x),0) + sunR.s + moonR.s - 3.3), 5, 95));
+  return {list, total, attract, emo, talk, stable, sunR, moonR, merR};
+}
+const relRow = (x, y, same, friend, diff) => { const r = elRel(x,y); return `ธาตุ${ELEM[x].n}กับ${ELEM[y].n} ${r==='same'?same:r==='friend'?friend:diff}`; };
+const loveLabel = s => s>=70?'เข้ากันดีมาก':s>=58?'เข้ากันดี':s>=45?'เข้ากันได้ ต้องเรียนรู้กันบ้าง':s>=33?'ต้องใช้ความเข้าใจกันมาก':'ต่างกันมาก';
+
+let PARTNER = null;
+try { PARTNER = JSON.parse(localStorage.getItem('birthchart:partner')||'null'); } catch(e) { PARTNER = null; }
+function savePartner() { try { PARTNER ? localStorage.setItem('birthchart:partner', JSON.stringify(PARTNER)) : localStorage.removeItem('birthchart:partner'); } catch(e) {} }
+
+function renderLove(inp, ch) {
+  let html = `<p class="intro">ดูความเข้ากันของคุณกับคนรักหรือคนที่สนใจ ทั้งแรงดึงดูด ความเข้าใจทางใจ การสื่อสาร และความมั่นคงระยะยาว พร้อมสิ่งที่ส่งเสริมกัน ความท้าทาย และสิ่งที่ควรปรับเข้าหากัน</p>`;
+  if (!PARTNER) {
+    const opts = $('place').innerHTML.replace(/<optgroup label="อื่น ๆ">.*?<\/optgroup>/, '');
+    html += `<form id="rf" class="mform" novalidate>
+      <label class="mini">ชื่อคนรัก<input id="r-name" type="text" autocomplete="off" placeholder="เช่น ต้น"></label>
+      <div class="row r3"><label class="mini">วัน<input id="r-day" type="number" inputmode="numeric" min="1" max="31"></label><label class="mini">เดือน<select id="r-month"><option value="">เลือก</option>${MONTHS.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('')}</select></label><label class="mini">ปี<input id="r-year" type="number" inputmode="numeric" placeholder="พ.ศ. หรือ ค.ศ."></label></div>
+      <div class="row r2"><label class="mini">ชั่วโมง<input id="r-hour" type="number" inputmode="numeric" min="0" max="23"></label><label class="mini">นาที<input id="r-minute" type="number" inputmode="numeric" min="0" max="59"></label></div>
+      <label class="check"><input id="r-notime" type="checkbox"> ไม่ทราบเวลาเกิด</label>
+      <label class="mini">สถานที่เกิด<select id="r-place">${opts}</select></label>
+      <p class="err" id="r-err" role="alert"></p>
+      <button class="btn" type="submit">ดูความเข้ากัน</button>
+    </form>`;
+    $('p-love').innerHTML = html;
+    $('r-notime').addEventListener('change', e=>{ $('r-hour').disabled = $('r-minute').disabled = e.target.checked; });
+    return;
+  }
+  const B = memberChart(PARTNER), nB = esc(PARTNER.name), S = loveSynastry(ch, B, 'คุณ', nB);
+  const tone = S.total>=58?'e':S.total>=45?'m':'h';
+  html += `<section class="sec" id="love-top"><div class="love-head"><div class="love-score"><span class="num">${S.total}</span><span class="tag n-${tone}">${loveLabel(S.total)}</span></div><div><h3 style="margin:0">คุณกับ${nB}</h3><p class="sub" style="margin:2px 0 0">${signOf(ch.lons.sun).g} อาทิตย์ราศี${signOf(ch.lons.sun).th} กับ ${signOf(B.lons.sun).g} อาทิตย์ราศี${signOf(B.lons.sun).th}</p></div></div>`;
+  html += `<div class="bars wide" style="max-width:480px;margin-top:14px">${bar('แรงดึงดูด',S.attract)}${bar('ความเข้าใจทางใจ',S.emo)}${bar('การสื่อสาร',S.talk)}${bar('ความมั่นคงระยะยาว',S.stable)}</div></section>`;
+
+  const ve = signOf(ch.lons.venus).el, vB = signOf(B.lons.venus).el, me = signOf(ch.lons.moon).el, mB = signOf(B.lons.moon).el, ma = signOf(ch.lons.mars).el, mrB = signOf(B.lons.mars).el;
+  html += `<section class="sec"><h3>ความเข้ากัน</h3><dl class="dl">
+    <dt>ตัวตน (ดวงอาทิตย์)</dt><dd>ดวงอาทิตย์ของทั้งคู่${S.sunR.t}</dd>
+    <dt>ใจ (ดวงจันทร์)</dt><dd>${relRow(me, mB, 'ความต้องการทางใจคล้ายกัน รู้ใจกันโดยไม่ต้องพูด', 'ใจเข้ากันได้ดี เติมกำลังใจให้กันได้', 'อารมณ์และวิธีปลอบใจต่างกัน สิ่งที่ทำให้คนหนึ่งหายเศร้าอาจไม่ได้ผลกับอีกคน (ดูหัวข้อ เวลาอีกฝ่ายเครียด ด้านล่าง)')}</dd>
+    <dt>การสื่อสาร (ดาวพุธ)</dt><dd>${relRow(signOf(ch.lons.mercury).el, signOf(B.lons.mercury).el, 'คิดและพูดภาษาเดียวกัน คุยกันไม่กี่คำก็เข้าใจ', 'คุยกันลื่น ต่อยอดความคิดกันได้ดี', 'วิธีคิดและวิธีพูดต่างกัน ต้องตั้งใจฟังและทวนความเข้าใจกันมากขึ้น')}</dd>
+    <dt>ภาษารัก (ดาวศุกร์)</dt><dd>คุณรู้สึกถูกรักผ่าน${LOVE_LANG[ve]} ส่วน${nB}รู้สึกถูกรักผ่าน${LOVE_LANG[vB]}${ve===vB?' ภาษารักตรงกัน ทำให้กันได้ง่าย':''}</dd>
+  </dl></section>`;
+
+  const good = S.list.filter(x=>x.nature==='e').slice(0,5), hard = S.list.filter(x=>x.nature==='h').slice(0,5), mixed = S.list.filter(x=>x.nature==='m').slice(0,3);
+  const li = (x, c) => `<li><span class="tag n-${c}">${LBL(x.a)}ของคุณ ${x.asp.n} ${LBL(x.b)}ของ${nB}</span> ${x.txt}</li>`;
+  html += `<section class="sec"><h3>สิ่งที่ส่งเสริมกัน</h3>${good.length?`<ul class="hl good">${good.map(x=>li(x,'e')).join('')}${mixed.map(x=>li(x,'m')).join('')}</ul>`:'<p class="sub">ไม่มีมุมส่งเสริมที่ชัด ความสัมพันธ์นี้ต้องสร้างจากความตั้งใจของทั้งคู่มากกว่าความง่ายตามธรรมชาติ</p>'}</section>`;
+  html += `<section class="sec"><h3>ความท้าทาย</h3>${hard.length?`<ul class="hl bad">${hard.map(x=>li(x,'h')).join('')}</ul>`:'<p class="sub">ไม่มีมุมท้าทายที่ชัด ความสัมพันธ์ค่อนข้างราบรื่น</p>'}</section>`;
+
+  const tips = [];
+  const seen = new Set(); hard.forEach(x=>{ if (!seen.has(x.tip)) { seen.add(x.tip); tips.push(`<b>${LBL(x.a)}กับ${LBL(x.b)}</b> ${x.tip}`); } });
+  tips.push(`<b>แสดงความรัก</b> ถ้าอยากให้${nB}รู้สึกถูกรัก ให้เน้น${LOVE_LANG[vB]} ส่วน${nB}จะทำให้คุณรู้สึกถูกรักผ่าน${LOVE_LANG[ve]}`);
+  tips.push(`<b>เวลาอีกฝ่ายเครียด</b> ${nB}ต้องการให้คุณ${COMFORT[mB]} ส่วนคุณต้องการให้${nB}${COMFORT[me]}`);
+  const quick = e => e==='fire'||e==='air';
+  const ft = quick(ma)&&quick(mrB) ? 'ทั้งคู่อยากเคลียร์เร็ว ระวังพูดแรงใส่กันตอนร้อน ตกลงกันว่าจะพักสักครู่ก่อนคุยต่อ'
+    : !quick(ma)&&!quick(mrB) ? 'ทั้งคู่ต้องการเวลา ระวังปล่อยให้ความเงียบยาวเกินไปจนกลายเป็นระยะห่าง ควรนัดคุยกันภายในวันนั้น'
+    : 'คนหนึ่งอยากเคลียร์ทันที อีกคนต้องการเวลา คนที่ใจร้อนควรให้เวลาอีกฝ่าย ส่วนคนที่เก็บเงียบควรบอกให้ชัดว่าจะกลับมาคุยเมื่อไหร่';
+  tips.push(`<b>เวลาทะเลาะ</b> คุณมักจะ${FIGHT[ma]} ส่วน${nB}มักจะ${FIGHT[mrB]} ${ft}`);
+  html += `<section class="sec"><h3>สิ่งที่ต้องปรับ</h3><ul class="hl">${tips.map(x=>`<li>${x}</li>`).join('')}</ul></section>`;
+
+  const notes = [];
+  if (PARTNER.notime) notes.push(`ไม่ทราบเวลาเกิดของ${nB} ตำแหน่งดวงจันทร์อาจคลาดได้ถึงราว 7° และไม่ได้นำลัคนาของ${nB}มาคิด`);
+  if (!ch.cusps) notes.push('ไม่ทราบเวลาเกิดของคุณ จึงไม่ได้นำลัคนาของคุณมาคิด');
+  notes.push('ดวงเป็นเพียงมุมมองหนึ่ง ความสัมพันธ์จริงขึ้นกับการสื่อสารและการเลือกของทั้งสองคน ข้อมูลคนรักเก็บไว้ในเบราว์เซอร์ของคุณเท่านั้น');
+  html += `<p class="sub">${notes.join(' ')}</p><button class="more" type="button" data-partner-clear="1">เปลี่ยนคนที่ต้องการเทียบ</button>`;
+  $('p-love').innerHTML = html;
+}
+document.addEventListener('submit', e=>{
+  if (e.target.id !== 'rf') return;
+  e.preventDefault();
+  const o = {name:$('r-name').value.trim().replace(/[<>&"]/g,''), day:$('r-day').value, month:$('r-month').value, year:$('r-year').value, hour:$('r-hour').value, minute:$('r-minute').value, notime:$('r-notime').checked, place:$('r-place').value};
+  const err = memberError(o); if (err) { $('r-err').textContent = err.replace('เพื่อนร่วมงาน','คนรัก'); return; }
+  PARTNER = o; savePartner(); renderLove(CUR.inp, CUR.ch); openItem('love','love-top');
+});
+document.addEventListener('click', e=>{
+  if (!e.target.closest('[data-partner-clear]')) return;
+  PARTNER = null; savePartner(); renderLove(CUR.inp, CUR.ch);
+});
+
 function render(inp, ch) {
   CUR = {inp, ch};
   const dtf = new Intl.DateTimeFormat('th-TH',{dateStyle:'long',...(inp.timeKnown?{timeStyle:'short'}:{}),timeZone:'UTC'});
@@ -1377,7 +1551,7 @@ function render(inp, ch) {
   $('cTitle').textContent = inp.title;
   $('cSub').textContent = inp.sub || `${localShown}${inp.timeKnown?' น.':' (ไม่ทราบเวลาเกิด คำนวณที่เที่ยงวัน)'} ที่${inp.placeName} (${fmtOff(inp.off)})`;
   drawWheel(ch);
-  renderOverview(inp, ch); renderPlanets(inp, ch); renderHouses(inp, ch); renderAspects(inp, ch); renderWork(inp, ch); renderSummary(inp, ch);
+  renderOverview(inp, ch); renderPlanets(inp, ch); renderHouses(inp, ch); renderAspects(inp, ch); renderWork(inp, ch); renderLove(inp, ch); renderSummary(inp, ch);
   const notes = [];
   if (ch.houseNote) notes.push(ch.houseNote);
   notes.push('ใช้ระบบราศีแบบตะวันตก (Tropical) ตำแหน่งดาวคำนวณในเบราว์เซอร์ของคุณ ไม่มีการส่งข้อมูลออกไป ความคลาดเคลื่อนราว 1 ถึง 2 ลิปดา ใช้ได้กับปีเกิด ค.ศ. 1800 ถึง 2100 คำอธิบายเป็นความหมายทั่วไปเพื่อการเรียนรู้และความบันเทิง');
