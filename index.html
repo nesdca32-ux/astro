@@ -183,6 +183,30 @@ td.lv-h{color:var(--harmony);font-weight:600} td.lv-m{color:var(--ink)} td.lv-l{
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface);margin:0 0 16px}
 .seg button{font:inherit;font-size:15px;font-weight:500;color:var(--ink-soft);background:none;border:0;border-radius:999px;padding:6px 16px;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+.chip{font:inherit;font-size:14px;color:var(--ink-soft);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip i{width:14px;height:3px;border-radius:2px;background:var(--rc);opacity:.35}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:var(--rc)} .chip[aria-pressed="true"] i{opacity:1}
+.life-box{margin:0 -4px}
+.life-svg{width:100%;min-width:560px;display:block;touch-action:pan-y}
+.life-svg:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lg-grid{stroke:var(--line-soft);stroke-width:1}
+.lg-tick{stroke:var(--line)}
+.lg-yl,.lg-xl{font-family:var(--body);font-size:14px;fill:var(--ink-soft)}
+.lg-xs{font-family:var(--body);font-size:11px;fill:var(--ink-soft);opacity:.8}
+.lg-line{fill:none;stroke:var(--rc);stroke-width:1.8;stroke-linejoin:round;opacity:.85}
+.lg-line.main{stroke-width:3;opacity:1}
+.lg-now{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 4}
+.lg-nowl{font-family:var(--body);font-size:13px;font-weight:600;fill:var(--accent)}
+.lg-cursor{stroke:var(--ink);stroke-width:1;opacity:.5}
+.life-detail{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 16px;margin:10px 0 22px}
+.ld-head{margin-bottom:8px;font-size:17px}
+.now-bar{display:flex;gap:14px;align-items:end;margin:0 0 18px;flex-wrap:wrap} .now-bar input{width:auto}
+.now-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.now-card{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:10px 12px}
+.now-card .k{font-size:13px;color:var(--ink-soft)} .now-card .v{font-size:19px;font-weight:600;margin:2px 0 6px}
+.now-card .t,.ease-bar .t{display:block;height:6px;border-radius:3px;background:var(--line-soft);overflow:hidden} .now-card .t i,.ease-bar .t i{display:block;height:100%;border-radius:3px;background:var(--tense)}
+.ease-bar{flex:1;max-width:420px}
 .gen{font-size:14px !important;color:var(--ink-soft);border-left:2px solid var(--line);padding-left:10px}
 .note{font-size:13px;color:var(--ink-soft);margin-top:32px;border-top:1px solid var(--line-soft);padding-top:14px;max-width:72ch}
 
@@ -280,6 +304,8 @@ td.lv-h{color:var(--harmony);font-weight:600} td.lv-m{color:var(--ink)} td.lv-l{
         <button class="tab" role="tab" id="t-aspects" aria-controls="p-aspects" aria-selected="false" tabindex="-1">มุม</button>
         <button class="tab" role="tab" id="t-work" aria-controls="p-work" aria-selected="false" tabindex="-1">การทำงาน</button>
         <button class="tab" role="tab" id="t-love" aria-controls="p-love" aria-selected="false" tabindex="-1">Relationship Compatibility</button>
+        <button class="tab" role="tab" id="t-life" aria-controls="p-life" aria-selected="false" tabindex="-1">กราฟชีวิต</button>
+        <button class="tab" role="tab" id="t-now" aria-controls="p-now" aria-selected="false" tabindex="-1">ดาวช่วงนี้</button>
         <button class="tab" role="tab" id="t-summary" aria-controls="p-summary" aria-selected="false" tabindex="-1">สรุปไฮไลต์</button>
       </div>
       <section class="panel" role="tabpanel" id="p-overview" aria-labelledby="t-overview"></section>
@@ -288,6 +314,8 @@ td.lv-h{color:var(--harmony);font-weight:600} td.lv-m{color:var(--ink)} td.lv-l{
       <section class="panel" role="tabpanel" id="p-aspects" aria-labelledby="t-aspects" hidden></section>
       <section class="panel" role="tabpanel" id="p-work" aria-labelledby="t-work" hidden></section>
       <section class="panel" role="tabpanel" id="p-love" aria-labelledby="t-love" hidden></section>
+      <section class="panel" role="tabpanel" id="p-life" aria-labelledby="t-life" hidden></section>
+      <section class="panel" role="tabpanel" id="p-now" aria-labelledby="t-now" hidden></section>
       <section class="panel" role="tabpanel" id="p-summary" aria-labelledby="t-summary" hidden></section>
       <p class="note" id="note"></p>
     </main>
@@ -828,7 +856,7 @@ function degStr(lon) {
 const glyphSpan = p => (p.k==='asc'||p.k==='mc') ? `<span class="gl txt">${p.g}</span>` : `<span class="gl">${p.g}</span>`;
 
 /* ---------- tabs & opening items ---------- */
-const TABS = ['overview','planets','houses','aspects','work','love','summary'];
+const TABS = ['overview','planets','houses','aspects','work','love','life','now','summary'];
 function selectTab(name, focus) {
   TABS.forEach(t=>{
     const on = t===name, b=$('t-'+t);
@@ -1522,7 +1550,7 @@ function savePartner() { try { PARTNER ? localStorage.setItem('birthchart:partne
 
 function renderLove(inp, ch) {
   let html = `<div class="seg" role="group" aria-label="โหมด"><button type="button" data-lovemode="couple" aria-pressed="${LOVE_MODE==='couple'}">เทียบกับคนรัก</button><button type="button" data-lovemode="single" aria-pressed="${LOVE_MODE==='single'}">สำหรับคนโสด</button></div>`;
-  if (LOVE_MODE==='single') { $('p-love').innerHTML = html + `<p class="intro">ดูจากเรือนคู่ครอง เรือนความรัก ดาวศุกร์ และดวงจันทร์ ว่าคุณมีโอกาสพบคู่ที่ไหน และคนแบบไหนจะเข้ามาเติมเต็ม</p>` + singleHTML(ch); return; }
+  if (LOVE_MODE==='single') { $('p-love').innerHTML = html + `<p class="intro">ดูจากเรือนคู่ครอง เรือนความรัก ดาวศุกร์ และดวงจันทร์ ว่าการมีแฟนง่ายหรือยากแค่ไหน คุณมีโอกาสพบคู่ที่ไหน และคนแบบไหนจะเข้ามาเติมเต็ม</p>` + easeHTML(inp, ch) + singleHTML(ch); return; }
   html += `<p class="intro">ดูความเข้ากันของคุณกับคนรักหรือคนที่สนใจ ทั้งแรงดึงดูด ความเข้าใจทางใจ การสื่อสาร และความมั่นคงระยะยาว พร้อมสิ่งที่ส่งเสริมกัน ความท้าทาย และสิ่งที่ควรปรับเข้าหากัน</p>`;
   if (!PARTNER) {
     const opts = $('place').innerHTML.replace(/<optgroup label="อื่น ๆ">.*?<\/optgroup>/, '');
@@ -1703,6 +1731,276 @@ document.addEventListener('click', e=>{
   renderLove(CUR.inp, CUR.ch);
 });
 
+/* ---------- ดาวจร: กราฟชีวิต และดาวช่วงนี้ ---------- */
+const TR_PL = ['jupiter','saturn','uranus','neptune','pluto'];
+const TR_W = {jupiter:1, saturn:1.2, uranus:.9, neptune:.7, pluto:.9, mars:.5};
+const TR_VAL = {jupiter:{0:1,60:.8,90:.3,120:1,180:.3}, saturn:{0:-.8,60:.5,90:-1,120:.6,180:-.9}, uranus:{0:-.3,60:.4,90:-.6,120:.5,180:-.5}, neptune:{0:-.4,60:.3,90:-.6,120:.4,180:-.5}, pluto:{0:-.6,60:.4,90:-.8,120:.5,180:-.7}, mars:{0:.2,60:.4,90:-.6,120:.5,180:-.5}};
+const CATS = [{k:'all',l:'ภาพรวม',c:'var(--ink)'},{k:'career',l:'การงาน',c:'var(--harmony)'},{k:'love',l:'ความรัก',c:'var(--tense)'},{k:'money',l:'การเงิน',c:'var(--accent)'},{k:'health',l:'สุขภาพและพลัง',c:'var(--c6)'}];
+const CW = {all:{sun:1.2,moon:1,asc:1,mc:.8,venus:.6,mars:.6,mercury:.4}, career:{mc:1.5,sun:1,mars:.6,mercury:.4,saturn:.4}, love:{venus:1.5,moon:.8,dsc:1,mars:.6,sun:.4}, money:{venus:1,jupiter:.8,c2:1,sun:.3}, health:{asc:1.2,sun:1,mars:1,moon:.6}};
+const PT_NAME = {sun:'ดวงอาทิตย์', moon:'ดวงจันทร์', mercury:'ดาวพุธ', venus:'ดาวศุกร์', mars:'ดาวอังคาร', jupiter:'ดาวพฤหัส', saturn:'ดาวเสาร์', uranus:'ดาวยูเรนัส', asc:'ลัคนา', mc:'กลางฟ้า', dsc:'จุดตก', c2:'จุดเริ่มเรือนการเงิน'};
+const PT_DOM = {sun:'ตัวตนและเป้าหมายชีวิต', moon:'อารมณ์ บ้าน และครอบครัว', mercury:'ความคิด การเรียน และการสื่อสาร', venus:'ความรัก ความสัมพันธ์ และการเงิน', mars:'พลังงานและการลงมือ', jupiter:'โอกาสและการเติบโต', saturn:'ความรับผิดชอบและโครงสร้างชีวิต', uranus:'อิสรภาพและการเปลี่ยนแปลง', asc:'ตัวคุณ ร่างกาย และภาพลักษณ์', mc:'อาชีพและสถานะ', dsc:'คู่ครองและหุ้นส่วน', c2:'รายได้และทรัพย์สิน'};
+const TR_PH = {
+  jupiter:['มีโอกาสและการขยายตัว มีคนช่วยเหลือ เหมาะเริ่มสิ่งใหม่','มีโอกาสเข้ามา แต่ต้องระวังทำเกินตัวหรือใช้จ่ายเกินงบ'],
+  saturn:['ผลของความพยายามเริ่มเห็นชัด ชีวิตด้านนี้มั่นคงขึ้น','เจอการทดสอบ แรงกดดัน และความรับผิดชอบที่หนักขึ้น ต้องอดทนและวางแผนให้ดี'],
+  uranus:['มีการเปลี่ยนแปลงที่สดใหม่และอิสระมากขึ้น','มีเรื่องเปลี่ยนกะทันหันที่ไม่ได้คาดคิด ต้องยืดหยุ่นและเปิดใจ'],
+  neptune:['มีแรงบันดาลใจ ความอ่อนโยน และความฝันใหม่','อาจสับสนหรือมองอะไรไม่ชัด ระวังถูกหลอกหรือเชื่อคนง่าย'],
+  pluto:['มีพลังเปลี่ยนแปลงตัวเองอย่างลึกซึ้ง','เกิดการเปลี่ยนแปลงครั้งใหญ่ที่บังคับให้ปล่อยของเก่า'],
+  mars:['มีพลังและกล้าลงมือ','หงุดหงิดง่าย ระวังขัดแย้งหรือรีบจนพลาด'],
+};
+const SPECIAL = {
+  'saturn-return':['ดาวเสาร์กลับมาที่ตำแหน่งเดิม (Saturn Return)','ช่วงทดสอบความเป็นผู้ใหญ่ สิ่งที่ไม่มั่นคงจะถูกทดสอบ และเป็นจังหวะวางรากฐานใหม่ของชีวิต'],
+  'saturn-opp':['ดาวเสาร์อยู่ตรงข้ามตำแหน่งเดิม (Saturn Opposition)','ช่วงทบทวนว่าสิ่งที่สร้างมามั่นคงพอหรือไม่ และปรับสมดุลระหว่างหน้าที่กับความต้องการของตัวเอง'],
+  'jupiter-return':['ดาวพฤหัสกลับมาที่ตำแหน่งเดิม (Jupiter Return)','รอบใหม่ของโอกาสและการเติบโต เหมาะกับการเริ่มต้นสิ่งใหม่'],
+  'uranus-opp':['ดาวยูเรนัสอยู่ตรงข้ามตำแหน่งเดิม (Uranus Opposition)','ช่วงอยากเปลี่ยนชีวิตกลางคน กล้าทำสิ่งที่เคยเก็บไว้ และอยากเป็นตัวของตัวเองมากขึ้น'],
+};
+const JH = {10:{career:.6},7:{love:.6},5:{love:.5},2:{money:.6},8:{money:.3},1:{health:.4},6:{health:.3},11:{all:.2,career:.2}};
+const SH = {1:{health:-.4,all:-.2},12:{health:-.3,all:-.2},7:{love:-.4},2:{money:-.3},4:{all:-.2},10:{career:-.2},6:{health:-.3}};
+const YR = 365.2422*864e5;
+function natalPoints(ch) {
+  const L = ch.lons, p = {sun:L.sun, moon:L.moon, mercury:L.mercury, venus:L.venus, mars:L.mars, jupiter:L.jupiter, saturn:L.saturn, uranus:L.uranus};
+  if (ch.asc!=null) { p.asc = ch.asc; p.mc = ch.mc; p.dsc = norm(ch.asc+180); p.c2 = ch.cusps[1]; }
+  return p;
+}
+function catScores(T, NP, ch, collect, planets, orbMax, age) {
+  const s = {all:0,career:0,love:0,money:0,health:0}, hits = [];
+  for (const t of (planets||TR_PL)) {
+    const om = orbMax || 3;
+    for (const n in NP) {
+      const d = sep(T[t], NP[n]);
+      for (const A of ASPECTS) {
+        const orb = Math.abs(d - A.a); if (orb > om) continue;
+        if (t===n && age!=null && age < ({jupiter:8,saturn:20,uranus:30,neptune:99,pluto:99}[t]) && (A.a===0 || age < 10)) continue;
+        const f = (1 - orb/om) * TR_W[t], v = TR_VAL[t][A.a];
+        let special = null;
+        if (t===n) special = A.a===0 && t==='saturn' ? 'saturn-return' : A.a===180 && t==='saturn' ? 'saturn-opp' : A.a===0 && t==='jupiter' ? 'jupiter-return' : A.a===180 && t==='uranus' ? 'uranus-opp' : null;
+        let used = false;
+        for (const c in CW) { const w = CW[c][n]; if (w) { s[c] += v*w*f; used = true; } }
+        if (special==='saturn-return') { s.all -= .6*f; s.career -= .3*f; } else if (special==='saturn-opp') s.all -= .3*f; else if (special==='jupiter-return') { s.all += .5*f; s.money += .3*f; } else if (special==='uranus-opp') s.all -= .4*f;
+        if (collect && (used || special)) hits.push({t, n, A, orb, v, f, special});
+      }
+    }
+  }
+  if (ch.cusps && !planets) {
+    const hj = ch.houseOf(T.jupiter), hs = ch.houseOf(T.saturn);
+    for (const c in (JH[hj]||{})) s[c] += JH[hj][c];
+    for (const c in (SH[hs]||{})) s[c] += SH[hs][c];
+  }
+  return collect ? {s, hits} : s;
+}
+function lifeSeries(inp, ch) {
+  const NP = natalPoints(ch), Y = 90, raw = [], specials = [];
+  for (let a = 0; a <= Y; a++) {
+    const acc = {all:0,career:0,love:0,money:0,health:0};
+    for (let m = 0; m < 12; m++) {
+      const ms = inp.ms + (a + (m+0.5)/12)*YR, T = longitudes(ms/864e5 + 2440587.5);
+      const r = catScores(T, NP, ch, true, null, null, a + (m+0.5)/12);
+      for (const c in acc) acc[c] += r.s[c]/12;
+      r.hits.forEach(h=>{ if (h.special && h.orb < 1.5) specials.push({type:h.special, age:a + (m+0.5)/12, orb:h.orb}); });
+    }
+    raw.push(acc);
+  }
+  const stats = {}, val = {};
+  CATS.forEach(({k})=>{
+    const xs = raw.map(r=>r[k]), sm = xs.map((x,i)=>0.25*(xs[i-1]??x) + 0.5*x + 0.25*(xs[i+1]??x));
+    const m = sm.reduce((a,b)=>a+b,0)/sm.length, sd = Math.sqrt(sm.reduce((a,b)=>a+(b-m)**2,0)/sm.length) || 1;
+    const mr = xs.reduce((a,b)=>a+b,0)/xs.length, sdr = Math.sqrt(xs.reduce((a,b)=>a+(b-mr)**2,0)/xs.length) || 1;
+    stats[k] = {m:mr, sd:sdr};
+    val[k] = sm.map(x=>Math.round(clamp(50 + 15*(x-m)/sd, 5, 95)));
+  });
+  specials.sort((a,b)=>a.age-b.age);
+  const events = [];
+  specials.forEach(s=>{ const last = events.filter(e=>e.type===s.type).pop();
+    if (last && s.age - last.end < 1.5) { last.end = s.age; if (s.orb < last.orb) { last.orb = s.orb; last.age = s.age; } }
+    else events.push({type:s.type, age:s.age, end:s.age, orb:s.orb}); });
+  events.sort((a,b)=>a.age-b.age);
+  return {val, stats, events, NP, Y};
+}
+const beYear = (inp, age) => new Date(inp.ms + age*YR).getUTCFullYear() + 543;
+const hitText = h => {
+  if (h.special) return `<b>${SPECIAL[h.special][0]}</b> ${SPECIAL[h.special][1]}`;
+  const good = h.v > 0;
+  return `<b>${PK[h.t].th}ทำ${h.A.n} (${h.A.en}) กับ${PT_NAME[h.n]}ของคุณ</b> เรื่อง${PT_DOM[h.n]} ${TR_PH[h.t][good?0:1]}`;
+};
+function yearHits(inp, ch, age) {
+  const NP = natalPoints(ch), best = {};
+  for (let q = 0; q < 4; q++) {
+    const ms = inp.ms + (age + (q+0.5)/4)*YR, r = catScores(longitudes(ms/864e5 + 2440587.5), NP, ch, true, null, null, age + (q+0.5)/4);
+    r.hits.forEach(h=>{ const k = h.t+h.n+h.A.a; if (!best[k] || h.f > best[k].f) best[k] = h; });
+  }
+  return Object.values(best).sort((a,b)=>(b.f*Math.abs(b.v)+(b.special?1:0))-(a.f*Math.abs(a.v)+(a.special?1:0))).slice(0,5);
+}
+let LIFE = null, LIFE_ON = {all:true, career:true, love:true, money:false, health:false}, LIFE_AGE = null;
+function lifeSVG(inp) {
+  const W = 800, H = 320, pl = 62, pr = 14, pt = 16, pb = 40, Y = LIFE.Y;
+  const x = a => pl + a/Y*(W-pl-pr), y = v => pt + (100-v)/100*(H-pt-pb);
+  let s = `<svg id="lifeSvg" class="life-svg" viewBox="0 0 ${W} ${H}" tabindex="0" role="img" aria-label="กราฟชีวิต ใช้ปุ่มลูกศรซ้ายขวาเพื่อเลือกอายุ">`;
+  [[75,'ดี'],[50,'ปกติ'],[25,'ท้าทาย']].forEach(([v,l])=>{ s += `<line class="lg-grid" x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}"/><text class="lg-yl" x="${pl-8}" y="${y(v)}" text-anchor="end" dominant-baseline="central">${l}</text>`; });
+  for (let a = 0; a <= Y; a += 10) s += `<line class="lg-tick" x1="${x(a)}" x2="${x(a)}" y1="${H-pb}" y2="${H-pb+5}"/><text class="lg-xl" x="${x(a)}" y="${H-pb+18}" text-anchor="middle">${a}</text><text class="lg-xs" x="${x(a)}" y="${H-pb+32}" text-anchor="middle">${beYear(inp,a)}</text>`;
+  const now = (Date.now() - inp.ms)/YR;
+  if (now >= 0 && now <= Y) s += `<line class="lg-now" x1="${x(now)}" x2="${x(now)}" y1="${pt}" y2="${H-pb}"/><text class="lg-nowl" x="${x(now)+4}" y="${pt+10}">ตอนนี้</text>`;
+  CATS.forEach(c=>{ if (!LIFE_ON[c.k]) return; const v = LIFE.val[c.k];
+    s += `<polyline class="lg-line${c.k==='all'?' main':''}" style="--rc:${c.c}" points="${v.map((p,a)=>`${x(a).toFixed(1)},${y(p).toFixed(1)}`).join(' ')}"/>`; });
+  const ag = LIFE_AGE ?? Math.max(0, Math.min(Y, Math.floor(now)));
+  s += `<line id="lgCursor" class="lg-cursor" x1="${x(ag+0.5)}" x2="${x(ag+0.5)}" y1="${pt}" y2="${H-pb}"/>`;
+  s += `<rect id="lgHit" x="${pl}" y="${pt}" width="${W-pl-pr}" height="${H-pt-pb}" fill="transparent"/></svg>`;
+  return s;
+}
+function lifeDetail(inp, ch, age) {
+  const v = k => LIFE.val[k][age], hits = yearHits(inp, ch, age);
+  const ev = LIFE.events.filter(e=>Math.floor(e.age)===age);
+  return `<div class="ld-head"><b>อายุ ${age} ปี</b> <span class="sub">(พ.ศ. ${beYear(inp,age)} ถึง ${beYear(inp,age+1)})</span></div>
+    <div class="bars wide">${CATS.map(c=>bar(c.l, v(c.k))).join('')}</div>
+    ${hits.length||ev.length ? `<ul class="hl">${ev.map(e=>`<li><b>${SPECIAL[e.type][0]}</b> ${SPECIAL[e.type][1]}</li>`).join('')}${hits.filter(h=>!h.special).map(h=>`<li><span class="tag n-${h.v>0?'e':'h'}">${h.v>0?'ส่งเสริม':'ท้าทาย'}</span> ${hitText(h)}</li>`).join('')}</ul>` : '<p class="sub">ปีนี้ไม่มีดาวเคลื่อนช้าทำมุมกับจุดสำคัญในดวงของคุณ ชีวิตค่อนข้างเรียบ ๆ ตามจังหวะของตัวเอง</p>'}`;
+}
+function bindLife(inp, ch) {
+  const svg = $('lifeSvg'); if (!svg) return;
+  const setAge = a => { LIFE_AGE = Math.max(0, Math.min(LIFE.Y-1, a)); const W = 800, pl = 62, pr = 14, xx = pl + (LIFE_AGE+0.5)/LIFE.Y*(W-pl-pr);
+    const c = $('lgCursor'); c.setAttribute('x1', xx); c.setAttribute('x2', xx); $('lifeDetail').innerHTML = lifeDetail(inp, ch, LIFE_AGE); };
+  const fromEvt = e => { const r = svg.getBoundingClientRect(), W = 800, pl = 62, pr = 14; const vx = (e.clientX - r.left)/r.width*W; return Math.floor((vx-pl)/(W-pl-pr)*LIFE.Y); };
+  let last = -1;
+  svg.addEventListener('pointermove', e=>{ const a = fromEvt(e); if (a!==last && a>=0 && a<LIFE.Y) { last = a; setAge(a); } });
+  svg.addEventListener('click', e=>{ const a = fromEvt(e); if (a>=0 && a<LIFE.Y) setAge(a); });
+  svg.addEventListener('keydown', e=>{ if (e.key==='ArrowRight') { e.preventDefault(); setAge((LIFE_AGE??0)+1); } if (e.key==='ArrowLeft') { e.preventDefault(); setAge((LIFE_AGE??0)-1); } });
+}
+function renderLife(inp, ch) {
+  LIFE = lifeSeries(inp, ch);
+  const now = Math.max(0, Math.floor((Date.now() - inp.ms)/YR));
+  LIFE_AGE = Math.min(now, LIFE.Y-1);
+  let html = `<p class="intro" id="life-top">กราฟนี้คำนวณจากดาวเคลื่อนช้า (ดาวพฤหัส ดาวเสาร์ ดาวยูเรนัส ดาวเนปจูน และดาวพลูโต) ที่โคจรมาทำมุมกับดาวและจุดสำคัญในดวงกำเนิดของคุณในแต่ละปี เส้นที่สูงหมายถึงช่วงที่ดาวส่งเสริม เส้นที่ต่ำหมายถึงช่วงที่มีบทเรียนหรือแรงกดดัน ชี้หรือแตะที่กราฟเพื่อดูรายละเอียดแต่ละปี</p>`;
+  html += `<div class="chips">${CATS.map(c=>`<button type="button" class="chip" data-lifecat="${c.k}" aria-pressed="${LIFE_ON[c.k]}" style="--rc:${c.c}"><i></i>${c.l}</button>`).join('')}</div>`;
+  html += `<div class="scroll life-box">${lifeSVG(inp)}</div><div id="lifeDetail" class="life-detail">${lifeDetail(inp, ch, LIFE_AGE)}</div>`;
+  const ev = LIFE.events.filter(e=>e.type!=='jupiter-return' || e.age > now - 1);
+  html += `<h3>ช่วงสำคัญของชีวิต</h3><ul class="hl">${ev.map(e=>`<li><span class="tag n-${e.type==='jupiter-return'?'e':'m'}">อายุราว ${Math.floor(e.age)} ปี (พ.ศ. ${beYear(inp, e.age)})</span> <b>${SPECIAL[e.type][0]}</b> ${SPECIAL[e.type][1]}</li>`).join('')}</ul>`;
+  const from = Math.min(now, LIFE.Y-1), to = Math.min(from+10, LIFE.Y-1);
+  if (to > from) {
+    html += `<h3>10 ปีข้างหน้า</h3><div class="scroll"><table class="tt"><thead><tr><th>ด้าน</th><th>ปีที่เด่นที่สุด</th><th>ปีที่ต้องระวัง</th></tr></thead><tbody>${CATS.map(c=>{ const seg = LIFE.val[c.k].slice(from, to+1).map((v,i)=>({v, a:from+i}));
+      const hi = seg.slice().sort((a,b)=>b.v-a.v)[0], lo = seg.slice().sort((a,b)=>a.v-b.v)[0];
+      return `<tr><td>${c.l}</td><td>พ.ศ. ${beYear(inp,hi.a)} (อายุ ${hi.a})</td><td>พ.ศ. ${beYear(inp,lo.a)} (อายุ ${lo.a})</td></tr>`; }).join('')}</tbody></table></div>`;
+  }
+  html += `<p class="sub">คะแนนเทียบช่วงต่าง ๆ ในชีวิตของคุณเอง ไม่ได้เทียบกับคนอื่น 50 คือระดับปกติของชีวิตคุณ ${ch.cusps?'':'ไม่ทราบเวลาเกิด จึงไม่ได้นำลัคนา กลางฟ้า และเรือนมาคิด กราฟด้านการงานและการเงินจึงหยาบกว่าปกติ '}ใช้เพื่อวางแผนและเตรียมตัว ไม่ใช่คำทำนายที่แน่นอน</p>`;
+  $('p-life').innerHTML = html;
+  bindLife(inp, ch);
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-lifecat]'); if (!b) return;
+  LIFE_ON[b.dataset.lifecat] = !LIFE_ON[b.dataset.lifecat];
+  b.setAttribute('aria-pressed', LIFE_ON[b.dataset.lifecat]);
+  document.querySelector('.life-box').innerHTML = lifeSVG(CUR.inp); bindLife(CUR.inp, CUR.ch);
+});
+
+/* ดาวช่วงนี้ */
+const RX_TXT = {
+  mercury:'การสื่อสาร เอกสาร การเดินทาง และเทคโนโลยีมีโอกาสผิดพลาด ตรวจทานให้ดีและเลี่ยงเซ็นสัญญาสำคัญถ้าเลี่ยงได้ เหมาะกับการทบทวน แก้ไขงานเก่า และติดต่อคนที่ห่างกันไป',
+  venus:'ความรักและการเงินถูกทบทวน คนเก่าอาจกลับมา ไม่เหมาะเริ่มความสัมพันธ์ใหม่ ซื้อของราคาแพง หรือเปลี่ยนลุคครั้งใหญ่',
+  mars:'พลังและแรงจูงใจลดลง หงุดหงิดง่าย ไม่เหมาะเริ่มโปรเจกต์ใหญ่หรือมีเรื่องขัดแย้ง เหมาะทำเรื่องที่ค้างให้เสร็จ',
+  jupiter:'การเติบโตหันเข้าด้านใน เหมาะทบทวนเป้าหมายและความเชื่อมากกว่าขยายงาน',
+  saturn:'ทบทวนความรับผิดชอบ ภาระ และโครงสร้างชีวิต งานที่ค้างจะกลับมาให้จัดการ',
+  uranus:'การเปลี่ยนแปลงเกิดจากข้างใน อยากเป็นอิสระแต่ยังไม่ถึงเวลาลงมือ',
+  neptune:'ภาพลวงตาเริ่มคลาย เหมาะกับการมองความจริงให้ชัด',
+  pluto:'ทบทวนเรื่องอำนาจ การควบคุม และสิ่งที่ควรปล่อยวาง',
+};
+const STAT_TH = {mercury:.08, venus:.05, mars:.03, jupiter:.008, saturn:.005, uranus:.003, neptune:.002, pluto:.002};
+const RX_SET = ['mercury','venus','mars','jupiter','saturn','uranus','neptune','pluto'];
+const thDate = ms => new Intl.DateTimeFormat('th-TH', {day:'numeric', month:'short', year:'numeric'}).format(new Date(ms));
+function speedAt(jd) { const a = longitudes(jd-0.5), b = longitudes(jd+0.5), sp = {}; for (const k of RX_SET.concat(['sun','moon'])) { let d = norm(b[k]-a[k]); if (d>180) d -= 360; sp[k] = d; } return sp; }
+function rxPeriods(ms0) {
+  const out = {}, jd0 = ms0/864e5 + 2440587.5, ks = ['mercury','venus','mars'], start = {}, res = {mercury:[],venus:[],mars:[]};
+  for (let d = -160; d <= 420; d++) { const sp = speedAt(jd0+d);
+    for (const k of ks) { const r = sp[k] < 0;
+      if (r && start[k]==null) start[k] = d; if (!r && start[k]!=null) { res[k].push([start[k], d-1]); start[k] = null; } } }
+  for (const k of ks) { if (start[k]!=null) res[k].push([start[k], 420]);
+    out[k] = {cur: res[k].find(([a,b])=>a<=0 && b>=0), next: res[k].find(([a])=>a>0)}; }
+  return out;
+}
+let NOW_DATE = null;
+function renderNow(inp, ch) {
+  const d = NOW_DATE ? new Date(NOW_DATE+'T12:00:00') : new Date();
+  const ms = d.getTime(), jd = ms/864e5 + 2440587.5, T = longitudes(jd), sp = speedAt(jd);
+  const iso = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  let html = `<p class="intro">ดาวบนท้องฟ้าเคลื่อนที่ตลอดเวลา เมื่อดาวโคจรผ่านเรือนหรือทำมุมกับดาวในดวงกำเนิดของคุณ จะส่งผลต่อเรื่องนั้นในช่วงเวลานั้น เลือกวันที่เพื่อดูช่วงอื่นได้</p>
+    <div class="now-bar"><label class="mini">วันที่<input id="nowDate" type="date" value="${iso}"></label><button class="more" type="button" data-nowreset="1">กลับมาวันนี้</button></div>`;
+  // ภาพรวมช่วงนี้
+  if (LIFE) {
+    const NP = natalPoints(ch), r = catScores(T, NP, ch, true), r2 = catScores(T, NP, ch, true, ['mars'], 2);
+    const sc = {}; CATS.forEach(c=>{ sc[c.k] = Math.round(clamp(50 + 15*((r.s[c.k] + r2.s[c.k]*0.3) - LIFE.stats[c.k].m)/LIFE.stats[c.k].sd, 5, 95)); });
+    const word = v => v>=65 ? 'ดีมาก' : v>=55 ? 'ดี' : v>=45 ? 'ทรงตัว' : v>=35 ? 'ต้องระวัง' : 'มีบทเรียน';
+    html += `<section class="sec"><h3>ช่วงนี้เป็นอย่างไร</h3><div class="now-grid">${CATS.map(c=>`<div class="now-card"><div class="k">${c.l}</div><div class="v">${word(sc[c.k])}</div><span class="t"><i style="width:${sc[c.k]}%;background:${c.c}"></i></span></div>`).join('')}</div>`;
+    const hits = r.hits.concat(r2.hits).sort((a,b)=>(b.f*Math.abs(b.v))-(a.f*Math.abs(a.v))).slice(0,6);
+    html += hits.length ? `<ul class="hl">${hits.map(h=>`<li><span class="tag n-${h.v>0?'e':'h'}">${h.v>0?'ส่งเสริม':'ท้าทาย'}</span> ${hitText(h)} <span class="sub">(คลาด ${h.orb.toFixed(1)}°)</span></li>`).join('')}</ul>` : '<p class="sub">ช่วงนี้ไม่มีดาวเคลื่อนช้าทำมุมกับจุดสำคัญในดวงของคุณ ชีวิตเป็นไปตามจังหวะปกติ</p>';
+    if (ch.cusps) { const hj = ch.houseOf(T.jupiter), hs = ch.houseOf(T.saturn);
+      html += `<ul class="hl"><li><b>ดาวพฤหัสกำลังผ่านเรือน ${hj} (${HOUSES[hj-1].t})</b> โอกาสและการเติบโตช่วงนี้มาจาก${H_VIA[hj-1]}</li><li><b>ดาวเสาร์กำลังผ่านเรือน ${hs} (${HOUSES[hs-1].t})</b> บทเรียนและความรับผิดชอบช่วงนี้อยู่ที่${H_VIA[hs-1]} ความพยายามด้านนี้จะให้ผลระยะยาว</li></ul>`; }
+    html += `</section>`;
+  }
+  // ดาวถอยหลัง
+  const rx = RX_SET.filter(k=>sp[k] < 0);
+  html += `<section class="sec"><h3>ดาวที่กำลังถอยหลัง</h3>`;
+  html += rx.length ? `<ul class="hl bad">${rx.map(k=>{ const h = ch.cusps ? ch.houseOf(T[k]) : null; const outer = ['uranus','neptune','pluto'].includes(k);
+    return `<li><b>${PK[k].th}ถอยหลัง (Retrograde) ในราศี${signOf(T[k]).th}</b> ${RX_TXT[k]}${h?` ในดวงของคุณ ดาวนี้ถอยหลังในเรือน ${h} เรื่อง${HOUSES[h-1].t}จึงได้รับผลมากที่สุด`:''}${outer?' (ดาวดวงนี้ถอยหลังทุกปีนานหลายเดือน ผลจึงไม่รุนแรง)':''}</li>`; }).join('')}</ul>` : '<p class="sub">ช่วงนี้ไม่มีดาวดวงไหนถอยหลัง</p>';
+  const rp = rxPeriods(ms);
+  html += `<p class="k2">รอบถอยหลังของดาวเคลื่อนเร็ว</p><ul class="pl">${['mercury','venus','mars'].map(k=>{ const p = rp[k], f = x => thDate(ms + x*864e5);
+    return `<li><b>${PK[k].th}</b> ${p.cur ? `กำลังถอยหลัง ${f(p.cur[0])} ถึง ${f(p.cur[1])}` : p.next ? `ถอยหลังครั้งถัดไป ${f(p.next[0])} ถึง ${f(p.next[1])}` : 'ไม่ถอยหลังในปีนี้'}</li>`; }).join('')}</ul></section>`;
+  // ตารางดาว
+  const moonPh = norm(T.moon - T.sun), phase = moonPh<22.5||moonPh>=337.5 ? 'จันทร์ดับ' : moonPh<157.5 ? 'ข้างขึ้น' : moonPh<202.5 ? 'จันทร์เต็มดวง' : 'ข้างแรม';
+  html += `<section class="sec"><h3>ตำแหน่งดาวบนท้องฟ้า</h3><p class="sub">ดวงจันทร์อยู่ราศี${signOf(T.moon).th} ช่วง${phase}</p><div class="scroll"><table class="tt"><thead><tr><th>ดาว</th><th>ราศี</th><th>องศา</th><th>ทิศทาง</th>${ch.cusps?'<th>ผ่านเรือนของคุณ</th>':''}</tr></thead><tbody>${PLANETS.map(p=>{ const k = p.k, l = T[k];
+    const dir = NODE_KEYS.includes(k) ? 'ถอยหลังตามปกติ' : ['sun','moon'].includes(k) ? 'เดินหน้า' : Math.abs(sp[k]) < (STAT_TH[k]||0) ? 'เกือบหยุดนิ่ง' : sp[k] < 0 ? '<span class="rx">Rx</span> ถอยหลัง' : 'เดินหน้า';
+    return `<tr><td><span class="sg">${p.g}</span> ${p.th}</td><td><span class="sg">${signOf(l).g}</span> ${signOf(l).th}</td><td class="num">${degStr(l)}</td><td>${dir}</td>${ch.cusps?`<td class="num">${ch.houseOf(l)}</td>`:''}</tr>`; }).join('')}</tbody></table></div></section>`;
+  $('p-now').innerHTML = html;
+  $('nowDate').addEventListener('change', e=>{ NOW_DATE = e.target.value || null; renderNow(CUR.inp, CUR.ch); });
+}
+document.addEventListener('click', e=>{ if (!e.target.closest('[data-nowreset]')) return; NOW_DATE = null; renderNow(CUR.inp, CUR.ch); });
+
+/* ดัชนีความง่ายในการมีแฟน */
+const LE_NORM = {t:[0.776,1.698], n:[0.149,1.134]};
+function loveEaseRaw(ch) {
+  const L = ch.lons, f = [], add = (v,t) => f.push({v,t});
+  const vs = signOf(L.venus), vd = dignity('venus', L.venus);
+  if (vd==='dom'||vd==='ex') add(1.2, `ดาวศุกร์${DT[vd].n} ในราศี${vs.th} เสน่ห์และความรักของคุณทำงานได้เต็มที่`);
+  if (vd==='det'||vd==='fall') add(-1, `ดาวศุกร์${DT[vd].n} ในราศี${vs.th} คุณอาจเลือกมาก เปิดใจช้า หรือแสดงความรักไม่ถนัด`);
+  if (ch.cusps) {
+    const hv = ch.houseOf(L.venus);
+    if ([1,5,7,11].includes(hv)) add(1, `ดาวศุกร์อยู่เรือน ${hv} (${HOUSES[hv-1].t}) เสน่ห์ของคุณเห็นได้ชัดในชีวิตประจำวัน`);
+    if ([6,8,12].includes(hv)) add(-.6, `ดาวศุกร์อยู่เรือน ${hv} (${HOUSES[hv-1].t}) ความรักมักเริ่มแบบเงียบ ๆ หรือต้องใช้เวลา`);
+    const V7 = {venus:1.2, jupiter:1.2, moon:.8, sun:.6, saturn:-1, uranus:-.6, pluto:-.4, neptune:-.3};
+    const R7 = {saturn:'ความรักจริงจังมักมาช้า แต่เมื่อมาแล้วมั่นคง', uranus:'ความสัมพันธ์มาแบบไม่คาดฝันแต่ไม่ค่อยมั่นคง', pluto:'ความสัมพันธ์เข้มข้นและซับซ้อน', neptune:'อาจมองคู่ในอุดมคติจนเลือกยาก'};
+    PLANETS.filter(p=>V7[p.k] && ch.houseOf(L[p.k])===7).forEach(p=>add(V7[p.k], `${p.th}อยู่ในเรือนคู่ครอง ${V7[p.k]>0 ? 'ดึงดูดความสัมพันธ์เข้ามาได้ง่าย' : R7[p.k]}`));
+    PLANETS.filter(p=>['venus','jupiter','moon'].includes(p.k) && ch.houseOf(L[p.k])===5).forEach(p=>add(.6, `${p.th}อยู่ในเรือนความรัก ชอบการเดตและเปิดรับความรักง่าย`));
+    const d7 = Math.floor(norm(ch.cusps[6])/30), r7 = RULER[d7], h7 = ch.houseOf(L[r7]);
+    if ([1,5,7,10,11].includes(h7)) add(.5, `เจ้าเรือนคู่ครอง (${PK[r7].th}) อยู่เรือน ${h7} ความรักเชื่อมกับชีวิตประจำวันของคุณโดยตรง`);
+    if ([6,8,12].includes(h7)) add(-.5, `เจ้าเรือนคู่ครอง (${PK[r7].th}) อยู่เรือน ${h7} ความรักมักเกิดในที่ที่ไม่คาดคิดหรือต้องใช้เวลา`);
+    const ai = Math.floor(norm(ch.asc)/30);
+    if ([1,4,6].includes(ai)) add(.6, `ลัคนาราศี${SIGNS[ai].th} มีเสน่ห์ที่คนสังเกตเห็นตั้งแต่แรกพบ`);
+    if ([7,9].includes(ai)) add(-.3, `ลัคนาราศี${SIGNS[ai].th} ภายนอกดูเข้าถึงยาก คนอาจไม่กล้าเข้าหาก่อน`);
+  }
+  const has = (a,b,f2) => ch.aspects.find(x=>((x.p.k===a&&x.q.k===b)||(x.p.k===b&&x.q.k===a)) && f2(x));
+  const hard = x => x.A.c==='tense' || x.A.c==='conj', soft = x => x.A.c!=='tense';
+  if (has('venus','jupiter',()=>true)) add(1, 'ดาวศุกร์ทำมุมกับดาวพฤหัส ใจกว้าง มีเสน่ห์ และมักมีโชคเรื่องความรัก');
+  if (has('venus','mars',soft)) add(.8, 'ดาวศุกร์กับดาวอังคารส่งเสริมกัน มีแรงดึงดูดทางเพศตรงข้ามหรือคนที่สนใจสูง');
+  if (has('venus','saturn',hard)) add(-.9, 'ดาวศุกร์ถูกดาวเสาร์กดดัน ระวังตัวในความรัก กลัวถูกปฏิเสธ หรือความรักมาช้า');
+  if (has('venus','uranus',x=>x.A.c==='tense')) add(-.5, 'ดาวศุกร์ทำมุมท้าทายกับดาวยูเรนัส รักอิสระจนความสัมพันธ์ไม่ค่อยยืด');
+  if (has('venus','pluto',x=>x.A.c==='tense')) add(-.4, 'ดาวศุกร์ทำมุมท้าทายกับดาวพลูโต ความรักเข้มข้นจนเหนื่อยหรือกลัวการผูกพัน');
+  if (has('moon','saturn',hard)) add(-.6, 'ดวงจันทร์ถูกดาวเสาร์กดดัน เปิดใจยากและไม่ค่อยแสดงความรู้สึก');
+  if (has('moon','venus',soft)) add(.5, 'ดวงจันทร์กับดาวศุกร์ส่งเสริมกัน อ่อนโยนและน่ารักในสายตาคนอื่น');
+  const wp = workProfile(ch).pct, sv = (wp-50)/50;
+  if (sv > 0.25) add(sv*.8, 'ชอบเข้าสังคมและพบคนใหม่ โอกาสรู้จักคนจึงมาก');
+  if (sv < -0.25) add(sv*.8, 'ชอบอยู่กับตัวเองหรือกลุ่มเล็ก ๆ โอกาสพบคนใหม่จึงน้อยกว่า');
+  return {sum: f.reduce((a,b)=>a+b.v,0), f};
+}
+function loveEase(ch) {
+  const r = loveEaseRaw(ch), N = LE_NORM[ch.cusps ? 't' : 'n'];
+  const pct = Math.round(clamp(50 + 16*(N ? (r.sum - N[0])/N[1] : 0), 8, 95));
+  return {pct, f:r.f};
+}
+const easeLabel = p => p>=75 ? 'มีแฟนได้ง่าย' : p>=60 ? 'ค่อนข้างง่าย' : p>=45 ? 'ปานกลาง' : p>=30 ? 'ต้องใช้เวลา' : 'ต้องตั้งใจมาก';
+function easeHTML(inp, ch) {
+  const E = loveEase(ch), pos = E.f.filter(x=>x.v>0).sort((a,b)=>b.v-a.v), neg = E.f.filter(x=>x.v<0).sort((a,b)=>a.v-b.v);
+  let soon = '';
+  if (LIFE) { const now = Math.max(0, Math.floor((Date.now()-inp.ms)/YR)), yrs = [];
+    for (let a = now; a <= Math.min(now+5, LIFE.Y-1); a++) if (LIFE.val.love[a] >= 60) yrs.push(a);
+    soon = yrs.length ? `<p><b>ช่วงที่โอกาสความรักเด่นใน 5 ปีข้างหน้า</b> ${yrs.map(a=>`พ.ศ. ${beYear(inp,a)}`).join(' ')} ${lk('life','life-top','ดูกราฟชีวิต')}</p>` : `<p class="sub">ใน 5 ปีข้างหน้ายังไม่มีช่วงที่ดาวส่งเสริมความรักเด่นเป็นพิเศษ ความรักจึงขึ้นกับการออกไปพบคนมากกว่าจังหวะดาว</p>`; }
+  return `<section class="sec" id="ease"><h3>ความง่ายในการมีแฟน</h3><div class="love-head"><div class="love-score"><span class="num">${E.pct}%</span><span class="tag n-${E.pct>=60?'e':E.pct>=45?'m':'h'}">${easeLabel(E.pct)}</span></div><div class="ease-bar"><span class="t"><i style="width:${E.pct}%"></i></span><p class="sub" style="margin:6px 0 0">เทียบกับดวงของคนทั่วไป 50% คือระดับเฉลี่ย ไม่ใช่ความน่าจะเป็นทางสถิติ</p></div></div>
+    <div class="split" style="margin-top:12px"><div><p class="k2">ทำไมถึงง่าย</p>${pos.length?`<ul class="hl good">${pos.map(x=>`<li>${x.t}</li>`).join('')}</ul>`:'<p class="sub">ไม่มีปัจจัยเด่นที่ทำให้ง่ายเป็นพิเศษ</p>'}</div><div><p class="k2">ทำไมถึงต้องใช้เวลา</p>${neg.length?`<ul class="hl bad">${neg.map(x=>`<li>${x.t}</li>`).join('')}</ul>`:'<p class="sub">ไม่มีปัจจัยที่ทำให้ยากเป็นพิเศษ</p>'}</div></div>${soon}</section>`;
+}
+
 function render(inp, ch) {
   CUR = {inp, ch};
   const dtf = new Intl.DateTimeFormat('th-TH',{dateStyle:'long',...(inp.timeKnown?{timeStyle:'short'}:{}),timeZone:'UTC'});
@@ -1710,7 +2008,7 @@ function render(inp, ch) {
   $('cTitle').textContent = inp.title;
   $('cSub').textContent = inp.sub || `${localShown}${inp.timeKnown?' น.':' (ไม่ทราบเวลาเกิด คำนวณที่เที่ยงวัน)'} ที่${inp.placeName} (${fmtOff(inp.off)})`;
   drawWheel(ch);
-  renderOverview(inp, ch); renderPlanets(inp, ch); renderHouses(inp, ch); renderAspects(inp, ch); renderWork(inp, ch); renderLove(inp, ch); renderSummary(inp, ch);
+  renderOverview(inp, ch); renderPlanets(inp, ch); renderHouses(inp, ch); renderAspects(inp, ch); renderWork(inp, ch); renderLife(inp, ch); renderNow(inp, ch); renderLove(inp, ch); renderSummary(inp, ch);
   const notes = [];
   if (ch.houseNote) notes.push(ch.houseNote);
   notes.push('ใช้ระบบราศีแบบตะวันตก (Tropical) ตำแหน่งดาวคำนวณในเบราว์เซอร์ของคุณ ไม่มีการส่งข้อมูลออกไป ความคลาดเคลื่อนราว 1 ถึง 2 ลิปดา ใช้ได้กับปีเกิด ค.ศ. 1800 ถึง 2100 คำอธิบายเป็นความหมายทั่วไปเพื่อการเรียนรู้และความบันเทิง');
